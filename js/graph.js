@@ -7,6 +7,8 @@ See http://js.cytoscape.org/#style/visibility.
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
 import cytoscape from "cytoscape";
+import cxtmenu from 'cytoscape-cxtmenu';
+cytoscape.use(cxtmenu);
 import {progress} from "./progress.js";
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
