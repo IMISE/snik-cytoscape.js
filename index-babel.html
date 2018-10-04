@@ -8,13 +8,16 @@
 	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen">
 	<link rel="stylesheet" type="text/css" href ="css/message.css" media="screen">
 	<link rel="stylesheet" type="text/css" href ="lib/themes/message_solid.css" media="screen">
-	<script src="lib/polyfill.min.js"></script>
-	<script src="lib/fetch.min.js"></script>
-	<script src="lib/cytoscape.min.js"></script>
-	<script src="lib/cytoscape-cxtmenu.js"></script>
-	<script src="lib/cytoscape-euler.js"></script>
+	<!--<script src="lib/polyfill.min.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.0.0/polyfill.min.js"></script>-->
+<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/core.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.16/cytoscape.min.js"></script>
+	<!--<script src="https://cdn.jsdelivr.net/npm/systemjs@2.0.1/dist/s.min.js"></script>-->
+	<!--<script src="https://cdn.jsdelivr.net/npm/systemjs@2.0.1/dist/system.min.js"></script>-->
+	<!--<script src="https://cdn.jsdelivr.net/npm/systemjs@2.0.1/dist/extras/transform.min.js"></script>-->
+	<!--<script src="lib/fetch.min.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>-->
 	<script src="lib/message.js"></script>
-	<script src="lib/lunr.js"></script>
 	<script src="config.js"></script>
 </head>
 
@@ -47,12 +50,19 @@
 		});
 	})([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 	</script>
-	<!-- include systemjs to load transpiled modules -->
-	<script src="lib/system.js"></script>
-	<script>
-	System.config({ "baseURL": "target" });
-	System.import("main.js");
-	</script>
+	<!--
+<script type="systemjs-packagemap">
+{
+  "packages": {"main": "./target/main.js"}
+}
+</script>-->
+<script>
+/*
+	SystemJS.config({ transpiler: 'transpiler-module' });
+	*/
+	//System.import("./target/main.js");
+
+</script>
 
 	<div id="top">
 		<form id="search" method="post">
@@ -72,6 +82,6 @@
 	</div>
 
 	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
-
+	<script src="dist/main.js"></script>
 </body>
 </html>

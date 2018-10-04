@@ -4,7 +4,10 @@ wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.16/cytoscape
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.16/cytoscape.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js
 wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js
-wget -N -P lib https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.17/system.js
+wget -N -P lib https://cdn.jsdelivr.net/npm/systemjs@2/dist/system.min.js
+wget -N -P lib https://cdn.jsdelivr.net/npm/systemjs@2/dist/system.min.js.map
+wget -N -P lib https://cdn.jsdelivr.net/npm/systemjs@2/dist/s.min.js
+wget -N -P lib https://cdn.jsdelivr.net/npm/systemjs@2/dist/s.min.js.map
 wget -N -P lib http://spin.js.org/spin.js
 wget -N -P lib https://raw.githubusercontent.com/cytoscape/cytoscape.js-euler/v1.0.0/cytoscape-euler.js
 wget -N -P lib https://unpkg.com/lunr/lunr.js	

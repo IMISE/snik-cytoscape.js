@@ -1,7 +1,7 @@
 /**
 Loading animation for long processes, such as layouting.
 @module */
-import {Spinner} from '../lib/spin.js';
+//import {Spinner} from '../lib/spin.js';
 
 const opts = {
   lines: 13, // The number of lines to draw
@@ -25,20 +25,20 @@ const opts = {
   hwaccel: false, // Whether to use hardware acceleration
   position: 'absolute', // Element positioning
 };
-let spinner = null;
+const spinner = null;
 let active = 0;
 
 /** Not thread safe but javascript is single threaded for now.*/
 function progress(p)
 {
   if(!window) {return;} // ignore when running in nodejs
-  if(!spinner) {spinner = new Spinner(opts);}
+  //if(!spinner) {spinner = new Spinner(opts);}
   if(p<100)
   {
     if(!active)
     {
       document.body.classList.add('waiting');
-      spinner.spin(document.body);
+    //  spinner.spin(document.body);
     }
     active++;
   }
@@ -48,7 +48,7 @@ function progress(p)
     if(active===0)
     {
       document.body.classList.remove('waiting');
-      spinner.stop();
+      //spinner.stop();
     }
   }
 }
