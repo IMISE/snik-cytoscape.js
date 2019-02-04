@@ -2,6 +2,9 @@ import * as language from '../js/lang/language.js';
 import chai from 'chai';
 chai.should();
 const assert = chai.assert;
+import * as log from 'loglevel';
+global.log = log;
+
 
 describe('language', function()
 {

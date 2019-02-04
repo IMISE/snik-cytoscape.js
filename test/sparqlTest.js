@@ -1,7 +1,10 @@
 import * as sparql from "../js/sparql.js";
+import * as log from 'loglevel';
+global.log = log;
 import chai from 'chai';
 chai.should();
 const assert = chai.assert;
+
 const EXPECTED_CLASSES_MIN = 4000;
 const EXPECTED_CLASSES_MAX = 20000;
 const EXPECTED_META_CLASSES_MIN = 10;

@@ -1,6 +1,9 @@
 import * as search from '../js/search.js';
 import chai from 'chai';
 const assert = chai.assert;
+// the global "log" is normally registered in the index file, so we have to do that here
+import * as log from 'loglevel';
+global.log = log;
 
 function equals(as, bs)
 {

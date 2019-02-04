@@ -6,7 +6,8 @@ cytoscape.use(euler);
 const LocalStorage = require('node-localstorage').LocalStorage;
 global.localStorage = new LocalStorage('./scratch');
 const assert = require('chai').assert;
-
+import * as log from 'loglevel';
+global.log = log;
 
 describe('cytoscape', function()
 {
