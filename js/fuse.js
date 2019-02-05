@@ -2,45 +2,67 @@
 Fuzzy search with fuse.js.
 @module */
 import * as sparql from "./sparql.js";
-import * as fuse from "../node_modules/fuse.js/dist/fuse.js";
-import * as NODE from "./node.js";
+import Fuse from "../node_modules/fuse.js/dist/fuse.js";
+import config from "./config.js";
 
 let index = null;
 
-const options = {
+const options =
+{
   shouldSort: true,
-  threshold: 0.6,
-  location: 0,
-  distance: 100,
-  maxPatternLength: 32,
-  minMatchCharLength: 1,
+  tokenize: true,
+  maxPatternLength: 40,
+  id: "uri",
   keys:
   [
-    "label",
-    "author.firstName",
+    {name:"l", weight: 0.3},
+    {name:"al", weight: 0.3},
+    {name:"def", weight: 0.1},
+    {name:"suffix", weight: 0.3},
   ],
 };
 
 /** Create fulltext index from SPARQL endpoint. */
-export function createIndex(cy)
+export async function createIndex()
 {
-  const items = [];
-  for(const node of cy.nodes())
+  const froms = config.allSubOntologies.map(sub=>`from <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
+  const sparqlQuery = `select
+  replace(replace(str(?c),"http://www.snik.eu/ontology/",""),"/",":") as ?uri
+  group_concat(distinct(str(?l));separator=" ") as ?l
+  group_concat(distinct(str(?al));separator=" ") as ?al
+  group_concat(distinct(str(?def));separator=" ") as ?def
+  ${froms}
   {
-    const item =
+    ?c a owl:Class.
+    OPTIONAL {?c rdfs:label ?l.}
+    OPTIONAL {?c skos:altLabel ?al.}
+    OPTIONAL {?c skos:definition ?def.}
+  }`;
+  const bindings = await sparql.select(sparqlQuery);
+  const items = [];
+
+  for(const b of bindings)
+  {
+    const item = {};
+    items.push(item);
+    for(const key of Object.keys(b))
     {
-      l: Object.values(node.data(NODE.LABEL)).join(''),
-    };
+      const v = b[key].value;
+      if(v) {item[key]=v;}
+    }
+    item.suffix = item.uri.replace(".*/","");
   }
-  console.log(JSON.stringify(item));
-  index = new fuse.Fuse(items,options);
+  index = new Fuse(items,options);
+  return items; // for testing
 }
 
 /** Searches the Fuse index for classes with a similar label.
 @return {Promise<Set>} A promise with a set of class URIs.
 */
-export function search(userQuery)
+export async function search(userQuery)
 {
-  if(!index) {throw "Index not ";}
-  return new Set();
+  if(!index) {await createIndex();}
+  const result = index.search(userQuery);
+  log.debug(result);
+  return result;
 }

@@ -6,6 +6,8 @@ import * as sparql from "./sparql.js";
 import * as menu from "./menu.js";
 import * as NODE from "./node.js";
 import * as util from "./util.js";
+import * as fuse from "./fuse.js";
+
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -96,10 +98,10 @@ function presentAll()
 
 /**
  * @param  {String} query The user query.
- * @param  {Set<String>} uris A set of OWL class URIs
+ * @param  {Array<String>} uris An array of OWL class URIs
  * @return {Boolean} Whether the search results are nonempty.
  */
-function showSearchResults(query, uris)
+export function showSearchResults(query, uris)
 {
   resultNodes = [];
   const table = util.getElementById("tab:searchresults");
@@ -110,23 +112,23 @@ function showSearchResults(query, uris)
   }
   util.getElementById("overlay").display = "block";
   util.getElementById("overlay").style.width = "100%";
-  if(uris.size===0)
+  if(uris.length===0)
   {
     util.getElementById("h2:searchresults").innerHTML=`No Search Results for "${query}"`;
     return false;
   }
-  if(uris.size===1)
+  if(uris.length===1)
   {
-    presentUri([...uris][0]);
+    presentUri(uris[0]);
     return true;
   }
-  if(uris.size===sparql.SPARQL_LIMIT)
+  if(uris.length===sparql.SPARQL_LIMIT)
   {
     util.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
   }
   else
   {
-    util.getElementById("h2:searchresults").innerHTML=`${uris.size} Search Results for "${query}"`;
+    util.getElementById("h2:searchresults").innerHTML=`${uris.length} Search Results for "${query}"`;
   }
   // Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and invisible and (2) not in the graph.
   const uriType = {};
@@ -141,9 +143,8 @@ function showSearchResults(query, uris)
     }
     else {uriType[uri]=2;}
   });
-  const sortedUris = Array.from(uris);
-  sortedUris.sort((a,b)=>(uriType[a]-uriType[b]));
-  sortedUris.forEach(uri=>
+  uris.sort((a,b)=>(uriType[a]-uriType[b]));
+  uris.forEach(uri=>
   {
     const row = table.insertRow();
     const cell = row.insertCell(0);
@@ -158,18 +159,19 @@ function showSearchResults(query, uris)
   cell.innerHTML = `<a href="javascript:window.presentAll();void(0)">
 		Highlight All</a>`;
 
+  const suris = new Set(uris);
   resultNodes = graph.cy.elements().nodes().filter((node)=>
   {
-    return uris.has(node.data(NODE.ID));
+    return new suris.has(node.data(NODE.ID));
   });
   return true;
 }
 
 /** Searches the SPARQL endpoint for classes with the given label.
 Case and space insensitive when not using bif:contains. Can be used by node.js.
-@return {Promise<Set>} A promise with a set of class URIs.
+@return {Promise<Array<String>>} A promise with an array of class URIs.
 */
-export function search(userQuery)
+export async function search(userQuery)
 {
   // prevent invalid SPARQL query and injection by keeping only alphanumeric English and German characters
   // if other languages with other characters are to be supported, extend the regular expression
@@ -188,20 +190,19 @@ export function search(userQuery)
   const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
 			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
   log.debug(sparqlQuery);
-  return sparql.select(sparqlQuery,"http://www.snik.eu/ontology").then(bindings=>new Set(bindings.map(b=>b.s.value)));
+  const bindings = await sparql.select(sparqlQuery,"http://www.snik.eu/ontology");
+  return bindings.map(b=>b.s.value);
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 }
 
 /**Search the class labels and display the result to the user.
 * @return {false} false to prevent page reload triggered by submit.*/
-function showSearch(userQuery)
+async function showSearch(userQuery)
 {
   util.getElementById("overlay").style.display= "block";
-  search(userQuery).then(uris =>
-  {
-    showSearchResults(userQuery,uris);
-  });
+  const uris = await fuse.search(userQuery);
+  showSearchResults(userQuery,uris);
   return false; // prevent page reload triggered by submit
 }
 
