@@ -3,6 +3,7 @@
 export default
 {
   "defaultSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
+  "allSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
   "logLevelConsole": "info",
   "logLevelDisplay": "error",
   "layoutCacheMinRecall": 0.95,
