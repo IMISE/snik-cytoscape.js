@@ -10,7 +10,8 @@
 	},
 	"rules":
 	{
-		"require-jsdoc": "off"
+		"require-jsdoc": "off",
+		"no-console": "off"
 	},
 	"plugins": ["mocha"]
 }
