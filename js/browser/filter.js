@@ -6,7 +6,7 @@ See http://js.cytoscape.org/#style/visibility.
 
 @module
 */
-import * as NODE from "./node.js";
+import * as NODE from "../node.js";
 
 const filterData = [
   [`node[${NODE.PREFIX}='meta']`,`meta`],

@@ -1,9 +1,9 @@
 /**
 Show the environment of a single node using a special layout.
 @module */
-import * as sparql from "./sparql.js";
+import * as sparql from "../sparql.js";
 import * as graph from "./graph.js";
-import * as NODE from "./node.js";
+import * as NODE from "../node.js";
 
 /** Centers a class and shows directly and indirectly connected roles, functions and entity types in a concentric layout.
 Hides all other nodes. Resetting the view unhides the other nodes but keeps the layout of those shown before.

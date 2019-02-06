@@ -2,9 +2,9 @@
 Creates the circular context menu that can be opened on top of an edge.
 @module */
 import * as graph from "./graph.js";
-import * as rdf from "./rdf.js";
-import * as EDGE from "./edge.js";
-import * as language from "./lang/language.js";
+import * as rdf from "../rdf.js";
+import * as EDGE from "../edge.js";
+import * as language from "../lang/language.js";
 
 /** Creates a human readable string of the triple an edge represents. */
 function edgeLabel(edge) {return rdf.short(edge.data(EDGE.SOURCE)) +" "+ rdf.short(edge.data(EDGE.PROPERTY)) +" "+ rdf.short(edge.data(EDGE.TARGET));}

@@ -1,17 +1,17 @@
 /** Standard dark mode Cytoscape color scheme.
 @module
 */
-import * as EDGE from "./edge.js";
+import * as EDGE from "../edge.js";
 
-const colorschemeday =
+const colorschemenight =
   [
     {
       "selector": "node",
       "css":
       {
-        "border-color": "rgb(0,0,0)",
+        "border-color": "rgb(255,255,255)",
         "background-color": "rgb(254,196,79)",
-        'color': 'black',
+        'color': 'white',
       },
     },
     {
@@ -44,43 +44,33 @@ const colorschemeday =
     },
     {
       "selector": "node:selected",
-      "css":
-      {
-        "background-color": "rgb(0,0,255)",
-      },
+      "css": {"background-color": "rgb(255,255,0)"},
     },
     {
       "selector": "node.source",
-      "css":
-      {
-        "border-color": "rgb(128,0,128)",
-      },
+      "css": {"border-color": "rgb(128,255,128)"},
     },
     {
       "selector": "node.target",
-      "css":
-      {
-        "border-color": "rgb(0,165,165)",
-      },
+      "css": {"border-color": "rgb(255,90,90)"},
     },
     {
-      "selector": "edge[!selected]",
+      "selector": "edge:unselected",
       "css":
       {
-        "opacity": 0.4,
         'line-color': function(edge)
         {
-        // highlight skos interlinks
+          // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(166,153,0)";
+            return "rgb(165,165,128)";
           }
           return "rgb(128,128,128)";
         },
       },
     },
     {
-      "selector": "edge.selected",
+      "selector": "edge:selected",
       "css":
       {
         "color": "rgb(255,255,128)", // label color
@@ -92,11 +82,11 @@ const colorschemeday =
       "selector": "edge.highlighted",
       "css":
       {
-        'color': 'rgb(128,255,128)',
+        'color': 'rgb(128,255,128)', // label color
         'line-color': 'rgb(128,255,128)',
         'mid-target-arrow-color': 'rgb(128,255,128)',
       },
     },
   ];
 
-export {colorschemeday};
+export {colorschemenight};

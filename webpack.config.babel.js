@@ -2,7 +2,7 @@ import path from 'path';
 import WebpackAutoInject from 'webpack-auto-inject-version';
 
 export default {
-  entry: path.join(__dirname, 'js/main.js'),
+  entry: path.join(__dirname, 'js/browser/main.js'),
   output: {
     path: path.join(__dirname, 'target'),
     filename: '[name].bundle.js',

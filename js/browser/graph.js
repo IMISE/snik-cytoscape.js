@@ -7,10 +7,10 @@ import {progress} from "./progress.js";
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
-import * as sparql from "./sparql.js";
+import * as sparql from "../sparql.js";
 import {registerMenu} from "./contextmenu.js";
-import timer from "./timer.js";
-import * as NODE from "./node.js";
+import timer from "../timer.js";
+import * as NODE from "../node.js";
 import * as util from "./util.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.

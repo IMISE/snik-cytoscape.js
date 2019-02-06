@@ -2,11 +2,11 @@
 Textual node search.
 @module */
 import * as graph from "./graph.js";
-import * as sparql from "./sparql.js";
+import * as sparql from "../sparql.js";
 import * as menu from "./menu.js";
-import * as NODE from "./node.js";
+import * as NODE from "../node.js";
 import * as util from "./util.js";
-import * as fuse from "./fuse.js";
+import * as fuse from "../fuse.js";
 
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible

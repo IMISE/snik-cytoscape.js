@@ -3,9 +3,9 @@ Cytoscape style file, excluding color information, which is contained in the col
 @see colorSchemeDay
 @see colorSchemeNight
 @module */
-import * as NODE from "./node.js";
-import * as EDGE from "./edge.js";
-import * as language from "./lang/language.js";
+import * as NODE from "../node.js";
+import * as EDGE from "../edge.js";
+import * as language from "../lang/language.js";
 const style =
 {
   'format_version': '1.0',

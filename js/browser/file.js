@@ -1,8 +1,8 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
 import * as graph from "./graph.js";
-import * as layout from "./layout.js";
-import timer from "./timer.js";
+import * as layout from "../layout.js";
+import timer from "../timer.js";
 
 /** Loads a local text file.
 When developing on Google Chrome, you may need to start the browser with "--allow-file-access-from-files".

@@ -2,8 +2,8 @@
 Lets the user download files generated from the loaded graph.
 @module */
 import * as graph from "./graph.js";
-import * as layout from "./layout.js";
-import config from "./config.js";
+import * as layout from "../layout.js";
+import config from "../config.js";
 import * as util from "./util.js";
 
 let a = null; // reused for all downloading, not visible to the user

@@ -1,17 +1,17 @@
 /** Standard dark mode Cytoscape color scheme.
 @module
 */
-import * as EDGE from "./edge.js";
+import * as EDGE from "../edge.js";
 
-const colorschemenight =
+const colorschemeday =
   [
     {
       "selector": "node",
       "css":
       {
-        "border-color": "rgb(255,255,255)",
+        "border-color": "rgb(0,0,0)",
         "background-color": "rgb(254,196,79)",
-        'color': 'white',
+        'color': 'black',
       },
     },
     {
@@ -44,33 +44,43 @@ const colorschemenight =
     },
     {
       "selector": "node:selected",
-      "css": {"background-color": "rgb(255,255,0)"},
+      "css":
+      {
+        "background-color": "rgb(0,0,255)",
+      },
     },
     {
       "selector": "node.source",
-      "css": {"border-color": "rgb(128,255,128)"},
+      "css":
+      {
+        "border-color": "rgb(128,0,128)",
+      },
     },
     {
       "selector": "node.target",
-      "css": {"border-color": "rgb(255,90,90)"},
-    },
-    {
-      "selector": "edge:unselected",
       "css":
       {
+        "border-color": "rgb(0,165,165)",
+      },
+    },
+    {
+      "selector": "edge[!selected]",
+      "css":
+      {
+        "opacity": 0.4,
         'line-color': function(edge)
         {
-          // highlight skos interlinks
+        // highlight skos interlinks
           if((String(edge.data(EDGE.PROPERTY)).substring(0,36))==='http://www.w3.org/2004/02/skos/core#')
           {
-            return "rgb(165,165,128)";
+            return "rgb(166,153,0)";
           }
           return "rgb(128,128,128)";
         },
       },
     },
     {
-      "selector": "edge:selected",
+      "selector": "edge.selected",
       "css":
       {
         "color": "rgb(255,255,128)", // label color
@@ -82,11 +92,11 @@ const colorschemenight =
       "selector": "edge.highlighted",
       "css":
       {
-        'color': 'rgb(128,255,128)', // label color
+        'color': 'rgb(128,255,128)',
         'line-color': 'rgb(128,255,128)',
         'mid-target-arrow-color': 'rgb(128,255,128)',
       },
     },
   ];
 
-export {colorschemenight};
+export {colorschemeday};

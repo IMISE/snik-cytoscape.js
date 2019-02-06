@@ -1,7 +1,7 @@
 /**
 Loading animation for long processes, such as layouting.
 @module */
-import {Spinner} from '../node_modules/spin.js/spin.js';
+import {Spinner} from '../../node_modules/spin.js/spin.js';
 
 const opts = {
   lines: 13, // The number of lines to draw

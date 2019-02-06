@@ -4,8 +4,8 @@ Creates the circular context menu that can be opened on top of a node/edge.
 import * as graph from "./graph.js";
 import * as nodes from "./contextmenuNodes.js";
 import * as edges from "./contextmenuEdges.js";
-import * as NODE from "./node.js";
-import * as EDGE from "./edge.js";
+import * as NODE from "../node.js";
+import * as EDGE from "../edge.js";
 
 /** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
 The extension itself is already registered through the plain HTML/JS import in index.html,

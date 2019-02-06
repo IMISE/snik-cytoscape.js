@@ -1,17 +1,17 @@
 /**
 Entry point.
 @module */
-import loadGraphFromSparql from "./loadGraphFromSparql.js";
+import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import addFilterEntries from "./filter.js";
-import {addMenu} from "./menu.js";
+import * as menu from "./menu.js";
 import * as search from "./search.js";
 import addButtons from "./button.js";
 import * as graph from "./graph.js";
 import * as file from "./file.js";
-import * as rdfGraph from "./rdfGraph.js";
-import * as layout from "./layout.js";
+import * as rdfGraph from "../rdfGraph.js";
+import * as layout from "../layout.js";
 import {progress} from "./progress.js";
-import config from "./config.js";
+import config from "../config.js";
 import * as util from "./util.js";
 
 /** Entry point. Is run when DOM is loaded. **/
@@ -31,7 +31,7 @@ function main()
     }
   }, true);
 
-  addMenu();
+  menu.addMenu();
   log.info('Menu added');
   addFilterEntries(graph.cy,util.getElementById("filter-div"));
   log.info('filter entries added');
@@ -46,7 +46,9 @@ function main()
   loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
     .then(()=>
     {
-      layout.runCached(graph.cy,layout.euler,rdfGraph.subs());
+      progress(0);
+      layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs());
+      progress(100);
     })
     .then(()=>
     {

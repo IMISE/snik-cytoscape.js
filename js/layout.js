@@ -5,10 +5,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 @module */
 import timer from "./timer.js";
 import * as NODE from "./node.js";
-import * as menu from "./menu.js";
-import {progress} from "./progress.js";
 import config from "./config.js";
-import {getStarMode} from "./graph.js";
 
 let activeLayout = undefined;
 
@@ -42,23 +39,21 @@ export function positions(nodes)
 @param {cy.cytoscape} cy the Cytoscape.js graph to run the layout on
 @param {json} layoutConfig the layout configuration, which includes the layout name and options
 @param {Set} subs Set of subontologies. If the subs are not given the layout still works but it is not saved.
+@param {boolean} separateSubs Whether to separate the graph based on the subontologies.
 @param {boolean} save Whether to save the layout on local storage.
 @returns whether the layout could successfully be applied. Does not indicate success of saving to cache.
 @example
 run(cy,{"name":"grid"},new Set(["meta","ciox"]))
 */
-export function run(cy,layoutConfig,subs,save)
+export function run(cy,layoutConfig,subs,separateSubs,save)
 {
-  progress(0);
   if(cy.nodes().size()===0)
   {
     log.warn("layout.js#run: Graph empty. Nothing to layout.");
-    progress(100);
     return false;
   }
   const layoutTimer = timer("layout");
-  const separateSubs = subs&&menu.separateSubs();
-  if(separateSubs&&!getStarMode())
+  if(subs&&separateSubs)
   {
     const virtualNodes = [];
     for(const sub of subs)
@@ -86,7 +81,7 @@ export function run(cy,layoutConfig,subs,save)
   activeLayout.on("layoutstop",()=>
   {
     layoutTimer.stop();
-    if(separateSubs)
+    if(subs&&separateSubs)
     {
       const virtualNodes = cy.nodes("[type='virtual']");
       log.debug(`Removing ${virtualNodes.length} virtual nodes.`);
@@ -97,7 +92,6 @@ export function run(cy,layoutConfig,subs,save)
       if(typeof(localStorage)=== "undefined")
       {
         log.warn("web storage not available, could not write to cache.");
-        progress(100);
         return true;
       }
       const pos = positions(cy.nodes());
@@ -105,7 +99,6 @@ export function run(cy,layoutConfig,subs,save)
       localStorage.setItem(name,JSON.stringify(pos));
       log.info("Replaced layout cache.");
     }
-    progress(100);
   });
   activeLayout.run();
   return true;
