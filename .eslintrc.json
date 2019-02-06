@@ -20,7 +20,8 @@
 		"dhtmlx": true,
 		"Spinner": true,
 		"config": true,
-		"log": true
+		"log": true,
+		"Fuse": true
 	},
 	"extends":
 	[
