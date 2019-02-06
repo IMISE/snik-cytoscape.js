@@ -162,7 +162,7 @@ export function showSearchResults(query, uris)
   const suris = new Set(uris);
   resultNodes = graph.cy.elements().nodes().filter((node)=>
   {
-    return new suris.has(node.data(NODE.ID));
+    return suris.has(node.data(NODE.ID));
   });
   return true;
 }
