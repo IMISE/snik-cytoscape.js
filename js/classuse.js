@@ -10,7 +10,7 @@ Hides all other nodes. Resetting the view unhides the other nodes but keeps the 
 Recalculate the layout to place those nodes in relation to the whole graph again.
 @param {string} The URI of the class.
  */
-function classUse(clazz,subTop)
+export default function classUse(clazz,subTop)
 {
   let innerType = "meta:Role";
   let middleType = "meta:Function";
@@ -152,5 +152,3 @@ function classUse(clazz,subTop)
   }
   );
 }
-
-export {classUse};
