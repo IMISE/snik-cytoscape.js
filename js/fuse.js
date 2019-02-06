@@ -2,7 +2,6 @@
 Fuzzy search with fuse.js.
 @module */
 import * as sparql from "./sparql.js";
-import Fuse from "../node_modules/fuse.js/dist/fuse.js";
 import config from "./config.js";
 
 let index = null;

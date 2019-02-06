@@ -1,4 +1,4 @@
-import * as search from '../js/search.js';
+//import * as search from '../js/search.js';
 import * as fuse from '../js/fuse.js';
 
 import chai from 'chai';
@@ -6,7 +6,10 @@ const assert = chai.assert;
 // the global "log" is normally registered in the index file, so we have to do that here
 import * as log from 'loglevel';
 global.log = log;
-const fs = require('fs');
+// the global "Fuse" is normally registered in the index file, so we have to do that here
+import Fuse from 'fuse.js';
+global.Fuse = Fuse;
+//const fs = require('fs');
 
 function equals(as, bs)
 {
