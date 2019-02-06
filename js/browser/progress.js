@@ -29,28 +29,21 @@ let spinner = null;
 let active = 0;
 
 /** Not thread safe but javascript is single threaded for now.*/
-function progress(p)
+export default async function(func)
 {
   if(!window) {return;} // ignore when running in nodejs
   if(!spinner) {spinner = new Spinner(opts);}
-  if(p<100)
+  if(!active)
   {
-    if(!active)
-    {
-      document.body.classList.add('waiting');
-      spinner.spin(document.body);
-    }
-    active++;
+    document.body.classList.add('waiting');
+    spinner.spin(document.body);
   }
-  if(p>=100)
+  active++;
+  await func();
+  active--;
+  if(active<=0)
   {
-    active--;
-    if(active===0)
-    {
-      document.body.classList.remove('waiting');
-      spinner.stop();
-    }
+    document.body.classList.remove('waiting');
+    spinner.stop();
   }
 }
-
-export {progress};

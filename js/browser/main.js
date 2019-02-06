@@ -10,56 +10,52 @@ import * as graph from "./graph.js";
 import * as file from "./file.js";
 import * as rdfGraph from "../rdfGraph.js";
 import * as layout from "../layout.js";
-import {progress} from "./progress.js";
+import progress from "./progress.js";
 import config from "../config.js";
 import * as util from "./util.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
-  progress(0);
-  graph.initGraph();
-  log.setLevel(config.logLevelConsole);
-
-  window.addEventListener('keydown', e=>
+  progress(async ()=>
   {
-    if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
-    {
-      e.preventDefault();
-      search.hideSearchResults();
-      return false;
-    }
-  }, true);
+    graph.initGraph();
+    log.setLevel(config.logLevelConsole);
 
-  menu.addMenu();
-  log.info('Menu added');
-  addFilterEntries(graph.cy,util.getElementById("filter-div"));
-  log.info('filter entries added');
-  file.addFileLoadEntries(util.getElementById("file-div"));
-  log.info('fileLoadEntries added');
-  search.addSearch();
-  log.info('search field added');
-
-  addButtons();
-  log.info('buttons added');
-
-  loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies))
-    .then(()=>
+    window.addEventListener('keydown', e=>
     {
-      progress(0);
-      layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs());
-      progress(100);
-    })
-    .then(()=>
+      if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27))// && (e.target.nodeName==='BODY'))
+      {
+        e.preventDefault();
+        search.hideSearchResults();
+        return false;
+      }
+    }, true);
+
+    menu.addMenu();
+    log.info('Menu added');
+    addFilterEntries(graph.cy,util.getElementById("filter-div"));
+    log.info('filter entries added');
+    file.addFileLoadEntries(util.getElementById("file-div"));
+    log.info('fileLoadEntries added');
+    search.addSearch();
+    log.info('search field added');
+
+    addButtons();
+    log.info('buttons added');
+
+    try
     {
+      await loadGraphFromSparql(graph.cy,new Set(config.defaultSubOntologies));
       graph.cy.elements().addClass("unfiltered");
-    })
-    .catch(e=>
+      layout.runCached(graph.cy,layout.euler,rdfGraph.subs(),menu.separateSubs());
+    }
+    catch(e)
     {
       log.error(e);
       alert("Error initializing SNIK Graph\n\n"+e);
-    })
-    .finally(()=>{progress(100);});
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded",main);

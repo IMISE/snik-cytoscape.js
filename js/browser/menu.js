@@ -9,7 +9,7 @@ import * as NODE from "../node.js";
 import loadGraphFromSparql from "../loadGraphFromSparql.js";
 import * as language from "../lang/language.js";
 import * as util from "./util.js";
-import {progress} from "./progress.js";
+import progress from "./progress.js";
 
 /** @returns whether subontologies are to be displayed separately. */
 export function separateSubs()
@@ -76,9 +76,7 @@ function menuData()
         [download.downloadLayout,"Save Layout only","save-layout"],
         [()=>
         {
-          progress(0);
-          layout.run(graph.cy,layout.euler,rdfGraph.subs(),separateSubs(),true);
-          progress(100);
+          progress(()=>layout.run(graph.cy,layout.euler,rdfGraph.subs(),separateSubs(),true));
         },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
         [()=>download.downloadPng(false,false),"Save Image of Current View","save-image-current-view"],
         [()=>download.downloadPng(true,false),"Save Image of Whole Graph","save-image-whole-graph"],

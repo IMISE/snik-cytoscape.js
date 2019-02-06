@@ -3,7 +3,6 @@ Provides graph operations such as initialization, wayfinding and highlighting.
 
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
-import {progress} from "./progress.js";
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
@@ -61,14 +60,12 @@ function highlight(eles)
 function resetStyle()
 {
   starMode=false;
-  progress(0);
   //setFirstCumulativeSearch(true);
   //selectedNode = undefined;
   cy.startBatch();
   cy.elements().removeClass("highlighted");
   cy.elements().removeClass("hidden");
   cy.endBatch();
-  progress(100);
 }
 
 /** Highlight all nodes and edges on a shortest path between "from" and "to".
@@ -80,7 +77,6 @@ Hide all other nodes except when in star mode.
 */
 function showPath(from, to,starPath)
 {
-  progress(0);
   const elements = cy.elements(".unfiltered");
 
   const aStar = elements.aStar(
@@ -109,12 +105,10 @@ function showPath(from, to,starPath)
   }
   else
   {
-    progress(100);
     if(!starMode) {resetStyle();} // keep it as it was before the path operation
     alert('no path found');
     return false;
   }
-  progress(100);
   return true;
 }
 
@@ -126,7 +120,6 @@ Hide all other nodes except when in star mode.
 */
 function showStar(node, changeLayout, directed)
 {
-  progress(0);
   cy.startBatch();
 
   // open 2 levels deep on closeMatch
@@ -167,7 +160,6 @@ function showStar(node, changeLayout, directed)
   }
 
   cy.endBatch();
-  progress(100);
 }
 
 /** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
