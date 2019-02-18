@@ -10,7 +10,7 @@ import * as EDGE from "../edge.js";
 /** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
 The extension itself is already registered through the plain HTML/JS import in index.html,
 which makes available cy.cxtmenu().*/
-export function registerMenu()
+export function registerDevMenu()
 {
   log.trace("Register Context Menu");
   for(const cmd of nodes.defaultsNodes.commands)

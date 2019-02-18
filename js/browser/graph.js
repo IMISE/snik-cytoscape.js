@@ -7,7 +7,6 @@ import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
 import * as sparql from "../sparql.js";
-import {registerMenu} from "./contextmenu.js";
 import timer from "../timer.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
@@ -316,7 +315,6 @@ function initGraph()
     });
   cy.panzoom(); // Google Maps like zoom UI element
   selectedNode = cy.collection();
-  registerMenu();
   /*
   cy.on('select', 'edge', function(event)
   {

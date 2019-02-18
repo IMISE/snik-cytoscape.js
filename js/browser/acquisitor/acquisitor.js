@@ -1,19 +1,19 @@
 /**
 Entry point.
 @module */
-import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import addFilterEntries from "./filter.js";
-import * as menu from "./menu.js";
-import * as search from "./search.js";
-import addButtons from "./button.js";
-import * as graph from "./graph.js";
-import {registerDevMenu} from "./contextmenu.js";
-import * as file from "./file.js";
-import * as rdfGraph from "../rdfGraph.js";
-import * as layout from "../layout.js";
-import progress from "./progress.js";
-import config from "../config.js";
-import * as util from "./util.js";
+import loadGraphFromSparql from "../../loadGraphFromSparql.js";
+import addFilterEntries from "../filter.js";
+import * as menu from "../menu.js";
+import * as search from "../search.js";
+import addButtons from "../button.js";
+import * as graph from "../graph.js";
+import {registerDevMenu} from "../contextmenu.js";
+import * as file from "../file.js";
+import * as rdfGraph from "../../rdfGraph.js";
+import * as layout from "../../layout.js";
+import progress from "../progress.js";
+import config from "../../config.js";
+import * as util from "../util.js";
 
 /** Entry point. Is run when DOM is loaded. **/
 function main()
@@ -21,7 +21,7 @@ function main()
   progress(async ()=>
   {
     graph.initGraph();
-    registerDevMenu();
+    //registerMenu();
     log.setLevel(config.logLevelConsole);
 
     window.addEventListener('keydown', e=>
