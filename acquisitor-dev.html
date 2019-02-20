@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Acquisition Tool JavaScript Test</title>
+	<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="css/overlay.css" media="screen">
+	<link rel="stylesheet" href="node_modules/spin.js/spin.css">
+	<script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
+	<script src="node_modules/cytoscape-cxtmenu/cytoscape-cxtmenu.js"></script>
+	<script src="node_modules/cytoscape-euler/cytoscape-euler.js"></script>
+	<script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+	<script src="node_modules/loglevel/dist/loglevel.min.js"></script>
+	<script src="node_modules/fuse.js/dist/fuse.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/solid.css" integrity="sha384-rdyFrfAIC05c5ph7BKz3l5NG5yEottvO/DQ0dCrwD8gzeQDjYBHNr1ucUpQuljos" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css" integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT" crossorigin="anonymous">
+	<script src="node_modules/cytoscape-panzoom/cytoscape-panzoom.js"></script>
+	<link rel="stylesheet" href="node_modules/cytoscape-panzoom/cytoscape.js-panzoom.css">
+	<script type="module" src="./js/browser/acquisitor/acquisitor.js"></script>
+	<script src="./js/browser/browsercheck.js"></script>
+</head>
+
+<body style="margin: 0; height: 100%; overflow: hidden">
+	<noscript><h1>JavaScript is off. <a href="http://enable-javascript.com/">Please enable</a> to view site.</h1></noscript>
+  <script>browserCheckNonTranspiled();</script>
+	<div id="top">
+		<form id="search" method="post">
+			<input type="text" name="query" id="query" list="matches" placeholder="🔍 Class Name"/>
+		</form>
+		<span id="buttons"/>
+	</div>
+
+	<div id="overlay-legend" class="overlay-legend">
+		<img src="img/legend.png"/>
+	</div>
+
+	<div id="overlay" class="overlay">
+		<h2 id="h2:searchresults">Search Results</h2>
+		<a href="javascript:void(0)" id="closelink" class="closebtn">&times;</a>
+		<table id="tab:searchresults"></table>
+	</div>
+
+	<div id="cy" style="width:100%;height:100vh;background-color:black;"></div>
+
+</body>
+</html>
