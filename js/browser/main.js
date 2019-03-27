@@ -17,6 +17,25 @@ import * as util from "./util.js";
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
+  const logs = [];
+  const schmog = log;
+
+  log =
+  {
+    debug : debugs =>
+    {
+      logs.push(debugs);
+      console.log("pushed: "+debugs);
+      schmog.debug(debugs);
+    },
+    trace:schmog.trace,
+    info:schmog.info,
+    warn:schmog.warn,
+    error:schmog.error,
+    setLevel: schmog.setLevel,
+  };
+
+  //logs.length = 0;
   progress(async ()=>
   {
     console.groupCollapsed("Initializing");
@@ -45,7 +64,11 @@ function main()
     log.debug('search field added');
     addButtons();
     log.debug('buttons added');
+    console.log(logs);
     console.groupEnd();
+
+    // schmebug("Test");
+    // console.log(logs);
 
     try
     {
@@ -58,7 +81,10 @@ function main()
       log.error("Error initializing SNIK Graph "+e);
       alert("Error initializing SNIK Graph\n\n"+e);
     }
-    finally {console.groupEnd();}
+    finally
+    {
+      console.groupEnd();
+    }
   });
 }
 
