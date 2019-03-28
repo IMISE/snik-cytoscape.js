@@ -17,22 +17,13 @@ import * as util from "./util.js";
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
-  const logs = [];
-  const schmog = log;
-
-  log =
+  log.setLevel(config.logLevelConsole);
+  log.logs = [];
+  const tmp = log.debug;
+  log.debug = message  =>
   {
-    debug : debugs =>
-    {
-      logs.push(debugs);
-      console.log("pushed: "+debugs);
-      schmog.debug(debugs);
-    },
-    trace:schmog.trace,
-    info:schmog.info,
-    warn:schmog.warn,
-    error:schmog.error,
-    setLevel: schmog.setLevel,
+    log.logs.push(message);
+    tmp(message);
   };
 
   //logs.length = 0;
@@ -42,7 +33,6 @@ function main()
     menu.addMenu();
     log.debug('Menu added');
     graph.initGraph();
-    log.setLevel(config.logLevelConsole);
 
     window.addEventListener('keydown', e=>
     {
@@ -64,7 +54,6 @@ function main()
     log.debug('search field added');
     addButtons();
     log.debug('buttons added');
-    console.log(logs);
     console.groupEnd();
 
     // schmebug("Test");
@@ -84,6 +73,7 @@ function main()
     finally
     {
       console.groupEnd();
+      console.log("Logs: "+log.logs);
     }
   });
 }
