@@ -118,7 +118,6 @@ function showPath(from, to, starPath)
   else
   {
     if(!starMode) {resetStyle();} // keep it as it was before the path operation
-    alert('no path found');
     log.warn("No path found!");
     return false;
   }
@@ -332,7 +331,7 @@ function initGraph()
       maxZoom: 7,
     });
   cy.panzoom(); // Google Maps like zoom UI element
-  selectedNode = cy.collection();
+  selectedNode = null;
   /*
   cy.on('select', 'edge', function(event)
   {

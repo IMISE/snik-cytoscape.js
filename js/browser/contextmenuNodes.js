@@ -59,9 +59,13 @@ const baseCommands =
     content: 'path',
     select: node=>
     {
-      if(graph.getSource()&&graph.getSource()!==node)
+      if(node&&graph.getSource()&&graph.getSource()!==node)
       {
         graph.showPath(graph.getSource(), node);
+      }
+      else
+      {
+        log.warn("Path not possible.");
       }
     },
   },

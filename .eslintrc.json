@@ -19,7 +19,8 @@
 		"cytoscape": false,
 		"Spinner": true,
 		"log": true,
-		"Fuse": true
+		"Fuse": true,
+		"Notyf": true
 	},
 	"extends":
 	[

@@ -14,6 +14,22 @@ import config from "../config.js";
 import * as util from "./util.js";
 import {registerContextMenu} from "./contextmenu.js";
 
+const notyf = new Notyf(
+  {
+    types: [
+      {
+        type: 'warn',
+        backgroundColor: 'orange',
+        icon: {
+          className: 'material-icons',
+          tagName: 'i',
+          text: 'warning',
+        },
+      },
+    ],
+  }
+);
+
 /** Entry point. Is run when DOM is loaded. **/
 function main()
 {
@@ -27,8 +43,14 @@ function main()
       if(!log.logs) {log.logs=[];}
       log.logs.push(message);
       tmp(message);
+      switch(f)
+      {
+        case "error": notyf.error(message);break;
+        case "warn": notyf.open({type: 'warn',message: message});
+      }
     };
   }
+
 
   //logs.length = 0;
   progress(async ()=>
