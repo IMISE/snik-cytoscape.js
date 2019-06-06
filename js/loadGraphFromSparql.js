@@ -11,25 +11,25 @@ import timer from "./timer.js";
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
 @param{cytoscape.Core} cy the cytoscape graph to load the data into
 */
-export default function loadGraphFromSparql(cy)
+export default async function loadGraphFromSparql(cy)
 {
   cy.elements().remove();
 
   const sparqlClassesTimer = timer("sparql-classes");
-  const classes = undefined;//localStorage.getItem('classes');
-  // if not in cache, load
-  const classPromise = (classes===undefined)?
-    sparql.select(config.classQuery):Promise.resolve(classes);
+  const classPromise = sparql.select(config.classQuery);
+
+  const sparqlPropertiesTimer = timer("sparql-properties");
   const propertyPromise = sparql.select(config.propertyQuery);
 
-  const nodePromise = classPromise.then((json)=>
+  try
   {
-    sparqlClassesTimer.stop(json.length+" classes");
+    const classes = await classPromise;
+    sparqlClassesTimer.stop(classes.length+" classes");
     /** @type{cytoscape.ElementDefinition[]} */
     const nodes = [];
-    for(let i=0;i<json.length;i++)
+    for(let i=0;i< classes.length;i++)
     {
-      const labels = json[i].l.value.split("|");
+      const labels = classes[i].l.value.split("|");
       const l = {};
       const data = {l};
       for(const label of labels)
@@ -40,10 +40,10 @@ export default function loadGraphFromSparql(cy)
         l[tag].push(stringAndTag[0]);
       }
 
-      for(const p in json[i])
+      for(const p in classes[i])
       {
         if(p==="l") {continue;}
-        data[p] = (json[i][p]===undefined)?null:json[i][p].value;
+        data[p] = (classes[i][p]===undefined)?null:classes[i][p].value;
       }
       nodes.push(
         {
@@ -51,52 +51,48 @@ export default function loadGraphFromSparql(cy)
           data: data,
         });
     }
-    log.info(json.length+" Nodes loaded from SPARQL Endpoint");
+    log.info(classes.length+" Nodes loaded from SPARQL Endpoint");
     cy.add(nodes);
-  })
-    .catch(e=>
-    {
-      log.error("Error loading nodes.");
-      throw e;
-    });
-
-  const sparqlPropertiesTimer = timer("sparql-properties");
-  const edges = [];
-  const edgePromise = propertyPromise.then(json=>
+  }
+  catch(e)
   {
-    sparqlPropertiesTimer.stop(json.length+" properties");
+    log.error("Error loading nodes.");
+    throw e;
+  }
 
-    for(let i=0;i<json.length;i++)
+  try
+  {
+    const properties = await propertyPromise;
+    sparqlPropertiesTimer.stop(properties.length+" properties");
+
+    const edges = [];
+    for(let i=0;i<properties.length;i++)
     {
       edges.push(
         {
           group: "edges",
           data: {
-            source: json[i].c.value,
-            target: json[i].d.value,
+            source: properties[i].c.value,
+            target: properties[i].d.value,
             id: i,
-            p: json[i].p.value,//Labels_DE: [json[i].l.value]
-            pl: json[i].p.value.replace(/.*[#/]/,""),
-            g: json[i].g.value,
-            ax: json[i].ax===undefined?null:json[i].ax.value,
+            p: properties[i].p.value,//Labels_DE: [properties[i].l.value]
+            pl: properties[i].p.value.replace(/.*[#/]/,""),
+            g: properties[i].g.value,
+            ax: properties[i].ax===undefined?null:properties[i].ax.value,
           },
           //position: { x: 200, y: 200 }
         });
     }
-    log.info(json.length+" Edges loaded from SPARQL Endpoint");
+    log.info(properties.length+" Edges loaded from SPARQL Endpoint");
+    cy.add(edges);
     // remove isolated nodes (too costly in SPARQL query)
     // deactivated for now, so that isolated nodes can be found and fixed
     //cy.nodes("[[degree=0]]").remove();
     return;
-  }).catch(e=>
+  }
+  catch(e)
   {
     log.error("Error loading edges.");
     throw e;
-  });
-
-  return Promise.all([nodePromise,edgePromise]).then(()=>
-  {
-    cy.add(edges);
   }
-  );
 }
