@@ -5,38 +5,6 @@ import * as sparql from "./sparql.js";
 import config from "./config.js";
 import timer from "./timer.js";
 
-/** https://github.com/binded/empty-promise/blob/master/src/index.js, is there a shorter or build in option?
-@returns {object} an empty promise that can be resolved or rejected from the outside.
-*/
-function emptyPromise()
-{
-  let callbacks;
-  let done = false;
-
-  const p = new Promise((resolve, reject) =>
-  {
-    callbacks = { resolve, reject };
-  });
-  // @ts-ignore
-  p.done = () => done;
-  // @ts-ignore
-  p.resolve = (val) =>
-  {
-    callbacks.resolve(val);
-    done = true;
-    return p;
-  };
-  // @ts-ignore
-  p.reject = (val) =>
-  {
-    callbacks.reject(val);
-    done = true;
-    return p;
-  };
-
-  return p;
-}
-
 // /**expands the snik pseudo prefix*/ optimization removed due to it being slower
 // function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
 
@@ -53,10 +21,8 @@ export default function loadGraphFromSparql(cy)
   const classPromise = (classes===undefined)?
     sparql.select(config.classQuery):Promise.resolve(classes);
   const propertyPromise = sparql.select(config.propertyQuery);
-  const nodePromise = emptyPromise();
-  const edgePromise = emptyPromise();
 
-  classPromise.then((json)=>
+  const nodePromise = classPromise.then((json)=>
   {
     sparqlClassesTimer.stop(json.length+" classes");
     /** @type{cytoscape.ElementDefinition[]} */
@@ -87,7 +53,6 @@ export default function loadGraphFromSparql(cy)
     }
     log.info(json.length+" Nodes loaded from SPARQL Endpoint");
     cy.add(nodes);
-    nodePromise.resolve();
   })
     .catch(e=>
     {
@@ -97,8 +62,7 @@ export default function loadGraphFromSparql(cy)
 
   const sparqlPropertiesTimer = timer("sparql-properties");
   const edges = [];
-  propertyPromise.then(json=>
-  //return Promise.all([classesAddedPromise,triplesPromise]).then((values)=>
+  const edgePromise = propertyPromise.then(json=>
   {
     sparqlPropertiesTimer.stop(json.length+" properties");
 
@@ -123,7 +87,6 @@ export default function loadGraphFromSparql(cy)
     // remove isolated nodes (too costly in SPARQL query)
     // deactivated for now, so that isolated nodes can be found and fixed
     //cy.nodes("[[degree=0]]").remove();
-    edgePromise.resolve();
     return;
   }).catch(e=>
   {
