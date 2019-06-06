@@ -52,36 +52,30 @@ export default function loadGraphFromSparql(cy,subs)
   const froms = rdfGraphs.map(sub=>`FROM <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
   const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
   cy.elements().remove();
-  // Optimization failed, was actually slower. Great example of premature optimization.
-  // Idea was to keep bindings short to minimize data sent over network but failed probably due to caching, compression and function overhead.
-  //replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
-  //group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  //substr(replace(str(sample(?st)),".*[#/]",""),1,1) as ?st replace(str(?src),".*[#/]","") as ?src sample(?inst) as ?inst
-  // only show classes with labels
+
+  // Failed SPARQL query optimization.
+  // Idea was to keep bindings short to minimize data sent over network but was slower probably due to caching, compression and function overhead.
+  // replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c ...
   // degree too time consuming, remove for development
   // #count(?o) as ?degree
   // too slow, remove isolated nodes in post processing
   // #{?c ?p ?o.} UNION {?o ?p ?c}.
   const classQuery =
-  `select ?c
+  `select ?id
   group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  sample(?st) as ?st
+  substr(replace(str(sample(?st)),"http://www.snik.eu/ontology/meta/",""),0,1) as ?st
   ?src
   sample(?inst) as ?inst
   ${froms}
   {
-    ?c a owl:Class.
+    ?id a owl:Class.
 
-    OPTIONAL {?src ov:defines ?c.}
-    OPTIONAL {?c meta:subTopClass ?st.}
-    OPTIONAL {?c rdfs:label ?l.}
-    OPTIONAL {?inst a ?c.}
+    OPTIONAL {?src ov:defines ?id.}
+    OPTIONAL {?id meta:subTopClass ?st.}
+    OPTIONAL {?id rdfs:label ?l.}
+    OPTIONAL {?inst a ?id.}
   }`;
-  //  this was actually slower, often by a whole second, probably due to compression and better caching or replace overhead
-  //  replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c
-  //  replace(str(?p),"http://www.snik.eu/ontology/","s:") as ?p
-  //  replace(str(?d),"http://www.snik.eu/ontology/","s:") as ?d
-  //  replace(str(?g),"http://www.snik.eu/ontology/","s:") as ?g
+
   const propertyQuery =
   `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
   ${froms}
@@ -128,9 +122,9 @@ export default function loadGraphFromSparql(cy,subs)
         {
           group: "nodes",
           data: {
-            id: json[i].c.value,
+            id: json[i].id.value,
             l: l,
-            st: (json[i].st===undefined)?null:json[i].st.value.replace("http://www.snik.eu/ontology/meta/","").substring(0,1),
+            st: (json[i].st===undefined)?null:json[i].st.value,
             prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
             inst: json[i].inst!==undefined,
             //degree: parseInt(json[i].degree.value),
