@@ -42,62 +42,17 @@ function emptyPromise()
 
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
 @param{cytoscape.Core} cy the cytoscape graph to load the data into
-@param{string[]} subs subontologies to load.
-@example
-loadGraphFromSparql(cy,new Set(["meta","bb"]))
 */
-export default function loadGraphFromSparql(cy,subs)
+export default function loadGraphFromSparql(cy)
 {
-  const rdfGraphs = [config.helperGraphs,...subs];
-  const froms = rdfGraphs.map(sub=>`FROM <http://www.snik.eu/ontology/${sub}>`).reduce((a,b)=>a+"\n"+b);
-  const fromNamed = froms.replace(/FROM/g,"FROM NAMED");
   cy.elements().remove();
 
-  // Failed SPARQL query optimization.
-  // Idea was to keep bindings short to minimize data sent over network but was slower probably due to caching, compression and function overhead.
-  // replace(str(?c),"http://www.snik.eu/ontology/","s:") as ?c ...
-  // degree too time consuming, remove for development
-  // #count(?o) as ?degree
-  // too slow, remove isolated nodes in post processing
-  // #{?c ?p ?o.} UNION {?o ?p ?c}.
-  const classQuery =
-  `select ?id
-  group_concat(distinct(concat(?l,"@",lang(?l)));separator="|") as ?l
-  substr(replace(str(sample(?st)),"http://www.snik.eu/ontology/meta/",""),0,1) as ?st
-  ?src
-  sample(?inst) as ?inst
-  ${froms}
-  {
-    ?id a owl:Class.
-
-    OPTIONAL {?src ov:defines ?id.}
-    OPTIONAL {?id meta:subTopClass ?st.}
-    OPTIONAL {?id rdfs:label ?l.}
-    OPTIONAL {?inst a ?id.}
-  }`;
-
-  const propertyQuery =
-  `select  ?c ?p ?d ?g (MIN(?ax) as ?ax)
-  ${froms}
-  ${fromNamed}
-  {
-   graph ?g {?c ?p ?d.}
-   owl:Class ^a ?c,?d.
-   filter(?p!=meta:subTopClass)
-   OPTIONAL
-   {
-    ?ax a owl:Axiom;
-        owl:annotatedSource ?c;
-        owl:annotatedProperty ?p;
-        owl:annotatedTarget ?d.
-   }
-  }`;
   const sparqlClassesTimer = timer("sparql-classes");
   const classes = undefined;//localStorage.getItem('classes');
   // if not in cache, load
   const classPromise = (classes===undefined)?
-    sparql.select(classQuery):Promise.resolve(classes);
-  const propertyPromise = sparql.select(propertyQuery);
+    sparql.select(config.classQuery):Promise.resolve(classes);
+  const propertyPromise = sparql.select(config.propertyQuery);
   const nodePromise = emptyPromise();
   const edgePromise = emptyPromise();
 
@@ -110,6 +65,7 @@ export default function loadGraphFromSparql(cy,subs)
     {
       const labels = json[i].l.value.split("|");
       const l = {};
+      const data = {l};
       for(const label of labels)
       {
         const stringAndTag = label.split("@");
@@ -118,31 +74,26 @@ export default function loadGraphFromSparql(cy,subs)
         l[tag].push(stringAndTag[0]);
       }
 
+      for(const p in json[i])
+      {
+        if(p==="l") {continue;}
+        data[p] = (json[i][p]===undefined)?null:json[i][p].value;
+      }
       nodes.push(
         {
           group: "nodes",
-          data: {
-            id: json[i].id.value,
-            l: l,
-            st: (json[i].st===undefined)?null:json[i].st.value,
-            prefix: (json[i].src===undefined)?null:json[i].src.value.replace("http://www.snik.eu/ontology/",""),
-            inst: json[i].inst!==undefined,
-            //degree: parseInt(json[i].degree.value),
-          },
-          //position: { x: 200, y: 200 }
+          data: data,
         });
-      /*console.log(json[i].l);
-        console.log(json[i].l.value);*/
     }
-    log.info(json.length+" Nodes loaded from SPARQL");
+    log.info(json.length+" Nodes loaded from SPARQL Endpoint");
     cy.add(nodes);
     nodePromise.resolve();
-  }).catch(e=>
-  {
-    log.error(classQuery,e);
-    nodePromise.reject();
-    return;
-  });
+  })
+    .catch(e=>
+    {
+      log.error("Error loading nodes.");
+      throw e;
+    });
 
   const sparqlPropertiesTimer = timer("sparql-properties");
   const edges = [];
@@ -168,7 +119,7 @@ export default function loadGraphFromSparql(cy,subs)
           //position: { x: 200, y: 200 }
         });
     }
-    log.info(json.length+" Properties loaded from SPARQL");
+    log.info(json.length+" Edges loaded from SPARQL Endpoint");
     // remove isolated nodes (too costly in SPARQL query)
     // deactivated for now, so that isolated nodes can be found and fixed
     //cy.nodes("[[degree=0]]").remove();
@@ -176,9 +127,8 @@ export default function loadGraphFromSparql(cy,subs)
     return;
   }).catch(e=>
   {
-    edgePromise.reject();
-    log.error(e);
-    return;
+    log.error("Error loading edges.");
+    throw e;
   });
 
   return Promise.all([nodePromise,edgePromise]).then(()=>

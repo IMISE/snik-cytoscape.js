@@ -20,10 +20,10 @@ function storageName(layoutName,subs,separateSubs) {return "layout"+layoutName+s
 
 /** Returns an array containing the positions of the given nodes
 @param {cytoscape.NodeCollection} nodes the nodes whose positions are returned
-@returns an array containing the positions of the given nodes
+@returns {array} an array containing the positions of the given nodes
 @example
-// returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
 positions(cy.nodes());
+// returns [["http://my/resource",{"x":1,"y":2}],...]
 */
 export function positions(nodes)
 {
