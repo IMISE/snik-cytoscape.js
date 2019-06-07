@@ -7,7 +7,7 @@ import * as menu from "./menu.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
 import * as fuse from "../fuse.js";
-
+import config from "../config.js";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -103,10 +103,6 @@ export function showSearchResults(query, uris)
     presentUri(uris[0]);
     return true;
   }
-  if(uris.length===sparql.SPARQL_LIMIT)
-  {
-    util.getElementById("h2:searchresults").innerHTML=`First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
-  }
   else
   {
     util.getElementById("h2:searchresults").innerHTML=`${uris.length} Search Results for "${query}"`;
@@ -133,7 +129,7 @@ export function showSearchResults(query, uris)
     // @ts-ignore
     window.presentUri=presentUri;
     locateCell.innerHTML = `<a class="search-class${uriType[uri]}"" href="javascript:window.presentUri('${uri}');void(0)">
-		${uri.replace(sparql.SPARQL_PREFIX,"")}</a>`;
+		${uri.replace(config.sparqlPrefix,"").replace("/",":")}</a>`;
     lodLiveCell.innerHTML = `<a class="search-class0"" href="${uri}" target="_blank">Description</a>`;
   });
 
@@ -173,9 +169,9 @@ export async function search(userQuery)
   const searchQuery = userQuery.replace(/[\x22\x27\x5C\x0A\x0D -]/g, '');
   // use this when labels are available, URIs are not searched
   const sparqlQuery = `select distinct(?s) { {?s a owl:Class.} UNION {?s a rdf:Property.}
-			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${sparql.SPARQL_LIMIT}`;
+			{?s rdfs:label ?l.} UNION {?s skos:altLabel ?l.}	filter(regex(lcase(replace(str(?l),"[ -]","")),lcase("${searchQuery}"))) } order by asc(strlen(str(?l))) limit ${config.searchPageSize}`;
   log.debug(sparqlQuery);
-  const bindings = await sparql.select(sparqlQuery,"http://www.snik.eu/ontology");
+  const bindings = await sparql.select(sparqlQuery);
   return bindings.map(b=>b.s.value);
   //		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
   //filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}

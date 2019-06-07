@@ -7,13 +7,12 @@ import config from "./config.js";
 /** Query public SNIK SPARQL endpoint with a SELECT query.
 ASK queries should also work but better use {@link ask} instead as it is more convenient.
 {@param query} A valid SPARQL query.
-{@param graph} An optional SPARQL graph.
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
-export async function select(query,graph)
+export async function select(query)
 {
   let url = config.sparqlEndpoint + '?query=' + encodeURIComponent(query) + '&format=json';
-  if(graph) {url+= '&default-graph-uri=' + encodeURIComponent(graph);}
+  url+= '&default-graph-uri=' + encodeURIComponent(config.sparqlGraph);
   try
   {
     const response = await fetch(url);

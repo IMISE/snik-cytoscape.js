@@ -5,9 +5,6 @@ import * as sparql from "./sparql.js";
 import config from "./config.js";
 import timer from "./timer.js";
 
-// /**expands the snik pseudo prefix*/ optimization removed due to it being slower
-// function expand(short) {return short.replace("s:","http://www.snik.eu/ontology/");}
-
 /** Loads a set of subontologies into the given graph. Data from RDF helper graphs is loaded as well, such as virtual triples.
 @param{cytoscape.Core} cy the cytoscape graph to load the data into
 */

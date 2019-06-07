@@ -2,6 +2,7 @@
 
 export default
 {
+  "name": "snik",
   "defaultSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
   "allSubOntologies": ["meta","bb","ob","ciox","he","it4it"],
   "helperGraphs": ["limes-exact","match"],

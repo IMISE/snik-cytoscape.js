@@ -6,10 +6,10 @@ Provides graph operations such as initialization, wayfinding and highlighting.
 import {style} from "./style.js";
 import {colorschemenight} from "./colorschemenight.js";
 import {colorschemeday} from "./colorschemeday.js";
-import * as sparql from "../sparql.js";
 import timer from "../timer.js";
 import * as NODE from "../node.js";
 import * as util from "./util.js";
+import config from "../config.js";
 
 // Handles the cytoscape.js canvas. Call initGraph(container) to start.
 let cy = null;
@@ -286,7 +286,7 @@ function setTarget(node)
   pathTarget = node;
   pathTarget.addClass('target');
   util.getElementById('targetlabel').innerHTML=
-      pathTarget.data(NODE.ID).replace(sparql.SPARQL_PREFIX,'');
+      pathTarget.data(NODE.ID).replace(config.SPARQL_PREFIX,'');
 }
 
 /** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.

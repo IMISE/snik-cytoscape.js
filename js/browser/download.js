@@ -56,14 +56,14 @@ export function downloadUrl(url, fileName)
 /** Downloads the whole layouted graph as a Cytoscape JSON file. */
 export function downloadGraph()
 {
-  return downloadJson(graph.cy.elements().jsons(),"snik.json");
+  return downloadJson(graph.cy.elements().jsons(),config.name+".json");
 }
 
 /** Downloads the visible layouted graph as a Cytoscape JSON file.
 Visible means not explicitly hidden, but includes elements that are off screen. */
 export function downloadVisibleGraph()
 {
-  return downloadJson(graph.cy.elements("*:visible").jsons(),"snikpart.json");
+  return downloadJson(graph.cy.elements("*:visible").jsons(),config.name+"part.json");
 }
 
 /** Downloads all node positions. Can only be applied later with a compatible graph already loaded.*/
@@ -94,5 +94,5 @@ export function downloadPng(full,highRes)
   }
 
   const image = graph.cy.png(options);
-  downloadUrl(image,"snik.png");
+  downloadUrl(image,config.name+".png");
 }

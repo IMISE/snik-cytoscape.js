@@ -73,7 +73,7 @@ export default function classUse(clazz,subTop)
       }
     }
   }`;
-  sparql.select(query,"http://www.snik.eu/ontology").then((json)=>
+  sparql.select(query).then((json)=>
   {
     const inner = new Set();
     const middle = new Set();

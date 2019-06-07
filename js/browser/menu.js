@@ -188,7 +188,7 @@ function menuData()
       "id":"services",
       "entries":
           [
-            ["http://www.snik.eu/sparql","SPARQL Endpoint","sparql-endpoint"],
+            [config.sparqlEndpoint,"SPARQL Endpoint","sparql-endpoint"],
             ["http://www.snik.eu/ontology","RDF Browser","rdf-browser"],
             ["http://snik.eu/evaluation","Data Quality Evaluation","data-quality-evaluation"],
           ],
