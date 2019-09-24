@@ -8,7 +8,7 @@ export default {
     path: path.join(__dirname, 'target'),
     filename: '[name].bundle.js',
   },
-  module: {
+/*  module: {
     rules: [{
       test: /\.js/,
       exclude: /(node_modules|bower_components)/,
@@ -16,7 +16,7 @@ export default {
         loader: 'babel-loader',
       }],
     }],
-  },
+  },*/
   stats: {
     colors: true,
   },
