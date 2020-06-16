@@ -11,6 +11,7 @@
     "cytoscape-cxtmenu": "^3.1.2",
     "cytoscape-euler": "^1.2.2",
     "cytoscape-panzoom": "^2.5.3",
+    "cytoscape-svg": "^0.3.1",
     "fuse.js": "^6.0.0",
     "hotkeys-js": "^3.8.1",
     "jquery": "^3.5.1",

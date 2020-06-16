@@ -100,10 +100,11 @@ export default class Menu
           {
             progress(()=>layout.run(this.graph.cy,layout.euler,config.defaultSubOntologies,this.separateSubs(),true));
           },"Recalculate Layout and Replace in Browser Cache","recalculate-layout-replace"],
-          [()=>download.downloadPng(this.graph,this,false,false),"Save Image of Current View","save-image-current-view"],
-          [()=>download.downloadPng(this.graph,this,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
-          [()=>download.downloadPng(this.graph,this,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
-          [()=>download.downloadPng(this.graph,this,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
+          [()=>download.downloadPng(this.graph,this.dayModeBox.checked,false,false),"Save Image of Current View","save-image-current-view"],
+          [()=>download.downloadPng(this.graph,this.dayModeBox.checked,true,false),"Save Image of Whole Graph","save-image-whole-graph"],
+          [()=>download.downloadPng(this.graph,this.dayModeBox.checked,false,true),"Save Image of Current View (high res)","save-image-current-view-high-res"],
+          [()=>download.downloadPng(this.graph,this.dayModeBox.checked,true,true),"Save Image of Whole Graph (high res)","save-image-whole-graph-high-res"],
+          [()=>download.downloadSvg(this.graph,this.dayModeBox.checked,true),"Save Image of Whole Graph (SVG)"],
         ],
       },
       {

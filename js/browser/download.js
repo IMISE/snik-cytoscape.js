@@ -68,11 +68,11 @@ Download the graph as a PNG (lossless compression).
 @param {boolean} highRes Iff true, generate a high resolution picture using the maximum width and height from config.js.
 Otherwise, either use the native resolution of the canvas (full=false) or the standard resolution (full=true) from config.js.
 */
-export function downloadPng(graph,menu,full,highRes)
+export function downloadPng(graph,dayMode,full,highRes)
 {
   const options =
   {
-    "bg": menu.dayModeBox.checked?"white":"black", // background according to color mode
+    "bg": dayMode?"white":"black", // background according to color mode
     "full": full,
   };
   if(highRes)
@@ -88,4 +88,22 @@ export function downloadPng(graph,menu,full,highRes)
 
   const image = graph.cy.png(options);
   downloadUrl(image,"snik.png");
+}
+
+/**
+Download the graph as a SVG (vector format).
+@param {boolean} full Iff true, include the whole graph, otherwise only include what is inside the canvas boundaries.
+*/
+export function downloadSvg(graph,dayMode,full = true)
+{
+  const options =
+  {
+    full: full, // default to full
+    scale : 1,
+    bg: dayMode?"white":"black", // background according to color mode
+  };
+  const data = graph.cy.svg(options);
+  const blob = new Blob([data], {type:"image/svg+xml;charset=utf-8"});
+  const url = window.URL.createObjectURL(blob);
+  downloadUrl(url,"snik.svg");
 }
