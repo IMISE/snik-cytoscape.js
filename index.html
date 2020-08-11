@@ -82,6 +82,22 @@
 		</form>
 	</div>
 
+	<div id="filter-star" class="fullscreen modal" aria-hidden="true">
+		<header>
+			<h2>Choose the classes and relations you want to use for the star</h2>
+			<a href="javascript:void(0)" class="closebtn" data-micromodal-close>&times;</a>
+		</header>
+		<form id="filter-star-form">
+			<select id="filter-star-select-subtop" name="filter-star-select-subtop" multiple required>
+				<option value="Role">Role</option>
+				<option value="Function">Function</option>
+				<option value="EntityType">Entity Type</option>
+			</select>
+			<input type="submit" value="Show Filtered Star"/>
+		</form>
+
+	</div>
+
 	<div id="loadarea"></div>
 	<div id="graph" style="width:100%;height:100vh;background-color:black;"></div>
 

@@ -187,6 +187,11 @@ const extCommands = graph =>
       select: node=> {graph.showStar(node,true);},
     },
     {
+      content: 'filter star',
+      id: 'filter-star',
+      select: graph.showFilterStar,
+    },
+    {
       content: 'LodLive',
       id: 'lodlive',
       select: node=> {window.open('http://en.lodlive.it/?'+node.data(NODE.ID));},

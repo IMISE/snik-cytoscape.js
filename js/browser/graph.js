@@ -52,7 +52,7 @@ export class Graph
     this.selectedNode = null;
     this.cy.on('select', 'node', event => {this.selectedNode = event.target;});
     // bind this to the class instance instead of the event source
-    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "combineMatch", "showCloseMatch","subOntologyConnectivity"];
+    const binds = ["resetStyle", "presentUri", "showPath", "showStar", "showWorm", "showDoubleStar", "showFilterStar", "combineMatch", "showCloseMatch","subOntologyConnectivity"];
     for(const bind of binds) {this[bind] = this[bind].bind(this);}
     initTimer.stop();
   }
@@ -284,6 +284,24 @@ export class Graph
       return true;
     }
     return false;
+  }
+
+  /** Star with custom subtop and relation filters. */
+  showFilterStar(center)
+  {
+    MicroModal.show("filter-star");
+    const form = document.getElementById("filter-star-form");
+    if(form.listener) {return;}
+    form.listener = function(e)
+    {
+      e.preventDefault();
+      MicroModal.close("filter-star");
+      log.debug(`Showing filtered star with filters ...`);
+      // TODO: extend filter options or reuse the existing filter menu
+      // TODO: apply filters
+      this.showStar(center);
+    }.bind(this);
+    form.addEventListener("submit",form.listener);
   }
 
   /** Returns the start node for all path operations
