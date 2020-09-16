@@ -62,7 +62,7 @@
     "test": "mocha",
     "lint": "eslint js",
     "typecheck": "tsc --noEmit",
-    "jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json"
+    "jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r"
   },
   "repository": {
     "type": "git",
