@@ -4,6 +4,7 @@ Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 import * as sparql from "./sparql.js";
 import timer from "./timer.js";
 import config from "./config.js";
+import datasource from "./browser/datasource/snik.js";
 
 /**
  * Query for classes from the endpoint
@@ -26,24 +27,7 @@ async function selectClasses(from) {
   }
   `;
 
-	const classQuerySnik = `
-  PREFIX ov: <http://open.vocab.org/terms/>
-  PREFIX meta: <http://www.snik.eu/ontology/meta/>
-  SELECT DISTINCT(?c)
-  GROUP_CONCAT(DISTINCT(CONCAT(?l,"@",lang(?l)));separator="|") AS ?l
-  SAMPLE(?st) AS ?st
-  ?src
-  SAMPLE(?inst) AS ?inst
-  ${from}
-  {
-    ?c a owl:Class.
-    OPTIONAL {?src ov:defines ?c.}
-    OPTIONAL {?c meta:subTopClass ?st.}
-    OPTIONAL {?c rdfs:label ?l.}
-    OPTIONAL {?inst a ?c.}
-  }`;
-
-	const classQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? classQuerySnik : classQuerySimple;
+	const classQuery = config.sparql.endpoint.includes("snik.eu/sparql") ? datasource.classQuery(from) : classQuerySimple;
 	const json = await sparql.select(classQuery);
 	sparqlClassesTimer.stop(json.length + " classes");
 	return json;

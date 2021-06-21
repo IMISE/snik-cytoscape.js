@@ -7,6 +7,7 @@ import * as NODE from "../node.js";
 import * as EDGE from "../edge.js";
 import * as language from "../lang/language.js";
 import config from "../config.js";
+import datasource from "./datasource/snik.js";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
 /** @type{object} */
@@ -33,35 +34,7 @@ const style = {
 				"font-weight": "normal",
 				"background-opacity": 0.5882352941176471,
 				"text-opacity": 1.0,
-				shape: function (node) {
-					switch (node.data(NODE.SUBTOP)) {
-						// shapes don't seem to have any difference in performance
-						case NODE.SUBTOP_ENTITY_TYPE: {
-							return "rectangle";
-						} //EntityType
-						case NODE.SUBTOP_ROLE: {
-							return "ellipse";
-						} //Role
-						case NODE.SUBTOP_FUNCTION: {
-							return "triangle";
-						} //Function
-					}
-					// the subtops don't have themselves as a subtop but should be shaped as such
-					switch (node.data(NODE.ID)) {
-						case "http://www.snik.eu/ontology/meta/EntityType": {
-							return "rectangle";
-						}
-						case "http://www.snik.eu/ontology/meta/Role": {
-							return "ellipse";
-						}
-						case "http://www.snik.eu/ontology/meta/Function": {
-							return "triangle";
-						}
-						default: {
-							return "hexagon";
-						}
-					}
-				},
+				shape: datasource.shape,
 				label: function (node) {
 					const SHOW_QUALITY = false;
 					let label = node.data(NODE.LABEL); // object with language code as keys and arrays of string as values

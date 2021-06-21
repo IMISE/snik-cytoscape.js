@@ -1,38 +1,19 @@
 /** @module */
 import * as NODE from "../../node.js";
 
+const shapeMap = new Map([
+	[NODE.SUBTOP_ENTITY_TYPE, "rectangle"],
+	[NODE.SUBTOP_ROLE, "ellipse"],
+	[NODE.SUBTOP_FUNCTION, "triangle"],
+	["http://www.snik.eu/ontology/meta/EntityType", "rectangle"],
+	["http://www.snik.eu/ontology/meta/Role", "ellipse"],
+	["http://www.snik.eu/ontology/meta/Function", "triangle"],
+]);
+
 export default {
 	id: "snik",
 	name: "SNIK",
-	shape: function (node) {
-		switch (node.data(NODE.SUBTOP)) {
-			// shapes don't seem to have any difference in performance
-			case NODE.SUBTOP_ENTITY_TYPE: {
-				return "rectangle";
-			} //EntityType
-			case NODE.SUBTOP_ROLE: {
-				return "ellipse";
-			} //Role
-			case NODE.SUBTOP_FUNCTION: {
-				return "triangle";
-			} //Function
-		}
-		// the subtops don't have themselves as a subtop but should be shaped as such
-		switch (node.data(NODE.ID)) {
-			case "http://www.snik.eu/ontology/meta/EntityType": {
-				return "rectangle";
-			}
-			case "http://www.snik.eu/ontology/meta/Role": {
-				return "ellipse";
-			}
-			case "http://www.snik.eu/ontology/meta/Function": {
-				return "triangle";
-			}
-			default: {
-				return "hexagon";
-			}
-		}
-	},
+	shape: (node) => shapeMap.get(node.data(NODE.SUBTOP)) || shapeMap.get(node.data(NODE.ID)) || "hexagon",
 
 	sparql: {
 		endpoint: "https://www.snik.eu/sparql",

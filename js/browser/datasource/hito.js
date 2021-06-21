@@ -2,18 +2,23 @@
 import * as NODE from "../../node.js";
 import * as rdf from "../../rdf.js";
 
-/*
-const prefixes = ["UserGroup","Feature","EnterpriseFunction","ApplicationSystem","OrganizationalUnit"];
-const citationTypes = prefixes.map(p=>p+'Citation');
-const classifiedTypes = prefixes.map(p=>p+'Classified');
-const catalogueTypes = prefixes.map(p=>p+'Catalogue');
-*/
+const prefixes = ["UserGroup", "Feature", "EnterpriseFunction", "ApplicationSystem", "OrganizationalUnit"];
+
+const citationTypes = prefixes.map((p) => p + "Citation");
+const classifiedTypes = prefixes.map((p) => p + "Classified");
+const catalogueTypes = prefixes.map((p) => p + "Catalogue");
 
 const shapeMap = new Map([
-	["Citation", "rectangle"],
-	["Classified", "ellipse"],
-	["Catalogue", "triangle"],
+	...prefixes.map((p) => [p + "Citation", "rectangle"]),
+	...prefixes.map((p) => [p + "Classified", "ellipse"]),
+	...prefixes.map((p) => [p + "Catalogue", "triangle"]),
 ]);
+//[...(prefixes.map((p) => [p + "Citation","rectangle"])]
+//...prefixes.map((p) => [p + "Citation","ellipse"],
+//...prefixes.map((p) => [p + "Citation","triangle"]
+/*("Citation", "rectangle")],
+	["Classified", "ellipse"],
+	["Catalogue", "triangle"],*/
 
 const colorMap = new Map([
 	["UserGroup", ""],
@@ -23,27 +28,13 @@ const colorMap = new Map([
 	["OrganizationalUnit", ""],
 ]);
 
+const HITO = "http://hitontology.eu/ontology/";
+
 export default {
 	id: "hito",
 	name: "HITO",
-	shape: (node) => {
-		const type = node.data(NODE.TYPE);
-		/* TODO: use shape map
-		if (type.endsWith("Citation")) return "rectangle";
-		if (type.endsWith("Classified")) return "ellipse";
-		if (type.endsWith("Catalogue")) return "triangle";
-*/
-		return "hexagon";
-	},
-
-	color: (node) => {
-		const type = node.data(NODE.TYPE);
-		/* TODO: use color map
-		if (type.startsWith("Citation")) return "rectangle";
-		if (type.startsWith("Classified")) return "ellipse";
-		if (type.startsWith("Catalogue")) return "triangle";
-		*/
-	},
+	shape: (node) => shapeMap.get(node.data("super")) || shapeMap.get(node.data("?c")) || "hexagon",
+	color: (node) => colorMap.get(node.data("pre")) || "orange",
 
 	sparql: {
 		endpoint: "https://www.snik.eu/sparql",
@@ -51,15 +42,17 @@ export default {
 		instances: false,
 	},
 
-	classQuery: (from) => `
-	PREFIX ov: <http://open.vocab.org/terms/>
-	SELECT ?c
-	GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
-	SAMPLE(?class) AS ?class
-	FROM <http://hitontology.eu/ontology/>
-	{
-		{?c a owl:Class.} UNION {?c a [a owl:Class].}
-		?c a ?class
-		OPTIONAL {?c rdfs:label ?l.}
-	}`,
+	classQuery: (FROM) => `
+SELECT REPLACE(STR(?c),"http://hitontology.eu/ontology/","") AS ?c
+GROUP_CONCAT(distinct(CONCAT(?l,"@",lang(?l)));separator="|") as ?l
+REPLACE(STR(SAMPLE(?class)),"http://hitontology.eu/ontology/","") AS ?class
+REPLACE(REPLACE(REPLACE(?class,"Classified",""),"Citation",""),"Catalogue","") AS ?pre
+REPLACE(STR(SAMPLE(?super)),"http://hitontology.eu/ontology/","") AS ?super
+FROM <http://hitontology.eu/ontology>
+{
+	{?c a owl:Class.} UNION {?c a [a owl:Class].}
+	?c a ?class
+	OPTIONAL {?c rdfs:label ?l.}
+	OPTIONAL {?class rdfs:subClassOf ?super.}
+}`,
 };
