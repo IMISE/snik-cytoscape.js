@@ -15,7 +15,7 @@ ASK queries should also work but better use {@link ask} instead as it is more co
 @param {string} endpoint An optional SPARQL endpoint. May override FROM statements.
 @return {Promise<object[]>} A promise of a set of SPARQL select result bindings.
 */
-export async function select(query, graph, endpoint = config.sparql.endpoint) {
+export async function select(query, graph?: string, endpoint: string = config.sparql.endpoint) {
 	let url = endpoint + "?query=" + encodeURIComponent(query) + "&format=json";
 	if (graph) {
 		url += "&default-graph-uri=" + encodeURIComponent(graph);

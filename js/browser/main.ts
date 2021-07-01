@@ -1,20 +1,20 @@
 /**
 Entry point.
 @module */
-import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import { Menu } from "./menu.js";
-import Search from "./search.js";
-import { loadGraphFromJsonFile } from "./load.js";
-import { Graph } from "./graph.js";
-import * as layout from "../layout.js";
-import * as sparql from "../sparql.js";
-import progress from "./progress.js";
-import config from "../config.js";
-import initLog from "./log.js";
-import * as util from "./util.js";
-import { addOverlay } from "./benchmark.js";
-import * as help from "../help.js";
-import { View, activeState } from "./view.js";
+import loadGraphFromSparql from "../loadGraphFromSparql";
+import { Menu } from "./menu";
+import Search from "./search";
+import { loadGraphFromJsonFile } from "./load";
+import { Graph } from "./graph";
+import * as layout from "../layout";
+import * as sparql from "../sparql";
+import progress from "./progress";
+import config from "../config";
+import initLog from "./log";
+import * as util from "./util";
+import { addOverlay } from "./benchmark";
+import * as help from "../help";
+import { View, activeState } from "./view";
 
 /** Parse browser URL POST parameters.
 @return {void}
@@ -32,7 +32,7 @@ function parseParams() {
 		...(url.searchParams.get("sparql") && { endpoint: url.searchParams.get("sparql") }), // don't overwrite default with null
 		// load and show instances when loading from endpoint, not only class
 		// specify either without value ...&instances or as ...&instances=true
-		...(url.searchParams.get("instances") !== null && { instances: url.searchParams.get("instances") === "" || url.searchParams.get("instances") === true }),
+		...(url.searchParams.get("instances") !== null && { instances: url.searchParams.get("instances") === "" || url.searchParams.get("instances") === "true" }),
 		virtual: url.searchParams.get("virtual") !== null, // create "virtual triples" to visualize connections like domain-range
 		rdfGraph: url.searchParams.get("graph"),
 		sub: url.searchParams.get("sub"),
@@ -145,7 +145,7 @@ function initKeyListener() {
 		if (!el || el.nodeName !== "BODY") {
 			return;
 		}
-
+		
 		const layoutState = activeState();
 		if (e.code === "Delete" || e.code === "Backspace") {
 			// backspace (for mac) or delete key

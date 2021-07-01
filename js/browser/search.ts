@@ -12,11 +12,14 @@ import { activeState } from "./view.js";
 // const USE_BIF_CONTAINS = false;
 
 export default class Search {
+
+	resultNodes = [];
+
 	/** Add search functionality to the form.
 	 *  @param {HTMLFormElement} form a form with a search field named "query"
 	 *  @return {void} */
 	constructor(form) {
-		this.resultNodes = [];
+		
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
 			// @ts-ignore
@@ -33,7 +36,7 @@ export default class Search {
 	showSearchResults(query, uris) {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
-		const table = util.getElementById("tab:search-results");
+		const table : HTMLTableElement = util.getElementById("tab:search-results");
 
 		// clear leftovers from last time
 		while (table.rows.length > 0) {

@@ -23,6 +23,8 @@ const options = {
 	],
 };
 
+interface Item {uri:string, l:string, def:string}
+
 /** Create fulltext index from SPARQL endpoint.
 @return {Promise<Array<object>>} the index items for testing*/
 export async function createIndex() {
@@ -46,7 +48,7 @@ export async function createIndex() {
 	const bindings = await sparql.select(sparqlQuery);
 	const items = [];
 	for (const b of bindings) {
-		const item = {};
+		const item : Item = {};
 		items.push(item);
 		const suffix = b.uri.value.replace(/.*\//, "");
 		item.uri = b.uri.value;

@@ -25,7 +25,13 @@ export function activeView() {
 	return viewLayout.selectedItem.getActiveContentItem();
 }
 
+interface State {title: string; graph: Graph; name: string;}
+
 export class View {
+
+	initialized: Promise<boolean>;
+	state: State;
+
 	/** Fill the initial graph or copy over from the main view if it is not the first.
 	 * @return {void} */
 	async fill() {
@@ -58,7 +64,7 @@ export class View {
 	 * @param {Boolean} [initialize=true] if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
 	 * @param {string}  title             optional view title
 	 */
-	constructor(initialize = true, title) {
+	constructor(initialize = true, title?: string) {
 		//find initial title of the new View
 		title = title ?? (viewCount++ === 0 ? "Gesamtmodell" : "Teilmodell " + (viewCount - 1));
 		this.state = { title: title };

@@ -22,12 +22,20 @@ export const Direction = Object.freeze({
 
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
+
+	cy: cytoscape.Core;
+	selectedNode: cytoscape.NodeSingular = null;
+	starMode: boolean = false;
+	matchComponents = [];
+	pathSource = null;
+	container: HTMLElement;
+
 	/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
   @param {HTMLElement} container parent element
   */
-	constructor(container) {
+	constructor(container: HTMLElement) {
 		const initTimer = timer("graph-init");
-		this.matchComponents = [];
+		
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
@@ -37,7 +45,7 @@ export class Graph {
 			minZoom: 0.02,
 			maxZoom: 7,
 		});
-		this.selectedNode = null;
+		
 		this.cy.on("select", "node", (event) => {
 			this.selectedNode = event.target;
 		});
@@ -118,7 +126,7 @@ export class Graph {
     @param {boolean} starPath whether to show the star around all nodes on the path
     @return {function} a function that given a source node shows that path if possible and returns whether a path could be found
     */
-	showPath(to, starPath) {
+	showPath(to, starPath?: boolean) {
 		/** @param {cytoscape.NodeSingular} from path source node
 		 * @return {boolean} whether a path could be found */
 		return (from) => {
@@ -674,7 +682,7 @@ export class Graph {
 	/** Create and return a new graph if the option is set to create star operations in a new view.
 	 *  @param {string} title optional view title
 	 *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */
-	async newGraph(title) {
+	async newGraph(title?: string) {
 		//if(!mainView.state.graph.menu.starNewView()) {return this;} // using the menu option to determine whether to create a new graph
 		if (this !== mainView.state.graph) {
 			return this;
