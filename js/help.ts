@@ -1,3 +1,5 @@
+import log from "loglevel";
+
 export const help = {
 	"SNIK Graph Manual": {
 		img: "graph.png",

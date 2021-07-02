@@ -44,6 +44,13 @@ const multicy = (f) =>
 Toggles the visibility of a set of nodes defined by a selector.
 */
 class Filter {
+	selector: string;
+	label: string;
+	checkbox: HTMLInputElement;
+	a: HTMLAnchorElement;
+	cssClass: string;
+	visible: boolean;
+
 	/**
   Creates filter with HTML elements, filter functionality and listeners.
   @param {string} selector a Cytoscape.js selector, see {@link http://js.cytoscape.org/#selectors}

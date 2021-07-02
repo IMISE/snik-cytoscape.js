@@ -13,6 +13,8 @@ import * as rdf from "../rdf.js";
 import * as language from "../lang/language.js";
 import progress from "./progress.js";
 import { mainView, View } from "./view.js";
+import Micromodal from "micromodal";
+import log from "loglevel";
 
 export const Direction = Object.freeze({
 	IN: Symbol("in"),

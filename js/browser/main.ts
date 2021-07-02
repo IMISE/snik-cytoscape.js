@@ -15,6 +15,8 @@ import * as util from "./util";
 import { addOverlay } from "./benchmark";
 import * as help from "../help";
 import { View, activeState } from "./view";
+import MicroModal from "micromodal";
+import log from "loglevel";
 
 /** Parse browser URL POST parameters.
 @return {void}

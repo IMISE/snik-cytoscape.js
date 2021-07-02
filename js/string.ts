@@ -7,7 +7,7 @@ String handling helper methods.
  * @param  {Number} [maxLength=25] maximum output string length
  * @return {string}                the abbreviated input string
  */
-export function abbrv(s, maxLength = 25) {
+export function abbrv(s: string, maxLength: number = 25) {
 	if (s.length < maxLength) {
 		return s;
 	}

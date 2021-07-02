@@ -2,12 +2,14 @@
 import * as util from "./util.js";
 import { View, mainView } from "./view.js";
 import * as layout from "../layout.js";
+import {GoldenLayout, LayoutConfig} from "golden-layout";
+import log from "loglevel";
 
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
-	const layoutConfig = {
-		settings: { selectionEnabled: true },
+	const layoutConfig : LayoutConfig = {
+		settings: { /*selectionEnabled: true*/ },
 		content: [
 			{
 				type: "stack",

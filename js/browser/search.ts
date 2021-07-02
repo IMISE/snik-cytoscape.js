@@ -6,6 +6,8 @@ import * as util from "./util.js";
 import * as fuse from "../fuse.js";
 import progress from "./progress.js";
 import { activeState } from "./view.js";
+import MicroModal from "micromodal";
+import log from "loglevel";
 
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
@@ -34,7 +36,7 @@ export default class Search {
 	showSearchResults(query, uris) {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
-		const table: HTMLTableElement = util.getElementById("tab:search-results");
+		const table = util.getElementById("tab:search-results") as HTMLTableElement;
 
 		// clear leftovers from last time
 		while (table.rows.length > 0) {

@@ -3,6 +3,8 @@ Fuzzy search with fuse.js.
 @module */
 import * as sparql from "./sparql.js";
 import config from "./config.js";
+import Fuse from "fuse.js";
+import log from "loglevel";
 
 let index = null;
 

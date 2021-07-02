@@ -4,6 +4,7 @@ Language dependend strings.
 
 import en from "./en.js";
 import de from "./de.js";
+import log from "loglevel";
 
 const strings = {
 	en: en,

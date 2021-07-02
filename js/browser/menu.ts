@@ -14,6 +14,7 @@ import { addFilterEntries } from "./filter";
 import * as load from "./load";
 import { Graph } from "./graph";
 import { activeState, activeView, mainView, views } from "./view.js";
+import log from "loglevel";
 
 export let menu = null; // singleton instance
 

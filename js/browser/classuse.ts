@@ -6,6 +6,7 @@ import * as NODE from "../node.js";
 import { Graph } from "./graph.js";
 import { View, mainView } from "./view.js";
 import { short } from "../rdf.js";
+import log from "loglevel";
 
 let count = 0;
 
@@ -82,7 +83,7 @@ export default async function classUse(clazz, subTop) {
 	// Class Use does not work with Combine Matches enabled, disable it temporarily.
 	// Enable again after finishing Class Use.
 	// See https://github.com/IMISE/snik-cytoscape.js/issues/341
-	const box = document.getElementById("combineMatchModeBox");
+	const box = document.getElementById("combineMatchModeBox") as HTMLInputElement;
 	const combineMatch = box.checked;
 	if (combineMatch) {
 		mainView.state.graph.combineMatch(false);
@@ -118,7 +119,7 @@ export default async function classUse(clazz, subTop) {
 				return 1;
 			},
 			minNodeSpacing: 20,
-			concentric: function (node) {
+			concentric: function (node: cytoscape.NodeSingular) {
 				const uri = node.data(NODE.ID);
 				if (uri === clazz) {
 					return 10;
