@@ -125,7 +125,7 @@ export async function fillInitialGraph(graph) {
 	await progress(async () => {
 		const params = parseParams();
 		await applyParams(graph, params);
-		graph.menu = new Menu(params.instances);
+		graph.menu = new Menu();
 		new Search(util.getElementById("search"));
 		help.init();
 	});
@@ -138,14 +138,14 @@ const clipboard = [];
 @return {void}
 */
 function initKeyListener() {
-	document.documentElement.addEventListener("keydown", (e) => {
+	document.documentElement.addEventListener("keydown", (e: KeyboardEvent) => {
 		// prevent keydown listener from firing on input fields
 		// See https://stackoverflow.com/questions/40876422/jquery-disable-keydown-in-input-and-textareas
-		const el = e.target;
+		const el = e.target as Element;
 		if (!el || el.nodeName !== "BODY") {
 			return;
 		}
-		
+
 		const layoutState = activeState();
 		if (e.code === "Delete" || e.code === "Backspace") {
 			// backspace (for mac) or delete key

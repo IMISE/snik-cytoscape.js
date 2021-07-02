@@ -75,12 +75,12 @@ function parseLabels(s) {
  * @param  {string} from a SPARQL FROM clause defining where to load the classes from
  * @return {Promise<Array.<cytoscape.ElementDefinition>>} nodes representing the classes
  */
-async function createClassNodes(from) {
+async function createClassNodes(from: string) {
 	const json = await selectClasses(from);
 
 	/** @type{cytoscape.ElementDefinition[]} */
-	const nodes = [];
-	const sources = new Set();
+	const nodes: Array<cytoscape.ElementDefinition> = [];
+	const sources = new Set<string>();
 	for (let i = 0; i < json.length; i++) {
 		let source;
 		if (json[i].src) {
@@ -248,7 +248,7 @@ async function createNodes(from, instances) {
   @example
   loadGraphFromSparql(cy,new Set(["meta","bb"]))
   */
-export default async function loadGraphFromSparql(cy, graphs, instances, virtual) {
+export default async function loadGraphFromSparql(cy, graphs, instances = false, virtual = false) {
 	log.debug(`Loading graph from endpoint ${config.sparql.endpoint} with graphs ${graphs}.`);
 	const from = graphs.map((g) => `FROM <${g}>`).reduce((a, b) => a + "\n" + b, "");
 	const fromNamed = from.replace(/FROM/g, "FROM NAMED");

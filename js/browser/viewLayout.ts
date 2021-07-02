@@ -6,7 +6,7 @@ import * as layout from "../layout.js";
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
-	const config = {
+	const layoutConfig = {
 		settings: { selectionEnabled: true },
 		content: [
 			{
@@ -16,7 +16,7 @@ export function goldenLayout() {
 		],
 	};
 
-	const viewLayout = new GoldenLayout(config);
+	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
 
 	viewLayout.on("selectionChanged ", (event) => {
@@ -66,20 +66,20 @@ export function goldenLayout() {
 			[
 				".recalculatesign",
 				() => {
-					layout.run(cy(), layout.euler, config.defaultSubOntologies, separateSubs(), true);
+					layout.run(cy(), layout.euler, layoutConfig.defaultSubOntologies, separateSubs(), true);
 				},
 			],
 			[
 				".tightlayoutsign",
 				() => {
-					layout.run(cy(), layout.eulerTight, config.defaultSubOntologies, separateSubs(), true);
+					layout.run(cy(), layout.eulerTight, layoutConfig.defaultSubOntologies, separateSubs(), true);
 				},
 			],
 			// The compound layout does not work with separate subs so set the latter always to false.
 			[
 				".compoundlayoutsign",
 				() => {
-					layout.run(cy(), layout.cose, config.defaultSubOntologies, false, true);
+					layout.run(cy(), layout.cose, layoutConfig.defaultSubOntologies, false, true);
 				},
 			],
 		];

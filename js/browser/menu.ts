@@ -1,25 +1,28 @@
 /** Populates the menu bar on the top and initializes the context menu.*/
 /**
 @module */
-import * as save from "./save.js";
-import * as layout from "../layout.js";
-import * as NODE from "../node.js";
-import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import * as language from "../lang/language.js";
-import * as util from "./util.js";
-import config from "../config.js";
-import progress from "./progress.js";
-import { showChapterSearch } from "./chaptersearch.js";
-import { addFilterEntries } from "./filter.js";
-import * as load from "./load.js";
-import { Graph } from "./graph.js";
+import * as save from "./save";
+import * as layout from "../layout";
+import * as NODE from "../node";
+import loadGraphFromSparql from "../loadGraphFromSparql";
+import * as language from "../lang/language";
+import * as util from "./util";
+import config from "../config";
+import progress from "./progress";
+import { showChapterSearch } from "./chaptersearch";
+import { addFilterEntries } from "./filter";
+import * as load from "./load";
+import { Graph } from "./graph";
 import { activeState, activeView, mainView, views } from "./view.js";
 
 export let menu = null; // singleton instance
 
 /** main menu bar */
 export class Menu {
-	/** Construct the main menu bar for the given graph. */
+	separateSubsBox;
+	dayModeBox;
+
+	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
 			throw Error("Menu already exists.");
@@ -255,7 +258,7 @@ export class Menu {
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
 	 * @param {Array<HTMLAnchorElement>} as an empty array that will be filled with the anchor elements
 	 * @return {void} */
-	addOptions(as) {
+	addOptions(as: Array<HTMLAnchorElement>) {
 		const optionsContent = util.getElementById("options-menu-content");
 		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "devMode", "extMode"]; // ,"starNewView"
 		this.optionBoxes = {};
@@ -264,7 +267,7 @@ export class Menu {
 			const a = document.createElement("a");
 			as.push(a);
 			optionsContent.appendChild(a);
-			a.setAttribute("tabindex", -1);
+			a.setAttribute("tabindex", "-1");
 			a.classList.add("dropdown-entry");
 
 			const box = document.createElement("input");

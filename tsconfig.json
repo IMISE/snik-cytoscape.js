@@ -11,6 +11,8 @@
   "module": "ESNext",
   "esModuleInterop": true,
   "noImplicitAny": false,
+  "noEmitOnError": true,
+  "noEmit": true,
   "strict": false
  },
 "include": ["js/**/*","globals.d.ts","test.ts"],

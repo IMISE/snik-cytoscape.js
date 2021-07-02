@@ -27,7 +27,7 @@ export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
 @param {array} logs optional array of github markdown formatted log strings
 @return {void}
 */
-export function createGitHubIssue(repo, title, body, logs) {
+export function createGitHubIssue(repo: string, title: string, body: string, logs?: Array<string>) {
 	//shorten the front end to avoid 414 Error URI too large
 	// let encodedBody = encodeURIComponent(body);
 	// if (encodedBody.length > LOG_LIMIT)

@@ -118,16 +118,18 @@ export function saveGraph(graph) {
 /** Saves the contents of all views as a custom JSON file.
  *  @return {void} */
 export function saveSession() {
-	const session = { tabs: [], state: toJSON() };
-	session.mainGraph = {
+	const mainGraph = {
 		title: mainView.state.title,
 		graph: mainView.state.cy.json(),
 	};
-	delete session.mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+	delete mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
+
+	const session = { tabs: [], state: toJSON(), mainGraph };
+
 	for (const view of partViews) {
 		const tabContent = {
 			title: view.state.title,
-			graph: view.state.cy.json(),
+			graph: view.state.cy.json() as { style },
 		};
 		delete tabContent.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 		session.tabs.push(tabContent);
@@ -162,13 +164,16 @@ export function savePng(graph, dayMode, full, highRes) {
 	const options = {
 		bg: dayMode ? "white" : "black", // background according to color mode
 		full: full,
+		maxWidth: undefined,
+		maxHeight: undefined,
 	};
+
 	if (highRes) {
-		options.maxWidth = config.save.image.max.width;
-		options.maxHeight = config.save.image.max.height;
+		options.maxWidth = config.download.image.max.width;
+		options.maxHeight = config.download.image.max.height;
 	} else if (full) {
-		options.maxWidth = config.save.image.standard.width;
-		options.maxHeight = config.save.image.standard.height;
+		options.maxWidth = config.download.image.standard.width;
+		options.maxHeight = config.download.image.standard.height;
 	}
 
 	const image = graph.cy.png(options);

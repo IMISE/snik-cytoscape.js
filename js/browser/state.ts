@@ -7,12 +7,16 @@ export const state = {
 	version: VERSION,
 };
 
+interface StateJson {
+	filters;
+	options;
+}
+
 /** Saves the visibility values of all filters.
  * @return {object} the JSON representation of the state */
-export function toJSON() {
-	const json = Object.assign({}, state);
-	json.filters = filter.toJSON();
-	json.options = menu.optionsToJSON();
+export function toJSON(): StateJson {
+	const json: StateJson = { filters: filter.toJSON(), options: menu.optionsToJSON() };
+	Object.assign(json, state);
 	return json;
 }
 

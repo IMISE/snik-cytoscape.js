@@ -23,7 +23,11 @@ const options = {
 	],
 };
 
-interface Item {uri:string, l:string, def:string}
+interface Item {
+	uri: string;
+	l: Array<string>;
+	def?: string;
+}
 
 /** Create fulltext index from SPARQL endpoint.
 @return {Promise<Array<object>>} the index items for testing*/
@@ -48,12 +52,14 @@ export async function createIndex() {
 	const bindings = await sparql.select(sparqlQuery);
 	const items = [];
 	for (const b of bindings) {
-		const item : Item = {};
-		items.push(item);
 		const suffix = b.uri.value.replace(/.*\//, "");
-		item.uri = b.uri.value;
-		item.l = [...b.l.value.split("|"), suffix];
+		const item: Item = {
+			uri: b.uri.value,
+			l: [...b.l.value.split("|"), suffix],
+		};
+		items.push(item);
 		item.l = [...new Set(item.l)]; // remove duplicates
+
 		if (b.def.value) {
 			item.def = b.def.value;
 		}

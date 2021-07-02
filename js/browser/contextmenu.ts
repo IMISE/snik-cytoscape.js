@@ -6,13 +6,16 @@ import nodeCommands from "./contextmenuNodes.js";
 import edgeCommands from "./contextmenuEdges.js";
 import { flatHelp } from "../help.js";
 
-const config = {};
+const config = { menuItems: [] };
 
 /** context menu for nodes and edges */
 export default class ContextMenu {
+	graph: cytoscape.Core;
+	cxtMenus: Array<Object>;
+
 	/** Fill the context menu and register it with configuration, which will show it for the node and edge selectors.
   The extension itself is already registered through the plain HTML/JS import in index.html,
-  which makes available cy.cxtmenu().
+  which makes available cy.contextMenus().
   @param {Graph}  graph the graph that the context menu applies to */
 	constructor(graph) {
 		this.graph = graph;
@@ -20,16 +23,8 @@ export default class ContextMenu {
 		//console.log(config);
 		config.menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];
 		graph.cy.contextMenus(config);
-		this.cxtmenus = [];
+		this.cxtMenus = [];
 	}
-
-	/**Destroy all submenus
-	 * @return {void} */
-	/*
-	reset() {
-		this.cxtmenus.forEach((c) => c.destroy());
-		this.cxtmenus = [];
-	}*/
 
 	/** Clears existing context menus of this menu and create anew the different context menus depending on whether dev and ext mode are active.
   @param {boolean} dev whether developer mode menu entries are shown

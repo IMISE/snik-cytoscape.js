@@ -7,7 +7,7 @@ import { toJSON } from "./state.js";
 
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
-export const partViews = new Set();
+export const partViews = new Set<View>();
 export const views = () => [mainView, ...partViews];
 
 let firstFinished = null; // following instances need to wait for the first to load
@@ -25,12 +25,19 @@ export function activeView() {
 	return viewLayout.selectedItem.getActiveContentItem();
 }
 
-interface State {title: string; graph: Graph; name: string;}
+interface State {
+	title: string;
+	graph: Graph;
+	name: string;
+	cy: cytoscape.Core;
+}
 
 export class View {
-
-	initialized: Promise<boolean>;
+	initialized: Promise<void>;
 	state: State;
+	cyContainer: HTMLDivElement;
+	element: HTMLElement;
+	cxtMenu: ContextMenu;
 
 	/** Fill the initial graph or copy over from the main view if it is not the first.
 	 * @return {void} */
@@ -67,7 +74,6 @@ export class View {
 	constructor(initialize = true, title?: string) {
 		//find initial title of the new View
 		title = title ?? (viewCount++ === 0 ? "Gesamtmodell" : "Teilmodell " + (viewCount - 1));
-		this.state = { title: title };
 		//const closable = views.length>1;
 		const itemConfig = {
 			title: title,
@@ -98,8 +104,8 @@ export class View {
 
 		const graph = new Graph(this.cyContainer);
 		const cy = graph.cy;
-		this.state.graph = graph;
-		this.state.cy = cy; // easier access for frequent use than this.state.graph.cy, also better separation
+
+		this.state = { title, graph, cy };
 		this.initialized = initialize ? this.fill() : Promise.resolve();
 		this.initialized.then(() => {
 			this.state.graph.invert(toJSON().options.dayMode);
@@ -131,9 +137,6 @@ export function reset() {
 	traverse(viewLayout.root, 0);
 	for (const content of removeTabsArray) {
 		content.remove();
-	}
-	for (const view of partViews) {
-		view.cxtMenu.reset();
 	}
 	partViews.clear();
 	viewCount = 0;

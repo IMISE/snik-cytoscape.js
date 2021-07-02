@@ -12,14 +12,12 @@ import { activeState } from "./view.js";
 // const USE_BIF_CONTAINS = false;
 
 export default class Search {
-
 	resultNodes = [];
 
 	/** Add search functionality to the form.
 	 *  @param {HTMLFormElement} form a form with a search field named "query"
 	 *  @return {void} */
 	constructor(form) {
-		
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
 			// @ts-ignore
@@ -36,7 +34,7 @@ export default class Search {
 	showSearchResults(query, uris) {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
-		const table : HTMLTableElement = util.getElementById("tab:search-results");
+		const table: HTMLTableElement = util.getElementById("tab:search-results");
 
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
@@ -83,7 +81,7 @@ export default class Search {
 			checkBox.type = "checkbox";
 			checkCell.appendChild(checkBox);
 			checkCell.addEventListener("change", (e) => {
-				selected[e.target.checked ? "add" : "remove"](uri);
+				selected[(e.target as HTMLInputElement).checked ? "add" : "remove"](uri);
 			});
 			const locateCell = row.insertCell();
 			const lodLiveCell = row.insertCell();

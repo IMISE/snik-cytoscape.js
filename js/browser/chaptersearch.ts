@@ -4,6 +4,7 @@ Search classes by chapter.
 import * as sparql from "../sparql.js";
 import * as util from "./util.js";
 import * as language from "../lang/language.js";
+import { Graph } from "./graph.js";
 
 /** @type {Map<String,Array<string>>} */
 const chapters = new Map();
@@ -16,7 +17,7 @@ const selectedChapters = new Set();
 @param {string} sub subontology, such as "bb" or "ob"
 @param {string} chapter the chapter string value exactly as in the SPARQL triples, such as "5.3".
 */
-async function getClasses(sub, chapter) {
+async function getClasses(sub, chapter): Promise<Set<string>> {
 	// Using .../meta:subChapterOf* does not work for unknown reasons, maybe because of the old Virtuoso version we need for the OntoWiki.
 	// See https://stackoverflow.com/questions/58322216/sparql-property-paths-x-y-yields-different-result-than-x-union-x-y
 	const query = `SELECT DISTINCT(?class) ?label
@@ -51,8 +52,8 @@ async function getClasses(sub, chapter) {
 @param {Graph} graph the graph that contains the nodes with the given URIs
 @param {Set<string>} classes resource URIs
 @returns {Promise<void>} Void promise, just for waiting. */
-async function showClasses(graph, classes) {
-	const table = util.getElementById("tab:chapter-search-classes");
+async function showClasses(graph: Graph, classes: Set<string>) {
+	const table = util.getElementById("tab:chapter-search-classes") as HTMLTableElement;
 	while (table.rows.length > 0) {
 		table.deleteRow(0);
 	} // clear leftovers from last time
@@ -96,15 +97,15 @@ async function showClasses(graph, classes) {
 @param {Graph} graph the graph that is searched
 @param {string} sub subontology, such as "bb" or "ob"
 @return {Promise<void>} void promise just for waiting*/
-export async function showChapterSearch(graph, sub) {
+export async function showChapterSearch(graph, sub): Promise<void> {
 	MicroModal.show("chapter-search");
 
-	const table = util.getElementById("tab:chapter-search-chapters");
+	const table = util.getElementById("tab:chapter-search-chapters") as HTMLTableElement;
 	while (table.rows.length > 0) {
 		table.deleteRow(0);
 	} // clear leftovers from last time
 	{
-		const classTable = util.getElementById("tab:chapter-search-classes");
+		const classTable = util.getElementById("tab:chapter-search-classes") as HTMLTableElement;
 		while (classTable.rows.length > 0) {
 			classTable.deleteRow(0);
 		} // clear leftovers from last time
@@ -117,7 +118,7 @@ export async function showChapterSearch(graph, sub) {
 	deselectLink.setAttribute("data-i18n", "deselect-all");
 	deselectLink.innerText = language.getString("deselect-all");
 	deselectLink.addEventListener("click", () => {
-		for (const box of document.getElementsByClassName("chaptersearch-checkbox")) {
+		for (const box of document.getElementsByClassName("chaptersearch-checkbox") as Iterable<HTMLInputElement>) {
 			if (box.checked) {
 				box.click();
 			}

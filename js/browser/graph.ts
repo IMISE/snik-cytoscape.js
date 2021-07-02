@@ -22,7 +22,6 @@ export const Direction = Object.freeze({
 
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
-
 	cy: cytoscape.Core;
 	selectedNode: cytoscape.NodeSingular = null;
 	starMode: boolean = false;
@@ -35,7 +34,7 @@ export class Graph {
   */
 	constructor(container: HTMLElement) {
 		const initTimer = timer("graph-init");
-		
+
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
@@ -45,7 +44,7 @@ export class Graph {
 			minZoom: 0.02,
 			maxZoom: 7,
 		});
-		
+
 		this.cy.on("select", "node", (event) => {
 			this.selectedNode = event.target;
 		});
@@ -642,7 +641,7 @@ export class Graph {
 	 * @return {void} */
 	subOntologyConnectivity() {
 		MicroModal.show("subontology-connectivity");
-		const form = document.getElementById("subontology-connectivity-form");
+		const form = document.getElementById("subontology-connectivity-form") as HTMLFormElement;
 		if (form.listener) {
 			return;
 		}
