@@ -4,7 +4,6 @@ import { View, reset, activeView } from "./view.js";
 import config from "../config.js";
 import { fromJSON } from "./state.js";
 import { VERSION } from "./util.js";
-
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
@@ -14,10 +13,10 @@ Uploads a JSON file from the user.
 function uploadJson(event, callback) {
 	const file = event.target.files[0];
 	const reader = new FileReader();
+	// @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | ArrayBuffer' is not ass... Remove this comment to see the full error message
 	reader.onload = () => callback(JSON.parse(reader.result));
 	reader.readAsText(file);
 }
-
 /**
  * Clear the graph and load the contents of the Cytoscape.js JSON file in it.
  * @param  {Graph} graph the graph instance to load into
@@ -30,9 +29,10 @@ function loadGraphFromJson(graph, json) {
 	graph.cy.elements().addClass("unfiltered");
 	const visibleFraction = (1.0 * graph.cy.elements(":visible").size()) / graph.cy.elements().size();
 	const starMode = visibleFraction < 0.8;
+	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("Load Graph from File: Visible fraction: " + visibleFraction + " set star mode to " + starMode);
 	if (graph.cy.nodes(":child").size() > 0) {
-		document.getElementById("combineMatchModeBox").checked = true;
+		(document.getElementById("combineMatchModeBox") as any).checked = true;
 	}
 	graph.starMode = starMode;
 	graph.cy.center(":visible");
@@ -40,7 +40,6 @@ function loadGraphFromJson(graph, json) {
 	graph.cy.elements().removeClass("highlighted");
 	graph.cy.elements().removeClass("source");
 }
-
 /**
 Curried function.
 Load a layouted graph from the JSON file specified by the given file input change event.
@@ -52,7 +51,6 @@ export const loadGraphFromJsonFile = (graph) => (event) => {
 		loadGraphFromJson(graph, json);
 	});
 };
-
 /** Loads the contents of all views from a JSON file.
 @param {Event} event a file input change event
 @return {void}
@@ -69,7 +67,6 @@ export async function loadSessionFromJsonFile(event) {
 		) {
 			return;
 		}
-
 		reset();
 		const promises = [];
 		const mainView = new View(false);
@@ -87,7 +84,6 @@ export async function loadSessionFromJsonFile(event) {
 		fromJSON(json.state); // update changed values, keep existing values that don't exist in the save file
 	});
 }
-
 /** Loads a stored view from a JSON file.
 @param {Event} event a file input change event
 @return {void}
@@ -106,7 +102,6 @@ export function loadView(event) {
 		activeView().setTitle(json.title);
 	});
 }
-
 /**
 Add an upload entry to the file menu.
 @param {Element} parent the parent element of the menu
@@ -135,7 +130,6 @@ function addLoadEntry(parent, i18n, description, func, as) {
 	// completed file chooser dialog triggers change event
 	input.addEventListener("change", func);
 }
-
 /**
 Add upload entries to the file menu.
 Cannot use the simpler default menu creation method because file upload only works with an input.

@@ -15,13 +15,11 @@ import progress from "./progress.js";
 import { mainView, View } from "./view.js";
 import Micromodal from "micromodal";
 import log from "loglevel";
-
 export const Direction = Object.freeze({
 	IN: Symbol("in"),
 	OUT: Symbol("out"),
 	BOTH: Symbol("both"),
 });
-
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
 	cy: cytoscape.Core;
@@ -30,23 +28,21 @@ export class Graph {
 	matchComponents = [];
 	pathSource = null;
 	container: HTMLElement;
-
 	/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
   @param {HTMLElement} container parent element
   */
 	constructor(container: HTMLElement) {
 		const initTimer = timer("graph-init");
-
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
 			container: container,
+			// @ts-expect-error ts-migrate(2322) FIXME: Type '({ selector: string; css: { "min-zoomed-font... Remove this comment to see the full error message
 			style: style.style.concat(colorschemenight),
 			//wheelSensitivity: 0.3,
 			minZoom: 0.02,
 			maxZoom: 7,
 		});
-
 		this.cy.on("select", "node", (event) => {
 			this.selectedNode = event.target;
 		});
@@ -68,13 +64,11 @@ export class Graph {
 		}
 		initTimer.stop();
 	}
-
 	/** Returns, whether cumulative search is activated.
 	 *  @return {boolean} whether cumulative search is activated. */
 	cumulativeSearch() {
-		return (document.getElementById("cumulativeSearchBox") || {}).checked; // menu may not be initialized yet
+		return ((document.getElementById("cumulativeSearchBox") || {}) as any).checked; // menu may not be initialized yet
 	}
-
 	/** Show (unhide) the given elements or hide them using visibility: hidden.
     Do not use this for filters as they use other classes to interact properly with shown and hidden elements.
     Does not unhide filtered elements on its own.
@@ -92,7 +86,6 @@ export class Graph {
 			edges.removeClass("highlighted");
 		}
 	}
-
 	/**
     @param {cytoscape.Collection} eles the elements to assign the star mode css class to
     @return {void}
@@ -102,7 +95,6 @@ export class Graph {
 		//eles.addClass('starmode');
 		eles.select();
 	}
-
 	/** Removes all highlighting (except selection) and shows all hidden nodes.
     @return {void} */
 	resetStyle() {
@@ -120,7 +112,6 @@ export class Graph {
     */
 		this.cy.endBatch();
 	}
-
 	/** Show all nodes and edges on a shortest path between "from" and "to".
     Hide all other nodes except when in star mode.
     @param {cytoscape.NodeSingular} to path target node
@@ -139,9 +130,7 @@ export class Graph {
 				log.warn(`Path source ${from.data(NODE.ID)} equals target.`);
 				return false;
 			}
-
 			const elements = this.cy.elements(".unfiltered");
-
 			const aStar = elements.aStar({
 				root: from,
 				goal: to,
@@ -176,7 +165,6 @@ export class Graph {
 			return true;
 		};
 	}
-
 	/** Multiplex star operations.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
@@ -184,7 +172,6 @@ export class Graph {
 	showStarMultiplexed(changeLayout, direction) {
 		return this.multiplex((x) => this.showStar(x, changeLayout, direction), null, true);
 	}
-
 	/** Multiplex star operations into a new view.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
       @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
@@ -195,7 +182,6 @@ export class Graph {
 		//graph.cy.fit(graph.cy.elements(":visible")); // doesn't work correctly
 		return f;
 	}
-
 	/** Highlight the give node and all its directly connected nodes (in both directions).
       Hide all other nodes except when in star mode.
       @param {cytoscape.Collection} center node or collection of nodes. center of the star
@@ -206,7 +192,6 @@ export class Graph {
 	showStar(center, changeLayout, direction) {
 		console.log("center", center);
 		this.cy.startBatch();
-
 		// open 2 levels deep on closeMatch
 		let inner = center; // if you don't want to include close match, keep inner at that
 		let closeMatchEdges;
@@ -230,7 +215,6 @@ export class Graph {
 			default:
 				edges = inner.connectedEdges(".unfiltered");
 		}
-
 		const nodes = edges.connectedNodes(".unfiltered");
 		const star = inner.union(nodes).union(edges);
 		star.merge(star.parent());
@@ -244,12 +228,10 @@ export class Graph {
 			this.starMode = true;
 			Graph.setVisible(this.cy.elements().not(star), false);
 		}
-
 		console.log("star", star);
 		Graph.starStyle(star);
 		//const visible = this.cy.nodes(".unfiltered").not(".hidden");
 		//Graph.starStyle(visible.edgesWith(visible));
-
 		if (changeLayout) {
 			const sorted = nodes.sort((a, b) => {
 				const pa = Math.min(
@@ -270,7 +252,6 @@ export class Graph {
 				);
 				return pa - pb;
 			});
-
 			sorted
 				.layout({
 					name: "concentric",
@@ -292,13 +273,11 @@ export class Graph {
 				.run();
 		}
 		this.cy.endBatch();
-
 		const visible = this.cy.nodes(":visible");
 		if (visible.size() < 100) {
 			this.cy.fit(visible, 100);
 		}
 	}
-
 	/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
@@ -306,12 +285,12 @@ export class Graph {
       */
 	showWorm(to) {
 		if (this.showPath(to)) {
+			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
 			this.showStar(to);
 			return true;
 		}
 		return false;
 	}
-
 	/** Highlight the given two nodes, directly connected nodes (in both directions) of both of them and a shortest path between the two.
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} to path target node
@@ -320,20 +299,20 @@ export class Graph {
 	showDoubleStar(to) {
 		const from = this.getSource();
 		if (this.showPath(to)) {
+			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
 			this.showStar(to);
+			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
 			this.showStar(from);
 			return true;
 		}
 		return false;
 	}
-
 	/** Get the equivalent elements in this graph of the given elements from another graph.
 	 * @param {cytoscape.Collection} eles elements from another graph
 	 * @return {cytoscape.Collection} equivalent elements that exist in this graph */
 	assimilate(eles) {
 		return this.getElementsByIds(eles.map((ele) => ele.id()));
 	}
-
 	/** @param {Array<string>} ids iterable of cytoscape ids
 	 * @return {cytoscape.Collection} cytoscape collection of elements with those ids */
 	getElementsByIds(ids) {
@@ -344,7 +323,6 @@ export class Graph {
 		}
 		return own;
 	}
-
 	/** Returns the start node for all path operations
       @return {?cytoscape.NodeSingular} the start node for all path operations, or null if none exists. */
 	getSource() {
@@ -357,7 +335,6 @@ export class Graph {
 		}
 		return null;
 	}
-
 	/** Set the given node as source for all path operations.
       @param {cytoscape.NodeSingular} node the new source
       @return {void} whether node is not null
@@ -371,7 +348,7 @@ export class Graph {
 			log.error("Invalid source. Length != 1");
 			return false;
 		}
-		if (this.pathTarget) {
+		if ((this as any).pathTarget) {
 			this.cy.resize(); // may move cytoscape div which it needs to be informed about, else there may be mouse pointer errrors.
 		}
 		if (this.pathSource) {
@@ -386,7 +363,6 @@ export class Graph {
 		this.pathSource.addClass("source");
 		return true;
 	}
-
 	/** Inverts the screen colors in the canvas for day mode. Uses an inverted node js style file to keep node colors.
       @param {boolean} enabled whether the canvas colors should be inverted
       @return {void}
@@ -394,13 +370,14 @@ export class Graph {
 	invert(enabled) {
 		if (enabled) {
 			this.container.style.backgroundColor = "white";
-			this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
+			// @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
+			(this.cy.style() as any).fromJson(style.style.concat(colorschemeday)).update();
 		} else {
 			this.container.style.backgroundColor = "black";
-			this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
+			// @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
+			(this.cy.style() as any).fromJson(style.style.concat(colorschemenight)).update();
 		}
 	}
-
 	/** Center and highlight the given URI.
       @param {string} uri The URI of a class in the graph.
       @return {boolean} whether presenting the URI succeeded */
@@ -429,7 +406,6 @@ export class Graph {
 		this.cy.center(node);
 		return true;
 	}
-
 	/** Center and highlight the given URIs.
 	 * @param  {Array<string>} uris the URIs to present
 	 * @param  {boolean} hideOthers whether to hide the other nodes
@@ -442,7 +418,6 @@ export class Graph {
 		if (!this.cumulativeSearch()) {
 			this.resetStyle();
 		}
-
 		const resultNodes = this.cy
 			.elements()
 			.nodes()
@@ -460,7 +435,6 @@ export class Graph {
 		this.cy.fit(this.cy.elements(":selected"));
 		return true;
 	}
-
 	/**  Multiplex takes a function that takes exactly one parameter in the form of a a single cytoscape Node, such as a star.
 	 * It returns a function that executes the given function one or more times with different input based on the following criteria:
 	 * If the nodes parameter is given, then multiplex uses it as input.
@@ -477,7 +451,6 @@ export class Graph {
 	multiplex(f, nodes, direct) {
 		return (ele) => {
 			const selected = this.cy.nodes(":selected");
-
 			let collection = nodes;
 			// nodes parameter is preferred
 			if (!nodes && selected.size() > 1) {
@@ -498,13 +471,13 @@ export class Graph {
 			}
 		};
 	}
-
 	/** Open an issue on GitHub to remove the given node.
 	 * @param {cytoscape.NodeSingular} node the node representing the resource that should be removed
 	 * @return {void}*/
 	createRemoveIssue(node) {
 		this.cy.remove(node);
 		const clazzShort = rdf.short(node.data(NODE.ID));
+		// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
 		sparql.describe(node.data(NODE.ID)).then((bindings) => {
 			const body = `Please permanently delete the class ${clazzShort}:
             \`\`\`\n
@@ -532,7 +505,6 @@ export class Graph {
 			);
 		});
 	}
-
 	/** Move all matching nodes together.
 	 * @param {number} distance the distance between them
 	 * @return {void} */
@@ -545,7 +517,6 @@ export class Graph {
 			this.moveNodes(comp.nodes(), distance);
 		}
 	}
-
 	/**
 	 * position in a circle around the first node
 	 * @param  {cytoscape.NodeCollection} nodes the nodes to position
@@ -558,7 +529,6 @@ export class Graph {
 			nodes[j].shift({ x: distance * Math.cos((2 * Math.PI * j) / (nodes.length - 1)), y: distance * Math.sin((2 * Math.PI * j) / (nodes.length - 1)) });
 		}
 	}
-
 	/** Sets whether close matches are grouped in compound nodes.
 	 * @param {boolean} enabled Whether to activate or deactivate combine match mode.
 	 * @return {Promise<void>} **/
@@ -576,11 +546,10 @@ export class Graph {
 			// Can be calculated only once per session but then it needs to be synchronized with in-visualization ontology edits.
 			const matchEdges = this.cy.edges('[pl="closeMatch"]').filter(".unfiltered").not(".hidden");
 			const matchGraph = this.cy.nodes(".unfiltered").not(".hidden").union(matchEdges);
-			if (!this.moveMatchNotified && this.cy.nodes(":visible").size() > 1000) {
+			if (!(this as any).moveMatchNotified && this.cy.nodes(":visible").size() > 1000) {
 				log.info("Combining Matches. Consider using Move Matches Nearby or Move Matches on top of each other.");
-				this.moveMatchNotified = true;
+				(this as any).moveMatchNotified = true;
 			}
-
 			{
 				this.matchComponents.length = 0;
 			}
@@ -590,11 +559,9 @@ export class Graph {
 				if (comp.length === 1) {
 					continue;
 				}
-
 				const id = "parent" + i;
 				const labels = {};
 				let nodes = comp.nodes();
-
 				for (let j = 0; j < nodes.length; j++) {
 					const l = nodes[j].data("l");
 					for (const key in l) {
@@ -620,7 +587,6 @@ export class Graph {
 					group: "nodes",
 					data: { id: id, l: labels },
 				});
-
 				for (let j = 0; j < nodes.length; j++) {
 					nodes[j].move({ parent: id });
 				}
@@ -628,20 +594,20 @@ export class Graph {
 			this.cy.endBatch();
 		});
 	}
-
 	/**Show close matches of the given nodes.
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
 	 * @return {void} */
 	showCloseMatch(nodes) {
+		// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 		MicroModal.show("search-results");
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
 		Graph.setVisible(matches.union(edges), true);
 	}
-
 	/** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them.
 	 * @return {void} */
 	subOntologyConnectivity() {
+		// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 		MicroModal.show("subontology-connectivity");
 		const form = document.getElementById("subontology-connectivity-form") as HTMLFormElement;
 		if (form.listener) {
@@ -649,10 +615,11 @@ export class Graph {
 		}
 		form.listener = async (e) => {
 			e.preventDefault();
+			// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 			MicroModal.close("subontology-connectivity");
 			const connect = new View();
 			await connect.initialized;
-			const subs = [form[0].value, form[1].value];
+			const subs = [(form[0] as any).value, (form[1] as any).value];
 			log.debug(`Showing connectivity between the subontologies ${subs[0]} and ${subs[1]}.`);
 			const subGraphs = subs.map((s) => connect.state.cy.nodes(`[source="${s}"]`));
 			const connections = subGraphs[0].edgesWith(subGraphs[1]);
@@ -667,8 +634,10 @@ export class Graph {
 					levelWidth: function () {
 						return 1;
 					},
+					// @ts-expect-error ts-migrate(2322) FIXME: Type '60' is not assignable to type '10'.
 					minNodeSpacing: 60,
 					concentric: function (layoutNode) {
+						// @ts-expect-error ts-migrate(2345) FIXME: Argument of type '{ degree(): number; }' is not as... Remove this comment to see the full error message
 						if (subGraphs[0].contains(layoutNode)) {
 							return 2;
 						}
@@ -679,7 +648,6 @@ export class Graph {
 		};
 		form.addEventListener("submit", form.listener);
 	}
-
 	/** Create and return a new graph if the option is set to create star operations in a new view.
 	 *  @param {string} title optional view title
 	 *  @return {Graph} this iff the option to create stars in a new view is unset, a new view's graph if it is set */

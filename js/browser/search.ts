@@ -8,26 +8,21 @@ import progress from "./progress.js";
 import { activeState } from "./view.js";
 import MicroModal from "micromodal";
 import log from "loglevel";
-
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
-
 export default class Search {
 	resultNodes = [];
-
 	/** Add search functionality to the form.
 	 *  @param {HTMLFormElement} form a form with a search field named "query"
 	 *  @return {void} */
 	constructor(form) {
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
-			// @ts-ignore
 			progress(() => this.showSearch(event.target.children.query.value));
 		});
 		log.debug("search initialized");
 	}
-
 	/**
 	 * @param  {String} query The user query.
 	 * @param  {Array<String>} uris An array of OWL class URIs
@@ -37,12 +32,10 @@ export default class Search {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
 		const table = util.getElementById("tab:search-results") as HTMLTableElement;
-
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
 			table.deleteRow(0);
 		}
-
 		if (uris.length === 0) {
 			util.getElementById("h2:search-results").innerHTML = `No Search Results for "${query}"`;
 			return false;
@@ -59,7 +52,6 @@ export default class Search {
 		}
 		// Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
 		const uriType = {};
-
 		uris.forEach((uri) => {
 			const node = activeState().cy.getElementById(uri)[0];
 			if (node) {
@@ -87,17 +79,13 @@ export default class Search {
 			});
 			const locateCell = row.insertCell();
 			const lodLiveCell = row.insertCell();
-			// @ts-ignore
-			window.presentUri = activeState().graph.presentUri;
-
+			(window as any).presentUri = activeState().graph.presentUri;
 			// todo: listener to add to selected uris
-
 			locateCell.innerHTML = `<a class="search-class${uriType[uri]}" href="javascript:MicroModal.close('search-results');window.presentUri('${uri}');void(0)">
           ${uri.replace(sparql.SNIK_PREFIX, "")}</a>`;
 			const html = `<a class="search-class${uriType[uri]}" href="${uri}" target="_blank">Description</a>`;
 			lodLiveCell.innerHTML = html;
 		});
-
 		const row = table.insertRow(0);
 		row.insertCell();
 		{
@@ -118,10 +106,8 @@ export default class Search {
 				e.preventDefault();
 			});
 		}
-
 		return true;
 	}
-
 	/** Searches the SPARQL endpoint for classes with the given label.
       Case and space insensitive when not using bif:contains. Can be used by node.js.
       @deprecated Old search without fuse index. Not used anymore.
@@ -151,7 +137,6 @@ export default class Search {
 		//		`select ?s {{?s a owl:Class.} UNION {?s a rdf:Property.}.
 		//filter (regex(replace(replace(str(?s),"${SPARQL_PREFIX}",""),"_"," "),"${query}","i")).}
 	}
-
 	/** Search the class labels and display the result to the user.
 	 *  @param {string} userQuery the search query as given by the user
 	 *  @return {Promise<false>} false to prevent page reload triggered by submit.*/

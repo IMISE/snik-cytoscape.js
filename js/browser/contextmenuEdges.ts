@@ -46,6 +46,7 @@ export default (graph) => {
 				if (edge.data(EDGE.AXIOM)) {
 					window.open(edge.data(EDGE.AXIOM));
 				} else {
+					// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 					log.warn("There is no description for this edge.");
 				}
 			},

@@ -4,41 +4,34 @@ import { fillInitialGraph } from "./main.js";
 import ContextMenu from "./contextmenu.js";
 import { goldenLayout } from "./viewLayout.js";
 import { toJSON } from "./state.js";
-
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
 export const partViews = new Set<View>();
 export const views = () => [mainView, ...partViews];
-
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout = goldenLayout();
-
 /** Returns the state of the active (focussed) view.
 @return {object} The state of the active (focussed) view. */
 export function activeState() {
-	return viewLayout.selectedItem.getActiveContentItem().config.componentState;
+	return (viewLayout as any).selectedItem.getActiveContentItem().config.componentState;
 }
-
 /** Returns the active (focussed) view.
 @return {object} The active (focussed) view. */
 export function activeView() {
-	return viewLayout.selectedItem.getActiveContentItem();
+	return (viewLayout as any).selectedItem.getActiveContentItem();
 }
-
 interface State {
 	title: string;
 	graph: Graph;
 	name: string;
 	cy: cytoscape.Core;
 }
-
 export class View {
 	initialized: Promise<void>;
 	state: State;
 	cyContainer: HTMLDivElement;
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
-
 	/** Fill the initial graph or copy over from the main view if it is not the first.
 	 * @return {void} */
 	async fill() {
@@ -47,10 +40,12 @@ export class View {
 			mainView = this;
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
+			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
 		} else {
 			await firstFinished;
 			graph.cy.add(mainView.state.cy.elements()); // don't load again, copy from first view
+			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug(`Create view ${this.state.title} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.title}.`);
 			const elements = graph.cy.elements();
 			Graph.setVisible(elements, false);
@@ -65,7 +60,6 @@ export class View {
       */
 		}
 	}
-
 	/**
 	 * Create an empty graph and add it to the state of this view along with its Cytoscape.js instance.
 	 * @param {Boolean} [initialize=true] if initialize is true or not given, the graph is copied from the main view or, if that doesn't exist, from the SPARQL endpoint
@@ -86,7 +80,6 @@ export class View {
 		if (mainView !== null) {
 			partViews.add(this);
 		}
-
 		viewLayout.registerComponent(
 			title,
 			function (
@@ -100,11 +93,10 @@ export class View {
 				});
 			}
 		);
-		viewLayout.root.contentItems[0].addChild(itemConfig);
-
+		(viewLayout as any).root.contentItems[0].addChild(itemConfig);
 		const graph = new Graph(this.cyContainer);
 		const cy = graph.cy;
-
+		// @ts-expect-error ts-migrate(2741) FIXME: Property 'name' is missing in type '{ title: strin... Remove this comment to see the full error message
 		this.state = { title, graph, cy };
 		this.initialized = initialize ? this.fill() : Promise.resolve();
 		this.initialized.then(() => {
@@ -113,9 +105,7 @@ export class View {
 		});
 	}
 }
-
 let removeTabsArray = [];
-
 /** Helper function that traverses the component tree.
  *  @param {object} x the component to traverse
  *  @param {number} depth recursive depth
@@ -129,12 +119,11 @@ function traverse(x, depth) {
 		traverse(y, ++depth);
 	}
 }
-
 /** Close all tabs except the first one.
  *  @return {void} */
 export function reset() {
 	removeTabsArray = [];
-	traverse(viewLayout.root, 0);
+	traverse((viewLayout as any).root, 0);
 	for (const content of removeTabsArray) {
 		content.remove();
 	}

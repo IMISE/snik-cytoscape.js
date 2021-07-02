@@ -15,14 +15,11 @@ import * as load from "./load";
 import { Graph } from "./graph";
 import { activeState, activeView, mainView, views } from "./view.js";
 import log from "loglevel";
-
 export let menu = null; // singleton instance
-
 /** main menu bar */
 export class Menu {
 	separateSubsBox;
 	dayModeBox;
-
 	/** Construct the main menu bar. */
 	constructor() {
 		if (menu) {
@@ -34,15 +31,12 @@ export class Menu {
 		this.addMenu();
 		menu = this;
 	}
-
 	/** @return {boolean} whether subontologies are to be displayed separately. */
 	separateSubs() {
 		return this.separateSubsBox.checked;
 	}
-
 	///** @return {boolean} whether star operations should be shown in a new view. */
 	// starNewView() {return this.starNewViewBox.checked;}
-
 	/** Sets the preferred node label language attribute. Use the values from node.js.
 	 * @param {string} lang the language to set
 	 * @return {void} */
@@ -60,16 +54,15 @@ export class Menu {
 			elements.restore();
 		}
 	}
-
 	/** Notifies the user of the program version so that errors can be properly reported.
 	 * @return {void} */
 	static about() {
 		window.alert("SNIK Graph version " + util.VERSION);
 	}
-
 	/** Creates a GitHub issue for the visualization.
 	 *  @return {void} */
 	static visualizationFeedback() {
+		// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 		util.createGitHubIssue(
 			util.REPO_APPLICATION,
 			"",
@@ -77,7 +70,6 @@ export class Menu {
 			log.logs
 		);
 	}
-
 	/** Show all nodes that are connected via close matches to visible nodes.
 	 *  @return {void} */
 	showCloseMatches() {
@@ -91,7 +83,6 @@ export class Menu {
 		//closeMatchEdges.connectedNodes();
 		//".unfiltered";
 	}
-
 	/**
   Creates and returns the menus for the top menu bar.
   The format is an array of menu elements.
@@ -110,12 +101,13 @@ export class Menu {
 				entries: [
 					[
 						async () => {
-							await loadGraphFromSparql(this.graph.cy, []);
-							progress(() => layout.runCached(this.graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
+							await loadGraphFromSparql((this as any).graph.cy, []);
+							progress(() => layout.runCached((this as any).graph.cy, layout.euler, config.defaultSubOntologies, this.separateSubs()));
 						},
 						"Load from SPARQL Endpoint",
 						"load-sparql",
 					],
+					// @ts-expect-error ts-migrate(2554) FIXME: Expected 0 arguments, but got 1.
 					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
 					[() => save.saveGraph(activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
 					[() => save.saveView(activeView()), "Save currently active view (partial graph)", "save-view"],
@@ -192,6 +184,7 @@ export class Menu {
 					[() => activeState().graph.moveAllMatches(100), "move matches nearby", "move-match-nearby"],
 					[
 						() => {
+							// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
 							showChapterSearch("bb");
 						},
 						"BB chapter search",
@@ -199,6 +192,7 @@ export class Menu {
 					],
 					[
 						() => {
+							// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
 							showChapterSearch("ob");
 						},
 						"OB chapter search",
@@ -254,7 +248,6 @@ export class Menu {
 			},
 		];
 	}
-
 	/**
 	 * Add the menu entries of the options menu. Cannot be done with an entries array because they need an event listener so they have its own function.
 	 * @param {Array<HTMLAnchorElement>} as an empty array that will be filled with the anchor elements
@@ -262,7 +255,7 @@ export class Menu {
 	addOptions(as: Array<HTMLAnchorElement>) {
 		const optionsContent = util.getElementById("options-menu-content");
 		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "devMode", "extMode"]; // ,"starNewView"
-		this.optionBoxes = {};
+		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
 			const a = document.createElement("a");
@@ -270,19 +263,16 @@ export class Menu {
 			optionsContent.appendChild(a);
 			a.setAttribute("tabindex", "-1");
 			a.classList.add("dropdown-entry");
-
 			const box = document.createElement("input");
-			this.optionBoxes[name] = box;
+			(this as any).optionBoxes[name] = box;
 			a.appendChild(box);
 			box.type = "checkbox";
 			box.autocomplete = "off";
 			this[name + "Box"] = box;
 			box.id = name + "Box";
-
 			a.addEventListener("keydown", util.checkboxKeydownListener(box));
 			a.appendChild(util.checkboxClickableDiv(box, language.getString(name), name));
 		}
-
 		this.separateSubsBox.addEventListener("change", () => {
 			log.debug("Set separate Subontologies to " + this.separateSubsBox.checked);
 		});
@@ -292,38 +282,38 @@ export class Menu {
 			}
 			log.debug("Set dayMode to " + this.dayModeBox.checked);
 		});
-		this.gridBox.addEventListener("change", () => {
-			document.body.classList[this.gridBox.checked ? "add" : "remove"]("grid");
-			log.debug("set gridBox to " + this.gridBox.checked);
+		(this as any).gridBox.addEventListener("change", () => {
+			document.body.classList[(this as any).gridBox.checked ? "add" : "remove"]("grid");
+			log.debug("set gridBox to " + (this as any).gridBox.checked);
 		});
 		if (config.activeOptions.includes("day")) {
 			this.dayModeBox.click();
 		}
 		if (config.activeOptions.includes("ext")) {
-			this.extModeBox.click();
+			(this as any).extModeBox.click();
 		}
 		if (config.activeOptions.includes("dev")) {
+			// @ts-expect-error ts-migrate(2551) FIXME: Property 'devModeBox' does not exist on type 'Menu... Remove this comment to see the full error message
 			this.devModeBox.click();
 		}
 		/** @type {HTMLInputElement} */
 		// is only used by the main tab
-		this.cumulativeSearchBox.addEventListener("change", () => {
-			log.debug("Set cumulative search to " + this.cumulativeSearchBox.checked);
+		(this as any).cumulativeSearchBox.addEventListener("change", () => {
+			log.debug("Set cumulative search to " + (this as any).cumulativeSearchBox.checked);
 		});
 		/** @type {HTMLInputElement} */
-		this.combineMatchModeBox.addEventListener("change", () => {
+		(this as any).combineMatchModeBox.addEventListener("change", () => {
 			// Combine matches is *not* active in a new tab if the user first copies, then turns combine matches on and finally pastes.
 			// In this case, "combine matches" needs to be deactivated and activated again to take effect on the paste result.
-			log.debug("Set combine match mode to " + this.combineMatchModeBox.checked);
+			log.debug("Set combine match mode to " + (this as any).combineMatchModeBox.checked);
 			// give the browser time to update the checkbox, see https://stackoverflow.com/questions/64442639/how-to-give-instant-user-feedback-on-slow-checkbox-listeners-in-javascript?noredirect=1#comment113950377_64442639
 			setTimeout(() => {
 				views()
 					.map((v) => v.state.graph)
-					.forEach((graph) => graph.combineMatch(this.combineMatchModeBox.checked));
+					.forEach((graph) => graph.combineMatch((this as any).combineMatchModeBox.checked));
 			}, 10);
 		});
 	}
-
 	/** Adds the menu to the graph parent DOM element and sets up the event listeners.
 	 *  @return {void} */
 	addMenu() {
@@ -335,17 +325,14 @@ export class Menu {
 		ul.classList.add("dropdown-bar");
 		// see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
 		ul.setAttribute("tabindex", "0");
-
 		const data = this.menuData();
 		const spans = [];
 		const aas = []; // 2-dimensional array of anchors
-
 		for (let i = 0; i < data.length; i++) {
 			const menuDatum = data[i];
 			const li = document.createElement("li");
 			li.setAttribute("tabindex", "-1");
 			ul.appendChild(li);
-
 			const span = document.createElement("span");
 			spans.push(span);
 			li.appendChild(span);
@@ -353,7 +340,6 @@ export class Menu {
 			span.innerText = menuDatum.label;
 			span.setAttribute("data-i18n", menuDatum.i18n);
 			span.setAttribute("tabindex", "-1");
-
 			const div = document.createElement("div");
 			li.appendChild(div);
 			div.classList.add("dropdown-content");
@@ -361,7 +347,6 @@ export class Menu {
 			if (menuDatum.id) {
 				div.id = menuDatum.id + "-menu-content";
 			}
-
 			span.addEventListener("click", () => {
 				for (const otherDiv of document.getElementsByClassName("dropdown-content")) {
 					if (div !== otherDiv) {
@@ -370,10 +355,8 @@ export class Menu {
 				}
 				div.classList.toggle("show");
 			});
-
 			const as = [];
 			aas.push(as);
-
 			for (const entry of menuDatum.entries) {
 				const a = document.createElement("a");
 				as.push(a);
@@ -418,15 +401,12 @@ export class Menu {
 				}
 			});
 		}
-
+		// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 4.
 		load.addFileLoadEntries(activeState().graph, util.getElementById("file-menu-content"), aas[0], this.optionsFromJSON); // update index when "File" position changes in the menu
 		log.debug("fileLoadEntries added");
-
 		addFilterEntries(util.getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
 		log.debug("filter entries added");
-
 		this.addOptions(aas[2]); // update index when "Options" position changes in the menu
-
 		for (let i = 0; i < aas.length; i++) {
 			const as = aas[i];
 			for (let j = 0; j < as.length; j++) {
@@ -450,13 +430,11 @@ export class Menu {
 				});
 			}
 		}
-
 		// fix mouse position after container change, see https://stackoverflow.com/questions/23461322/cytoscape-js-wrong-mouse-pointer-position-after-container-change
 		//this.graph.cy.resize();
 		log.debug("Menu added");
 		console.groupEnd();
 	}
-
 	/** Close the dropdown if the user clicks outside of the menu.
 	 *  @param {Event} e a click event
 	 *  @return {void} */
@@ -474,18 +452,16 @@ export class Menu {
 			Array.from(dropdowns).forEach((d) => d.classList.remove("show"));
 		}
 	}
-
 	/** Save session-based options (not user preferences) to JSON.
 	 *  @return {void} */
 	optionsToJSON() {
 		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "devMode", "extMode"];
 		const options = {};
 		for (const option of sessionOptions) {
-			options[option] = this.optionBoxes[option].checked;
+			options[option] = (this as any).optionBoxes[option].checked;
 		}
 		return options;
 	}
-
 	/** Restore session-based options from the output of toJSON().
 	 *  @param {object} json an option object
 	 *  @return {void} */
@@ -493,7 +469,7 @@ export class Menu {
 		const currentOptions = this.optionsToJSON();
 		for (const [name, checked] of Object.entries(json)) {
 			if (currentOptions[name] !== checked) {
-				this.optionBoxes[name].click();
+				(this as any).optionBoxes[name].click();
 			}
 		}
 	}

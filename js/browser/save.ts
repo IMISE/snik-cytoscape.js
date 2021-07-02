@@ -83,6 +83,7 @@ export function saveJson(data, fileName) {
 	a.download = fileName;
 	a.click();
 	window.URL.revokeObjectURL(url);
+	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("JSON File saved: " + fileName);
 }
 
@@ -103,6 +104,7 @@ export function saveUrl(url, fileName) {
 	a.download = fileName;
 	a.click();
 	window.URL.revokeObjectURL(url);
+	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("File saved: " + fileName);
 }
 

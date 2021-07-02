@@ -8,10 +8,13 @@ import * as rdf from "../rdf.js";
  * @return {void}
  */
 export function logWrap(cmd, messageFunction) {
-	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) return;
+	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
+		return;
+	}
 
 	const tmp = cmd.onClickFunction;
 	cmd.onClickFunction = (ele) => {
+		// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 		log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
 		tmp(ele);
 	};
@@ -33,6 +36,7 @@ export function menuDefaults() {
 		navigator.userAgent.match(/BlackBerry/i) ||
 		navigator.userAgent.match(/Windows Phone/i)
 	) {
+		// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 		log.info("Mobile browser detected, allowing taphold for context menu");
 	} else {
 		// taphold should not be necessary on desktop and may create issues on slow machines, see https://github.com/IMISE/snik-cytoscape.js/issues/51

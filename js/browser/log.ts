@@ -1,6 +1,6 @@
 /** @module*/
 import config from "../config.js";
-import {Notyf} from "notyf";
+import { Notyf } from "notyf";
 import log from "loglevel";
 
 /** Record log statements and show some to the user via overlays.
@@ -48,6 +48,7 @@ export default function initLog() {
 		],
 	});
 
+	// @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string' is not assignable to par... Remove this comment to see the full error message
 	log.setLevel(config.logLevelConsole);
 	const levels = ["error", "warn", "info", "debug", "trace"]; // no point in decorating silent
 	const value = { silent: 0, error: 1, warn: 2, info: 3, debug: 4, trace: 5 };
@@ -59,9 +60,12 @@ export default function initLog() {
 		) => {
 			tmp(message); // execute the saved original function, which writes to console
 			if (value[level] <= value[config.logLevelMemory]) {
+				// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 				if (!log.logs) {
+					// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 					log.logs = [];
 				}
+				// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 				log.logs.push(message);
 			}
 			if (value[level] <= value[config.logLevelDisplay]) {
