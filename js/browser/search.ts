@@ -1,11 +1,11 @@
 /**
 Textual node search.
 @module */
-import * as sparql from "../sparql.js";
-import * as util from "./util.js";
-import * as fuse from "../fuse.js";
-import progress from "./progress.js";
-import { activeState } from "./view.js";
+import * as sparql from "../sparql";
+import * as util from "./util";
+import * as fuse from "../fuse";
+import progress from "./progress";
+import { activeState } from "./view";
 import MicroModal from "micromodal";
 import log from "loglevel";
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible

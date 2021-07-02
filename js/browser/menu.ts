@@ -13,7 +13,7 @@ import { showChapterSearch } from "./chaptersearch";
 import { addFilterEntries } from "./filter";
 import * as load from "./load";
 import { Graph } from "./graph";
-import { activeState, activeView, mainView, views } from "./view.js";
+import { activeState, activeView, mainView, views } from "./view";
 import log from "loglevel";
 export let menu = null; // singleton instance
 /** main menu bar */
@@ -62,11 +62,11 @@ export class Menu {
 	/** Creates a GitHub issue for the visualization.
 	 *  @return {void} */
 	static visualizationFeedback() {
-		// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 		util.createGitHubIssue(
 			util.REPO_APPLICATION,
 			"",
 			"Please type your issue here:\n\n\n\n" + "!!Please do not delete the following text, because its the log for developers!!\n\n",
+			// @ts-expect-error ts-migrate(2551) FIXME: Property 'logs' does not exist on type 'RootLogger... Remove this comment to see the full error message
 			log.logs
 		);
 	}

@@ -1,7 +1,7 @@
 /** @module */
-import * as util from "./util.js";
-import { View, mainView } from "./view.js";
-import * as layout from "../layout.js";
+import * as util from "./util";
+import { View, mainView } from "./view";
+import * as layout from "../layout";
 import { GoldenLayout, LayoutConfig } from "golden-layout";
 import log from "loglevel";
 /** Create, configure and return a GoldenLayout instance.
