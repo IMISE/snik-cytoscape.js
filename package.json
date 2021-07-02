@@ -29,7 +29,6 @@
 		"@typescript-eslint/parser": "^4.28.1",
 		"chai": "^4.3.0",
 		"circular-dependency-plugin": "^5.2.2",
-		"cypress": "^5.3.0",
 		"docdash": "^1.2.0",
 		"es6-promise": "^4.2.8",
 		"eslint": "^7.20.0",
@@ -67,7 +66,6 @@
 		"lint": "eslint js",
 		"typecheck": "tsc --noEmit",
 		"jsdoc": "node_modules/.bin/jsdoc js -c jsdoc.json -r",
-		"cypress": "cypress open",
 		"prepare": "husky install"
 	},
 	"lint-staged": {
