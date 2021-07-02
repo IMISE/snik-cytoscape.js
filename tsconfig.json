@@ -1,20 +1,20 @@
 {
- "compilerOptions":
- {
-  "allowJs": true,
-  "checkJs": true,
-  "outDir": "tsout",
-  "lib": ["es2020","dom","dom.iterable","esnext"],
-  "target": "es6",
-  "allowSyntheticDefaultImports": true,
-  "typeRoots": [ "./node_modules/@types" ],
-  "module": "ESNext",
-  "esModuleInterop": true,
-  "noImplicitAny": false,
-  "noEmitOnError": true,
-  "noEmit": true,
-  "strict": false
- },
-"include": ["js/**/*","globals.d.ts","test.ts"],
-"exclude": ["node_modules"]
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"outDir": "tsout",
+		"lib": ["es2020", "dom", "dom.iterable", "esnext"],
+		"target": "es6",
+		"allowSyntheticDefaultImports": true,
+		"typeRoots": ["./node_modules/@types"],
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"noImplicitAny": false,
+		"noEmitOnError": true,
+		"noEmit": true,
+		"strict": false
+	},
+	"include": ["js/**/*", "globals.d.ts", "test.ts"],
+	"exclude": ["node_modules"]
 }
