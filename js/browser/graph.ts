@@ -3,18 +3,18 @@ Provides graph operations such as initialization, wayfinding and highlighting.
 
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
-import { style } from "./style";
-import { colorschemenight } from "./colorschemenight";
-import { colorschemeday } from "./colorschemeday";
-import timer from "../timer";
-import * as NODE from "../node";
-import * as sparql from "../sparql";
-import * as rdf from "../rdf";
-import * as language from "../lang/language";
-import progress from "./progress";
-import { mainView, View } from "./view";
-import Micromodal from "micromodal";
-import log from "loglevel";
+import { style } from "./style.js";
+import { colorschemenight } from "./colorschemenight.js";
+import { colorschemeday } from "./colorschemeday.js";
+import timer from "../timer.js";
+import * as NODE from "../node.js";
+import * as sparql from "../sparql.js";
+import * as rdf from "../rdf.js";
+import * as language from "../lang/language.js";
+import progress from "./progress.js";
+import { mainView, View } from "./view.js";
+import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 export const Direction = Object.freeze({
 	IN: Symbol("in"),
 	OUT: Symbol("out"),
@@ -112,7 +112,7 @@ export class Graph {
     */
 		this.cy.endBatch();
 	}
-	/** Show all nodes and edges on a shortest path between "from" and "to".
+	/** Show all nodes and edges on a shortest path between "from " and "to".
     Hide all other nodes except when in star mode.
     @param {cytoscape.NodeSingular} to path target node
     @param {boolean} starPath whether to show the star around all nodes on the path
@@ -278,7 +278,7 @@ export class Graph {
 			this.cy.fit(visible, 100);
 		}
 	}
-	/** Show a "spider worm" between two nodes, which combines a star around "from" with a shortest path to "to".
+	/** Show a "spider worm" between two nodes, which combines a star around "from " with a shortest path to "to".
       Hide all other nodes except when in star mode.
       @param {cytoscape.NodeSingular} to path target node, gets a "star" around it as well
       @return {boolean} whether a path could be found
@@ -598,7 +598,6 @@ export class Graph {
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
 	 * @return {void} */
 	showCloseMatch(nodes) {
-		// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 		MicroModal.show("search-results");
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
@@ -607,7 +606,6 @@ export class Graph {
 	/** Shows how any two subontologies are interconnected. The user chooses two subontologies and gets shown all pairs between them.
 	 * @return {void} */
 	subOntologyConnectivity() {
-		// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 		MicroModal.show("subontology-connectivity");
 		const form = document.getElementById("subontology-connectivity-form") as HTMLFormElement;
 		if (form.listener) {
@@ -615,7 +613,6 @@ export class Graph {
 		}
 		form.listener = async (e) => {
 			e.preventDefault();
-			// @ts-expect-error ts-migrate(2552) FIXME: Cannot find name 'MicroModal'. Did you mean 'Micro... Remove this comment to see the full error message
 			MicroModal.close("subontology-connectivity");
 			const connect = new View();
 			await connect.initialized;

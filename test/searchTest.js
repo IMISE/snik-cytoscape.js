@@ -4,7 +4,7 @@ import chai from "chai";
 const assert = chai.assert;
 import "isomorphic-fetch";
 // the global "log" is normally registered in the index file, so we have to do that here
-import log from "loglevel";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 global.log = log;
 import * as rdf from "../js/rdf.js";
 // the global "Fuse" is normally registered in the index file, so we have to do that here

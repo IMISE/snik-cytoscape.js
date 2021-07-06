@@ -2,7 +2,7 @@ import * as language from "../js/lang/language.js";
 import chai from "chai";
 chai.should();
 const assert = chai.assert;
-import log from "loglevel";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 global.log = log;
 
 describe("language", function () {

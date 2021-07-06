@@ -1,14 +1,13 @@
 /** @module */
-import * as util from "./util";
-import { View, mainView } from "./view";
-import * as layout from "../layout";
-import { GoldenLayout, LayoutConfig } from "golden-layout";
-import log from "loglevel";
+import * as util from "./util.js";
+import { View, mainView } from "./view.js";
+import * as layout from "../layout.js";
+//import { GoldenLayout, LayoutConfig } from "../../node_modules/golden-layout/dist/esm/index.js";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
-	// @ts-expect-error ts-migrate(2741) FIXME: Property 'root' is missing in type '{ settings: {}... Remove this comment to see the full error message
-	const layoutConfig: LayoutConfig = {
+	const layoutConfig: any = {
 		settings: {
 			/*selectionEnabled: true*/
 		},
@@ -21,13 +20,11 @@ export function goldenLayout() {
 	};
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
-	// @ts-expect-error ts-migrate(2345) FIXME: Argument of type '"selectionChanged "' is not assi... Remove this comment to see the full error message
 	viewLayout.on("selectionChanged ", (event) => {
 		// TODO TP: This event is not firing despite following the docs. Please investigate and fix.
 		log.info("SELECTION CHANGED");
 		log.info(event);
 	});
-	// @ts-expect-error ts-migrate(2345) FIXME: Argument of type '"stackCreated"' is not assignabl... Remove this comment to see the full error message
 	viewLayout.on("stackCreated", function (stack) {
 		(viewLayout as any).selectItem(stack);
 		const template = util.getElementById("goldenlayout-header");

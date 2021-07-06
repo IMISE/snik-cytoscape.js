@@ -3,7 +3,7 @@ Helper functions for RDF properties.
 @module */
 import * as rdf from "./rdf.js";
 import * as NODE from "./node.js";
-import log from "loglevel";
+import log from "../node_modules/loglevel/dist/loglevel.js";
 
 const propertyData = [
 	["meta:isAssociatedWith", "is associated with", null, null, false, true],

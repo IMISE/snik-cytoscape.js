@@ -4,7 +4,7 @@ Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 import * as sparql from "./sparql.js";
 import timer from "./timer.js";
 import config from "./config.js";
-import log from "loglevel";
+import log from "../node_modules/loglevel/dist/loglevel.js";
 
 /**
  * Query for classes from the endpoint

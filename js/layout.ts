@@ -6,7 +6,7 @@ If a breakthrough occurs in JavaScript graph layouting, update here and possibly
 import timer from "./timer.js";
 import * as NODE from "./node.js";
 import config from "./config.js";
-import log from "loglevel";
+import log from "../node_modules/loglevel/dist/loglevel.js";
 
 const ANIMATE_THRESHOLD = 500;
 

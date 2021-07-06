@@ -4,7 +4,7 @@ Language dependend strings.
 
 import en from "./en.js";
 import de from "./de.js";
-import log from "loglevel";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 const strings = {
 	en: en,

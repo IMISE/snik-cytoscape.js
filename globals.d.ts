@@ -1,10 +1,13 @@
 //import cytoscape from 'cytoscape';
 //import Fuse from 'fuse.js';
-import MicroModal from 'micromodal';
+import GoldenLayout from "golden-layout";
+import MicroModal from "micromodal";
+import * as log from "loglevel";
 
-declare global
-{
-  function cytoscape() : cytoscape.Core;
-  const hotkeys: Function;
-  const tippy: Function;
+declare global {
+	const log: log.DefaultLogger;
+	function cytoscape(): cytoscape.Core;
+	const hotkeys: Function;
+	const tippy: Function;
+	const GoldenLayout: GoldenLayout;
 }

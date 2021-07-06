@@ -1,13 +1,13 @@
 /**
 Textual node search.
 @module */
-import * as sparql from "../sparql";
-import * as util from "./util";
-import * as fuse from "../fuse";
-import progress from "./progress";
-import { activeState } from "./view";
-import MicroModal from "micromodal";
-import log from "loglevel";
+import * as sparql from "../sparql.js";
+import * as util from "./util.js";
+import * as fuse from "../fuse.js";
+import progress from "./progress.js";
+import { activeState } from "./view.js";
+import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;

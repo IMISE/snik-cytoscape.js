@@ -8,7 +8,7 @@ cytoscape.use(euler);
 //import {LocalStorage} from 'node-localstorage';
 //global.localStorage = new LocalStorage('./scratch');
 import chai from "chai";
-import log from "loglevel";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 global.log = log;
 const assert = chai.assert;
 

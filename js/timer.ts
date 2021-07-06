@@ -3,7 +3,7 @@ Measures elapsed duration.
 @module */
 
 import config from "./config.js";
-import log from "loglevel";
+import log from "../node_modules/loglevel/dist/loglevel.js";
 
 /** Generates a timer object that logs the elapsed time after its stop function is called.
 Call example: myTimer = timer("egg cooking"); cookEgg(); timer.stop("successfull");

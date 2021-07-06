@@ -1,6 +1,6 @@
 import * as sparql from "../js/sparql.js";
 import "isomorphic-fetch";
-import log from "loglevel";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 global.log = log;
 import chai from "chai";
 chai.should();

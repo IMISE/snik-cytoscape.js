@@ -1,7 +1,7 @@
 /** Standard dark mode Cytoscape color scheme.
 @module
 */
-import * as EDGE from "../edge";
+import * as EDGE from "../edge.js";
 
 const colorschemeday = [
 	{

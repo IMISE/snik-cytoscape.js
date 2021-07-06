@@ -1,12 +1,12 @@
 /**
 Show the environment of a single node using a special layout.
 @module */
-import * as sparql from "../sparql";
-import * as NODE from "../node";
-import { Graph } from "./graph";
-import { View, mainView } from "./view";
-import { short } from "../rdf";
-import log from "loglevel";
+import * as sparql from "../sparql.js";
+import * as NODE from "../node.js";
+import { Graph } from "./graph.js";
+import { View, mainView } from "./view.js";
+import { short } from "../rdf.js";
+import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 let count = 0;
 

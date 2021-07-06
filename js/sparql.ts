@@ -2,7 +2,7 @@
 Functions for querying the SNIK SPARQL endpoint.
 @module */
 import config from "./config.js";
-import log from "loglevel";
+//import log from "../node_modules/loglevel/dist/loglevel.js";
 
 export const SNIK_GRAPH_BB = "http://www.snik.eu/ontology/bb";
 export const SNIK_PREFIX = "http://www.snik.eu/ontology/"; //problem: different prefixes for different partial ontologies

@@ -40,12 +40,10 @@ export class View {
 			mainView = this;
 			firstFinished = fillInitialGraph(graph);
 			await firstFinished;
-			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug(`Main view ${this.state.name} loaded with ${graph.cy.elements().size()} elements.`);
 		} else {
 			await firstFinished;
 			graph.cy.add(mainView.state.cy.elements()); // don't load again, copy from first view
-			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug(`Create view ${this.state.title} with ${graph.cy.elements().size()} hidden elements copied from ${mainView.state.title}.`);
 			const elements = graph.cy.elements();
 			Graph.setVisible(elements, false);

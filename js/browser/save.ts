@@ -1,11 +1,11 @@
 /**
 Lets the user save files generated from the loaded graph.
 @module */
-import * as layout from "../layout";
-import config from "../config";
-import { toJSON } from "./state";
-import { mainView, partViews } from "./view";
-import { VERSION } from "./util";
+import * as layout from "../layout.js";
+import config from "../config.js";
+import { toJSON } from "./state.js";
+import { mainView, partViews } from "./view.js";
+import { VERSION } from "./util.js";
 
 let a = null; // reused for all saving, not visible to the user
 
@@ -83,7 +83,6 @@ export function saveJson(data, fileName) {
 	a.download = fileName;
 	a.click();
 	window.URL.revokeObjectURL(url);
-	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("JSON File saved: " + fileName);
 }
 
@@ -104,7 +103,6 @@ export function saveUrl(url, fileName) {
 	a.download = fileName;
 	a.click();
 	window.URL.revokeObjectURL(url);
-	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("File saved: " + fileName);
 }
 
