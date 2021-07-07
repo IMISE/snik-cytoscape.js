@@ -18,7 +18,7 @@ export function goldenLayout() {
 			},
 		],
 	};
-	// @ts-expect-error FIXME: TS2351: This expression is not constructable.
+	// @ts-expect-error This expression is not constructable
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
 	viewLayout.on("selectionChanged ", (event) => {

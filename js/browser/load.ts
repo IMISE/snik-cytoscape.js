@@ -10,11 +10,11 @@ Uploads a JSON file from the user.
 @param {function} callback the code to execute, receives a JSON object
 @return {void}
 */
-function uploadJson(event, callback) {
-	const file = event.target.files[0];
+function uploadJson(event: Event, callback: Function) {
+	const file = (event.target as HTMLInputElement).files[0];
 	const reader = new FileReader();
-	// @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | ArrayBuffer' is not ass... Remove this comment to see the full error message
-	reader.onload = () => callback(JSON.parse(reader.result));
+
+	reader.onload = () => callback(JSON.parse(reader.result as string));
 	reader.readAsText(file);
 }
 /**
@@ -108,9 +108,10 @@ Add an upload entry to the file menu.
 @param {string} description the text of the menu item
 @param {EventListener} func the function to be executed when the user clicks on the menu entry
 @param {Array<HTMLAnchorElement>} as the file menu in the form of anchor elements that get styled by CSS
+//@param {Function} optionsFromJson a function that loads session options, such as whether day mode is activated
 @return {void}
 */
-function addLoadEntry(parent, i18n, description, func, as) {
+function addLoadEntry(parent: Element, i18n: string, description: string, func: EventListener, as: Array<HTMLAnchorElement> /*, optionsFromJson: Function*/) {
 	const a = document.createElement("a");
 	as.push(a);
 	a.classList.add("dropdown-entry");
@@ -128,6 +129,7 @@ function addLoadEntry(parent, i18n, description, func, as) {
 	a.addEventListener("click", () => input.click());
 	// completed file chooser dialog triggers change event
 	input.addEventListener("change", func);
+	// TODO: use optionsFromJson
 }
 /**
 Add upload entries to the file menu.

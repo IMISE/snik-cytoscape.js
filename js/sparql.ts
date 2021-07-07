@@ -73,7 +73,7 @@ export function ask(query, graphOpt) {
 @param {string} [graphOpt] An optional SPARQL graph.
 @return {Promise<string|void>} A promise of the SPARQL describe result as text.
 */
-export function describe(uri, graphOpt) {
+export function describe(uri, graphOpt?: string) {
 	const query = "describe <" + uri + ">";
 	const url =
 		config.sparql.endpoint + "?query=" + encodeURIComponent(query) + "&format=text" + (graphOpt ? "&default-graph-uri=" + encodeURIComponent(graphOpt) : "");

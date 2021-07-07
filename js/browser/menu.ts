@@ -106,7 +106,7 @@ export class Menu {
 						"Load from SPARQL Endpoint",
 						"load-sparql",
 					],
-					// @ts-expect-error ts-migrate(2554) FIXME: Expected 0 arguments, but got 1.
+
 					[() => save.saveSession(this.optionsToJSON()), "Save Session", "save-session"],
 					[() => save.saveGraph(activeState().graph), "Save the full SNIK Graph", "save-snik-graph"],
 					[() => save.saveView(activeView()), "Save currently active view (partial graph)", "save-view"],
@@ -183,16 +183,14 @@ export class Menu {
 					[() => activeState().graph.moveAllMatches(100), "move matches nearby", "move-match-nearby"],
 					[
 						() => {
-							// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
-							showChapterSearch("bb");
+							showChapterSearch(activeState().graph, "bb");
 						},
 						"BB chapter search",
 						"bb-chapter-search",
 					],
 					[
 						() => {
-							// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
-							showChapterSearch("ob");
+							showChapterSearch(activeState().graph, "ob");
 						},
 						"OB chapter search",
 						"ob-chapter-search",
@@ -232,6 +230,7 @@ export class Menu {
 				i18n: "help",
 				entries: [
 					["manual.html", "Manual"],
+
 					["https://www.snik.eu/sites/www.snik.eu/files/files/uploads/Einfuehrung/snik-tutorial.pdf", "Tutorial"],
 					["layoutHelp.html", "Layout Help"],
 					["https://imise.github.io/snik-cytoscape.js/", "Developer Documentation"],
@@ -253,7 +252,7 @@ export class Menu {
 	 * @return {void} */
 	addOptions(as: Array<HTMLAnchorElement>) {
 		const optionsContent = util.getElementById("options-menu-content");
-		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "devMode", "extMode"]; // ,"starNewView"
+		const names = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"]; // ,"starNewView"
 		(this as any).optionBoxes = {};
 		for (const name of names) {
 			log.trace("Add option " + name);
@@ -287,13 +286,6 @@ export class Menu {
 		});
 		if (config.activeOptions.includes("day")) {
 			this.dayModeBox.click();
-		}
-		if (config.activeOptions.includes("ext")) {
-			(this as any).extModeBox.click();
-		}
-		if (config.activeOptions.includes("dev")) {
-			// @ts-expect-error ts-migrate(2551) FIXME: Property 'devModeBox' does not exist on type 'Menu... Remove this comment to see the full error message
-			this.devModeBox.click();
 		}
 		/** @type {HTMLInputElement} */
 		// is only used by the main tab
@@ -400,8 +392,8 @@ export class Menu {
 				}
 			});
 		}
-		// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 4.
-		load.addFileLoadEntries(activeState().graph, util.getElementById("file-menu-content"), aas[0], this.optionsFromJSON); // update index when "File" position changes in the menu
+
+		load.addFileLoadEntries(activeState().graph, util.getElementById("file-menu-content"), aas[0] /*, this.optionsFromJSON*/); // update index when "File" position changes in the menu
 		log.debug("fileLoadEntries added");
 		addFilterEntries(util.getElementById("filter-menu-content"), aas[1]); // update index when "Filter" position changes in the menu
 		log.debug("filter entries added");
@@ -454,7 +446,7 @@ export class Menu {
 	/** Save session-based options (not user preferences) to JSON.
 	 *  @return {void} */
 	optionsToJSON() {
-		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode", "devMode", "extMode"];
+		const sessionOptions = ["separateSubs", "cumulativeSearch", "grid", "combineMatchMode", "dayMode"];
 		const options = {};
 		for (const option of sessionOptions) {
 			options[option] = (this as any).optionBoxes[option].checked;

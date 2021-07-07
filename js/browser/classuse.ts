@@ -118,10 +118,10 @@ export default async function classUse(clazz, subTop) {
 			levelWidth: function () {
 				return 1;
 			},
-			// @ts-expect-error ts-migrate(2322) FIXME: Type '20' is not assignable to type '10'.
+
 			minNodeSpacing: 20,
-			// @ts-expect-error ts-migrate(2322) FIXME: Type '(node: NodeSingular) => 6 | 7 | 8 | 9 | 10' ... Remove this comment to see the full error message
-			concentric: function (node: cytoscape.NodeSingular) {
+
+			concentric: function (node: cytoscape.NodeSingular & { degree(): number }) {
 				const uri = node.data(NODE.ID);
 				if (uri === clazz) {
 					return 10;

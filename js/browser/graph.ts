@@ -14,12 +14,13 @@ import * as language from "../lang/language.js";
 import progress from "./progress.js";
 import { mainView, View } from "./view.js";
 import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
+import { NodeSingular } from "cytoscape";
 //import log from "../../node_modules/loglevel/dist/loglevel.js";
-export const Direction = Object.freeze({
-	IN: Symbol("in"),
-	OUT: Symbol("out"),
-	BOTH: Symbol("both"),
-});
+export enum Direction {
+	IN,
+	OUT,
+	BOTH,
+}
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
 	cy: cytoscape.Core;
@@ -37,7 +38,7 @@ export class Graph {
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
 			container,
-			// @ts-expect-error ts-migrate(2322) FIXME: Type '({ selector: string; css: { "min-zoomed-font... Remove this comment to see the full error message
+			//@ts-expect-error
 			style: style.style.concat(colorschemenight),
 			wheelSensitivity: 0.3,
 			minZoom: 0.02,
@@ -167,9 +168,9 @@ export class Graph {
 	}
 	/** Multiplex star operations.
       @param {boolean} [changeLayout=false] arrange the given node and its close matches in the center and the connected nodes in a circle around them.
-      @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
+      @param {Direction} [only] show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {function} show star function applied to multiple nodes  */
-	showStarMultiplexed(changeLayout, direction) {
+	showStarMultiplexed(changeLayout: boolean = false, direction: Direction) {
 		return this.multiplex((x) => this.showStar(x, changeLayout, direction), null, true);
 	}
 	/** Multiplex star operations into a new view.
@@ -186,10 +187,10 @@ export class Graph {
       Hide all other nodes except when in star mode.
       @param {cytoscape.Collection} center node or collection of nodes. center of the star
       @param {boolean} [changeLayout=false] arrange the given node and it's close matches in the center and the connected nodes in a circle around them.
-      @param {boolean} [direction=false] only show edges that originate from node, not those that end in it. Optional and defaults to false.
+      @param {Direction} direction only show edges that originate from node, not those that end in it. Optional and defaults to false.
       @return {void}
       */
-	showStar(center, changeLayout, direction) {
+	showStar(center, changeLayout: boolean = false, direction?: Direction) {
 		console.log("center", center);
 		this.cy.startBatch();
 		// open 2 levels deep on closeMatch
@@ -285,7 +286,6 @@ export class Graph {
       */
 	showWorm(to) {
 		if (this.showPath(to)) {
-			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
 			this.showStar(to);
 			return true;
 		}
@@ -299,9 +299,8 @@ export class Graph {
 	showDoubleStar(to) {
 		const from = this.getSource();
 		if (this.showPath(to)) {
-			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
 			this.showStar(to);
-			// @ts-expect-error ts-migrate(2554) FIXME: Expected 3 arguments, but got 1.
+
 			this.showStar(from);
 			return true;
 		}
@@ -370,12 +369,12 @@ export class Graph {
 	invert(enabled) {
 		if (enabled) {
 			this.container.style.backgroundColor = "white";
-			// @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
-			(this.cy.style() as any).fromJson(style.style.concat(colorschemeday)).update();
+			// @ts-expect-error
+			this.cy.style().fromJson(style.style.concat(colorschemeday)).update();
 		} else {
 			this.container.style.backgroundColor = "black";
-			// @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
-			(this.cy.style() as any).fromJson(style.style.concat(colorschemenight)).update();
+			// @ts-expect-error
+			this.cy.style().fromJson(style.style.concat(colorschemenight)).update();
 		}
 	}
 	/** Center and highlight the given URI.
@@ -477,7 +476,7 @@ export class Graph {
 	createRemoveIssue(node) {
 		this.cy.remove(node);
 		const clazzShort = rdf.short(node.data(NODE.ID));
-		// @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
+
 		sparql.describe(node.data(NODE.ID)).then((bindings) => {
 			const body = `Please permanently delete the class ${clazzShort}:
             \`\`\`\n
@@ -631,10 +630,10 @@ export class Graph {
 					levelWidth: function () {
 						return 1;
 					},
-					// @ts-expect-error ts-migrate(2322) FIXME: Type '60' is not assignable to type '10'.
+
 					minNodeSpacing: 60,
 					concentric: function (layoutNode) {
-						// @ts-expect-error ts-migrate(2345) FIXME: Argument of type '{ degree(): number; }' is not as... Remove this comment to see the full error message
+						// @ts-expect-error
 						if (subGraphs[0].contains(layoutNode)) {
 							return 2;
 						}

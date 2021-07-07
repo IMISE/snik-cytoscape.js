@@ -98,7 +98,7 @@ async function showClasses(graph: Graph, classes: Set<string>) {
 @param {Graph} graph the graph that is searched
 @param {string} sub subontology, such as "bb" or "ob"
 @return {Promise<void>} void promise just for waiting*/
-export async function showChapterSearch(graph, sub): Promise<void> {
+export async function showChapterSearch(graph: Graph, sub: string): Promise<void> {
 	MicroModal.show("chapter-search");
 
 	const table = util.getElementById("tab:chapter-search-chapters") as HTMLTableElement;

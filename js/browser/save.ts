@@ -117,10 +117,11 @@ export function saveGraph(graph) {
 
 /** Saves the contents of all views as a custom JSON file.
  *  @return {void} */
-export function saveSession() {
+export function saveSession(options) {
 	const mainGraph = {
 		title: mainView.state.title,
 		graph: mainView.state.cy.json(),
+		options,
 	};
 	delete mainGraph.graph.style; // the style gets corrupted on export due to including functions, the default style will be used instead
 

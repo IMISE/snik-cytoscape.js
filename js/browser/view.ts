@@ -72,7 +72,7 @@ export class View {
 	constructor(initialize = true, title?: string) {
 		//find initial title of the new View
 		title = title ?? (viewCount++ === 0 ? "Gesamtmodell" : "Teilmodell " + (viewCount - 1));
-		// @ts-expect-error fill properties later
+		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };
 
 		const itemConfig = {
