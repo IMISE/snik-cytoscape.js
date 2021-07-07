@@ -19,7 +19,6 @@ export default class ContextMenu {
   @param {Graph}  graph the graph that the context menu applies to */
 	constructor(graph) {
 		this.graph = graph;
-		// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 		log.debug("Register Context Menu.");
 		//console.log(config);
 		config.menuItems = [...nodeCommands(graph), ...edgeCommands(graph)];

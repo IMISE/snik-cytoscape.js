@@ -16,7 +16,7 @@ import { addOverlay } from "./benchmark.js";
 import * as help from "../help.js";
 import { View, activeState } from "./view.js";
 import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 /** Parse browser URL POST parameters.
 @return {void}
@@ -149,6 +149,7 @@ function initKeyListener() {
 		}
 
 		const layoutState = activeState();
+		if (!layoutState) return;
 		if (e.code === "Delete" || e.code === "Backspace") {
 			// backspace (for mac) or delete key
 			layoutState.cy.remove(":selected");

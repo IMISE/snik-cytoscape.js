@@ -29,7 +29,6 @@ function loadGraphFromJson(graph, json) {
 	graph.cy.elements().addClass("unfiltered");
 	const visibleFraction = (1.0 * graph.cy.elements(":visible").size()) / graph.cy.elements().size();
 	const starMode = visibleFraction < 0.8;
-	// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 	log.debug("Load Graph from File: Visible fraction: " + visibleFraction + " set star mode to " + starMode);
 	if (graph.cy.nodes(":child").size() > 0) {
 		(document.getElementById("combineMatchModeBox") as any).checked = true;

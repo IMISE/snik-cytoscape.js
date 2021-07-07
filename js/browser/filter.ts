@@ -107,7 +107,6 @@ class Filter {
 			// cytoscape.js does not have a class negation selector so we need to add a negation class ourselves
 			// see https://stackoverflow.com/questions/54108410/how-to-negate-class-selector-in-cytoscape-js
 			multicy((cy) => cy.elements().addClass("unfiltered"));
-			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug("All filters checked");
 		} else {
 			// "or" all selectors together to obtain a combined one
@@ -120,7 +119,6 @@ class Filter {
 				unfiltered.removeClass("filtered");
 				unfiltered.addClass("unfiltered");
 			});
-			// @ts-expect-error ts-migrate(2304) FIXME: Cannot find name 'log'.
 			log.debug("filter " + hiddenSelector + " triggered");
 		}
 	}

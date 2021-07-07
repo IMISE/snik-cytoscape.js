@@ -6,11 +6,11 @@
 	"type": "module",
 	"homepage": "https://github.com/IMISE/snik-cytoscape.js#readme",
 	"dependencies": {
-		"@types/stats": "^0.16.30",
 		"cytoscape": "^3.19.0",
 		"cytoscape-context-menus": "^4.1.0",
 		"cytoscape-euler": "^1.2.2",
 		"cytoscape-svg": "^0.3.1",
+		"esbuild": "^0.12.15",
 		"fuse.js": "^6.4.6",
 		"golden-layout": "^1.5.9",
 		"hotkeys-js": "^3.8.7",
@@ -24,8 +24,10 @@
 	},
 	"devDependencies": {
 		"@types/cytoscape": "^3.14.15",
+		"@types/jquery": "^3.5.6",
 		"@types/loglevel": "^1.6.3",
 		"@types/micromodal": "^0.3.2",
+		"@types/stats": "^0.16.30",
 		"@typescript-eslint/eslint-plugin": "^4.28.1",
 		"@typescript-eslint/parser": "^4.28.1",
 		"chai": "^4.3.4",
@@ -71,8 +73,7 @@
 	},
 	"lint-staged": {
 		"*.{js,mjs,ts}": [
-			"prettier --write",
-			"eslint --fix"
+			"prettier --write"
 		],
 		"*.{html,css,json}": [
 			"prettier --write"

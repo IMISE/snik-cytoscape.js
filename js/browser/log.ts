@@ -1,7 +1,7 @@
 /** @module*/
 import config from "../config.js";
-import { Notyf } from "../../node_modules/notyf/notyf.min.js";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import { Notyf } from "../../node_modules/notyf/notyf.min.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 /** Record log statements and show some to the user via overlays.
  *  @return {void} */

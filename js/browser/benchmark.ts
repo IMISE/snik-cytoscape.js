@@ -1,6 +1,6 @@
 /**  Add an overlay with performance statistics such as FPS and number of classes.
 @module */
-import Stats from "../../node_modules/stats.js/build/stats.min.js";
+//import Stats from "../../node_modules/stats.js/build/stats.min.js";
 /**
  * Show the performance overlay.
  * @param {cytoscape.Core} cy The core to add the overlay to.

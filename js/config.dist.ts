@@ -1,5 +1,7 @@
 /** @module */
 
+import { LogLevelDesc } from "loglevel";
+
 export default {
 	defaultSubOntologies: ["bb", "ob", "ciox", "he", "it4it"],
 	allSubOntologies: ["meta", "bb", "ob", "ciox", "he", "he-unconsolidated", "it4it"],
@@ -18,12 +20,9 @@ export default {
 	searchCloseMatch: true, // true is rejected because of the high estimated time by the SPARQL endpoint because of too many optional clauses
 	// only used for mobile, desktop will always use cxttapstart
 	openMenuEvents: "cxttapstart taphold", // space-separated cytoscape events that will open the menu; only `cxttapstart` and/or `taphold` work here, see https://github.com/cytoscape/cytoscape.js-cxtmenu
-	/** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
-	logLevelConsole: "debug",
-	/** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
-	logLevelDisplay: "info",
-	/** @type{'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent'} */
-	logLevelMemory: "debug",
+	logLevelConsole: "debug" as LogLevelDesc,
+	logLevelDisplay: "info" as LogLevelDesc,
+	logLevelMemory: "debug" as LogLevelDesc,
 	layoutCacheMinRecall: 0.95,
 	layoutCacheMinPrecision: 0.5,
 	language: "en",

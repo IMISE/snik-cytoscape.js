@@ -1,4 +1,4 @@
-import log from "../node_modules/loglevel/dist/loglevel.js";
+//import log from "../node_modules/loglevel/dist/loglevel.js";
 
 export const help = {
 	"SNIK Graph Manual": {

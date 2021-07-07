@@ -3,13 +3,13 @@ import * as util from "./util.js";
 import { View, mainView } from "./view.js";
 import * as layout from "../layout.js";
 //import { GoldenLayout, LayoutConfig } from "../../node_modules/golden-layout/dist/esm/index.js";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
 	const layoutConfig: any = {
 		settings: {
-			/*selectionEnabled: true*/
+			selectionEnabled: true,
 		},
 		content: [
 			{
@@ -18,6 +18,7 @@ export function goldenLayout() {
 			},
 		],
 	};
+	// @ts-expect-error FIXME: TS2351: This expression is not constructable.
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
 	viewLayout.on("selectionChanged ", (event) => {

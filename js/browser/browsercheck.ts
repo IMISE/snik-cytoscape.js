@@ -1,4 +1,4 @@
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 /** Browser version checking to warn the user if the browser may not be able to display SNIK graph properly.
 Imprecise, just to cover the majority of cases.

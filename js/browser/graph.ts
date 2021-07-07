@@ -14,7 +14,7 @@ import * as language from "../lang/language.js";
 import progress from "./progress.js";
 import { mainView, View } from "./view.js";
 import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 export const Direction = Object.freeze({
 	IN: Symbol("in"),
 	OUT: Symbol("out"),
@@ -36,10 +36,10 @@ export class Graph {
 		this.container = container;
 		this.container.style.backgroundColor = "black"; // required to show background image
 		this.cy = cytoscape({
-			container: container,
+			container,
 			// @ts-expect-error ts-migrate(2322) FIXME: Type '({ selector: string; css: { "min-zoomed-font... Remove this comment to see the full error message
 			style: style.style.concat(colorschemenight),
-			//wheelSensitivity: 0.3,
+			wheelSensitivity: 0.3,
 			minZoom: 0.02,
 			maxZoom: 7,
 		});

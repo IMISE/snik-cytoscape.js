@@ -6,7 +6,7 @@ import * as NODE from "../node.js";
 import { Graph } from "./graph.js";
 import { View, mainView } from "./view.js";
 import { short } from "../rdf.js";
-import log from "../../node_modules/loglevel/dist/loglevel.js";
+//import log from "../../node_modules/loglevel/dist/loglevel.js";
 
 let count = 0;
 
