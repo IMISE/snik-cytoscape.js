@@ -1,9 +1,9 @@
 /** Module for loading files both locally from the server and via upload from the client.
 @module */
-import { View, reset, activeView } from "./view.js";
-import config from "../config.js";
-import { fromJSON } from "./state.js";
-import { VERSION } from "./util.js";
+import { View, reset, activeView } from "./view";
+import config from "../config";
+import { fromJSON } from "./state";
+import { VERSION } from "./util";
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event

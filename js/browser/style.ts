@@ -3,10 +3,10 @@ Cytoscape style file, excluding color information, which is contained in the col
 @see colorSchemeDay
 @see colorSchemeNight
 @module */
-import * as NODE from "../node.js";
-import * as EDGE from "../edge.js";
-import * as language from "../lang/language.js";
-import config from "../config.js";
+import * as NODE from "../node";
+import * as EDGE from "../edge";
+import * as language from "../lang/language";
+import config from "../config";
 // see https://docs.google.com/spreadsheets/d/1ZrWs4IPrTU--pcyNkKm-YAUHdGMOKjcMZuVKeB_t6wg/edit?usp=sharing
 
 /** @type{object} */

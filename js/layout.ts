@@ -3,10 +3,10 @@ Due to JavaScript being a slow mostly single-threaded language with no really fa
 After the first time, the layout is cached and reused, until major changes occur in the graph.
 If a breakthrough occurs in JavaScript graph layouting, update here and possibly remove cache.
 @module */
-import timer from "./timer.js";
-import * as NODE from "./node.js";
-import config from "./config.js";
-//import log from "../node_modules/loglevel/dist/loglevel.js";
+import timer from "./timer";
+import * as NODE from "./node";
+import config from "./config";
+import log from "loglevel";
 
 const ANIMATE_THRESHOLD = 500;
 

@@ -3,19 +3,19 @@ Provides graph operations such as initialization, wayfinding and highlighting.
 
 @module graph*/
 /*eslint no-unused-vars: ["warn", { "argsIgnorePattern": "^_" }]*/
-import { style } from "./style.js";
-import { colorschemenight } from "./colorschemenight.js";
-import { colorschemeday } from "./colorschemeday.js";
-import timer from "../timer.js";
-import * as NODE from "../node.js";
-import * as sparql from "../sparql.js";
-import * as rdf from "../rdf.js";
-import * as language from "../lang/language.js";
-import progress from "./progress.js";
-import { mainView, View } from "./view.js";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
+import { style } from "./style";
+import { colorschemenight } from "./colorschemenight";
+import { colorschemeday } from "./colorschemeday";
+import timer from "../timer";
+import * as NODE from "../node";
+import * as sparql from "../sparql";
+import * as rdf from "../rdf";
+import * as language from "../lang/language";
+import progress from "./progress";
+import { mainView, View } from "./view";
+import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
 import { NodeSingular } from "cytoscape";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import log from "loglevel";
 export enum Direction {
 	IN,
 	OUT,
@@ -597,7 +597,7 @@ export class Graph {
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
 	 * @return {void} */
 	showCloseMatch(nodes) {
-		MicroModal.show("search-results");
+		MicroModal.show("search-resu");
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
 		Graph.setVisible(matches.union(edges), true);

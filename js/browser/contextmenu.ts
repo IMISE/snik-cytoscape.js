@@ -2,9 +2,10 @@
 Creates the circular context menu that can be opened on top of a node/edge.
 Needs to be initialized before it can be used via the default export function.
 @module */
-import nodeCommands from "./contextmenuNodes.js";
-import edgeCommands from "./contextmenuEdges.js";
-import { flatHelp } from "../help.js";
+import nodeCommands from "./contextmenuNodes";
+import edgeCommands from "./contextmenuEdges";
+import { flatHelp } from "../help";
+import log from "loglevel";
 
 const config = { menuItems: [] };
 
@@ -52,7 +53,7 @@ export default class ContextMenu {
 				return;
 			}
 			{
-				c.contentStyle = { "pointer-events": "all" };
+				c.contentStyle = { "pointer-eve": "all" };
 			}
 			c.content = `<img src onerror="tippy('span')"><span data-tippy-content="${tooltip}" style="padding:3em;">${c.content}</span>`;
 		});

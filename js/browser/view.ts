@@ -1,9 +1,11 @@
 /** @module */
-import { Graph } from "./graph.js";
-import { fillInitialGraph } from "./main.js";
-import ContextMenu from "./contextmenu.js";
-import { goldenLayout } from "./viewLayout.js";
-import { toJSON } from "./state.js";
+import { Graph } from "./graph";
+import { fillInitialGraph } from "./main";
+import ContextMenu from "./contextmenu";
+import { goldenLayout } from "./viewLayout";
+import { toJSON } from "./state";
+import log from "loglevel";
+
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
 export const partViews = new Set<View>();

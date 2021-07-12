@@ -2,9 +2,9 @@
 Language dependend strings.
 @module */
 
-import en from "./en.js";
-import de from "./de.js";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import en from "./en";
+import de from "./de";
+import log from "loglevel";
 
 const strings = {
 	en: en,

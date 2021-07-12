@@ -1,14 +1,14 @@
 /**
 Creates the circular context menu that can be opened on top of a node.
 @module */
-import classUse from "./classuse.js";
-import * as rdf from "../rdf.js";
-import * as NODE from "../node.js";
-import * as util from "./util.js";
-import { Graph, Direction } from "./graph.js";
-import { ontoWikiUrl } from "./contextmenuUtil.js";
-import * as sparql from "../sparql.js";
-import * as language from "../lang/language.js";
+import classUse from "./classuse";
+import * as rdf from "../rdf";
+import * as NODE from "../node";
+import * as util from "./util";
+import { Graph, Direction } from "./graph";
+import { ontoWikiUrl } from "./contextmenuUtil";
+import * as sparql from "../sparql";
+import * as language from "../lang/language";
 
 const eventify = (f) => (event) => f(event.target); // simplify multiplex expressions on event.target
 

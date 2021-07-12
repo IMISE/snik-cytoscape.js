@@ -1,11 +1,11 @@
 /**
 Search classes by chapter.
 @module */
-import * as sparql from "../sparql.js";
-import * as util from "./util.js";
-import * as language from "../lang/language.js";
-import { Graph } from "./graph.js";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
+import * as sparql from "../sparql";
+import * as util from "./util";
+import * as language from "../lang/language";
+import { Graph } from "./graph";
+import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
 
 /** @type {Map<String,Array<string>>} */
 const chapters = new Map();

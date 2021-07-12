@@ -1,10 +1,10 @@
 /**
 Fuzzy search with fuse.js.
 @module */
-import * as sparql from "./sparql.js";
-import config from "./config.js";
-//import Fuse from "../node_modules/fuse.js/dist/fuse.js";
-//import log from "../node_modules/loglevel/dist/loglevel.js";
+import * as sparql from "./sparql";
+import config from "./config";
+//import Fuse from "../node_modules/fuse.js/dist/fuse";
+import log from "loglevel";
 
 let index = null;
 

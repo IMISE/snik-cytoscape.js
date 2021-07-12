@@ -1,9 +1,9 @@
 /**
 Helper functions for RDF properties.
 @module */
-import * as rdf from "./rdf.js";
-import * as NODE from "./node.js";
-//import log from "../node_modules/loglevel/dist/loglevel.js";
+import * as rdf from "./rdf";
+import * as NODE from "./node";
+import log from "loglevel";
 
 const propertyData = [
 	["meta:isAssociatedWith", "is associated with", null, null, false, true],
@@ -20,8 +20,8 @@ const propertyData = [
 	["meta:approvesFunction", "approves function", "Role", "Function", false, true],
 	["meta:approvesEntityType", "approves entity type", "Role", "EntityType", false, true],
 	["meta:isInvolvedIn", "is involved in", "Role", "Function", false, true],
-	["meta:supports", "supports", "ApplicationComponent", "Function", false, true],
-	//["meta:represents","represents","RepresentationType","EntityType",false,true],
+	["meta:suppo", "supports", "ApplicationComponent", "Function", false, true],
+	//["meta:represe","represents","RepresentationType","EntityType",false,true],
 	["meta:responsibleForFunction", "responsible for", "Role", "Function", false, true],
 	["meta:responsibleForEntityType", "responsible for", "Role", "EntityType", false, true],
 	["rdfs:subClassOf", "subclass of", null, null, false, true],

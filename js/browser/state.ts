@@ -1,7 +1,7 @@
 /** @module */
-import * as filter from "./filter.js";
-import { menu } from "./menu.js";
-import { VERSION } from "./util.js";
+import * as filter from "./filter";
+import { menu } from "./menu";
+import { VERSION } from "./util";
 
 export const state = {
 	version: VERSION,

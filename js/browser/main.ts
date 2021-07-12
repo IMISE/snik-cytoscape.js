@@ -1,22 +1,22 @@
 /**
 Entry point.
 @module */
-import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import { Menu } from "./menu.js";
-import Search from "./search.js";
-import { loadGraphFromJsonFile } from "./load.js";
-import { Graph } from "./graph.js";
-import * as layout from "../layout.js";
-import * as sparql from "../sparql.js";
-import progress from "./progress.js";
-import config from "../config.js";
-import initLog from "./log.js";
-import * as util from "./util.js";
-import { addOverlay } from "./benchmark.js";
-import * as help from "../help.js";
-import { View, activeState } from "./view.js";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import loadGraphFromSparql from "../loadGraphFromSparql";
+import { Menu } from "./menu";
+import Search from "./search";
+import { loadGraphFromJsonFile } from "./load";
+import { Graph } from "./graph";
+import * as layout from "../layout";
+import * as sparql from "../sparql";
+import progress from "./progress";
+import config from "../config";
+import initLog from "./log";
+import * as util from "./util";
+import { addOverlay } from "./benchmark";
+import * as help from "../help";
+import { View, activeState } from "./view";
+import MicroModal from "micromodal";
+import log from "loglevel";
 
 /** Parse browser URL POST parameters.
 @return {void}

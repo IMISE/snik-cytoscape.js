@@ -1,10 +1,10 @@
 /**
 Loads the graph from the SNIK SPARQL endpoint. No layouting. May use caching.
 @module */
-import * as sparql from "./sparql.js";
-import timer from "./timer.js";
-import config from "./config.js";
-//import log from "../node_modules/loglevel/dist/loglevel.js";
+import * as sparql from "./sparql";
+import timer from "./timer";
+import config from "./config";
+import log from "loglevel";
 
 /**
  * Query for classes from the endpoint

@@ -1,20 +1,20 @@
 /** Populates the menu bar on the top and initializes the context menu.*/
 /**
 @module */
-import * as save from "./save.js";
-import * as layout from "../layout.js";
-import * as NODE from "../node.js";
-import loadGraphFromSparql from "../loadGraphFromSparql.js";
-import * as language from "../lang/language.js";
-import * as util from "./util.js";
-import config from "../config.js";
-import progress from "./progress.js";
-import { showChapterSearch } from "./chaptersearch.js";
-import { addFilterEntries } from "./filter.js";
-import * as load from "./load.js";
-import { Graph } from "./graph.js";
-import { activeState, activeView, mainView, views } from "./view.js";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import * as save from "./save";
+import * as layout from "../layout";
+import * as NODE from "../node";
+import loadGraphFromSparql from "../loadGraphFromSparql";
+import * as language from "../lang/language";
+import * as util from "./util";
+import config from "../config";
+import progress from "./progress";
+import { showChapterSearch } from "./chaptersearch";
+import { addFilterEntries } from "./filter";
+import * as load from "./load";
+import { Graph } from "./graph";
+import { activeState, activeView, mainView, views } from "./view";
+import log from "loglevel";
 export let menu = null; // singleton instance
 /** main menu bar */
 export class Menu {

@@ -17,7 +17,7 @@ export function getElementById(id) {
 	return el;
 }
 
-export const REPO_APPLICATION = "https://github.com/IMISE/snik-cytoscape.js";
+export const REPO_APPLICATION = "https://github.com/IMISE/snik-cytoscape";
 export const REPO_ONTOLOGY = "https://github.com/IMISE/snik-ontology";
 
 /** Open a new issue on the GitHub repository.

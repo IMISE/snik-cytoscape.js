@@ -1,13 +1,13 @@
 /**
 Textual node search.
 @module */
-import * as sparql from "../sparql.js";
-import * as util from "./util.js";
-import * as fuse from "../fuse.js";
-import progress from "./progress.js";
-import { activeState } from "./view.js";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es.js";
-//import log from "../../node_modules/loglevel/dist/loglevel.js";
+import * as sparql from "../sparql";
+import * as util from "./util";
+import * as fuse from "../fuse";
+import progress from "./progress";
+import { activeState } from "./view";
+import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
+import log from "loglevel";
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test
 // const USE_BIF_CONTAINS = false;
@@ -31,24 +31,24 @@ export default class Search {
 	showSearchResults(query, uris) {
 		this.resultNodes = [];
 		/** @type{HTMLTableElement} */
-		const table = util.getElementById("tab:search-results") as HTMLTableElement;
+		const table = util.getElementById("tab:search-resu") as HTMLTableElement;
 		// clear leftovers from last time
 		while (table.rows.length > 0) {
 			table.deleteRow(0);
 		}
 		if (uris.length === 0) {
-			util.getElementById("h2:search-results").innerHTML = `No Search Results for "${query}"`;
+			util.getElementById("h2:search-resu").innerHTML = `No Search Results for "${query}"`;
 			return false;
 		}
 		if (uris.length === 1) {
-			MicroModal.close("search-results");
+			MicroModal.close("search-resu");
 			activeState().graph.presentUri(uris[0]);
 			return true;
 		}
 		if (uris.length === sparql.SPARQL_LIMIT) {
-			util.getElementById("h2:search-results").innerHTML = `First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
+			util.getElementById("h2:search-resu").innerHTML = `First ${sparql.SPARQL_LIMIT} Search Results for "${query}"`;
 		} else {
-			util.getElementById("h2:search-results").innerHTML = `${uris.length} Search Results for "${query}"`;
+			util.getElementById("h2:search-resu").innerHTML = `${uris.length} Search Results for "${query}"`;
 		}
 		// Preprocessing: Classify URIs as (0) in graph and visible, (1) in graph and hidden but not filtered, (2) in graph and filtered and (3) not in the graph.
 		const uriType = {};
@@ -92,7 +92,7 @@ export default class Search {
 			const cell = row.insertCell();
 			cell.innerHTML = "<a href='#'>Highlight All</a>";
 			cell.addEventListener("click", (e) => {
-				MicroModal.close("search-results");
+				MicroModal.close("search-resu");
 				activeState().graph.presentUris(uris);
 				e.preventDefault();
 			});
@@ -101,7 +101,7 @@ export default class Search {
 			const cell = row.insertCell();
 			cell.innerHTML = "<a href='#'>Highlight Selected</a>";
 			cell.addEventListener("click", (e) => {
-				MicroModal.close("search-results");
+				MicroModal.close("search-resu");
 				activeState().graph.presentUris([...selected]);
 				e.preventDefault();
 			});
@@ -141,7 +141,7 @@ export default class Search {
 	 *  @param {string} userQuery the search query as given by the user
 	 *  @return {Promise<false>} false to prevent page reload triggered by submit.*/
 	async showSearch(userQuery) {
-		MicroModal.show("search-results");
+		MicroModal.show("search-resu");
 		// fuse returns results ordered by increasing score, where a low score is a better match than a high score
 		const items = await fuse.search(userQuery);
 		const uris = items.map((x) => x.item.uri);

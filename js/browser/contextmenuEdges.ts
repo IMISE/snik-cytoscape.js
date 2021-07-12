@@ -1,12 +1,12 @@
 /**
 Creates the circular context menu that can be opened on top of an edge.
 @module */
-import * as rdf from "../rdf.js";
-import * as util from "./util.js";
-import * as EDGE from "../edge.js";
-import * as language from "../lang/language.js";
-import { Graph } from "./graph.js";
-import { logWrap, ontoWikiUrl } from "./contextmenuUtil.js";
+import * as rdf from "../rdf";
+import * as util from "./util";
+import * as EDGE from "../edge";
+import * as language from "../lang/language";
+import { Graph } from "./graph";
+import { logWrap, ontoWikiUrl } from "./contextmenuUtil";
 
 /** Creates a human readable string of the triple that an edge represents.
  *  @param {cytoscape.EdgeSingular} edge the edge, whose label is determined
