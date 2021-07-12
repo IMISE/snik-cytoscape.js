@@ -23,7 +23,7 @@
 		"tippy.js": "^6.3.1"
 	},
 	"devDependencies": {
-		"@types/cytoscape": "^3.14.15",
+		"@types/cytoscape": "^3.14.17",
 		"@types/jquery": "^3.5.6",
 		"@types/loglevel": "^1.6.3",
 		"@types/micromodal": "^0.3.2",
