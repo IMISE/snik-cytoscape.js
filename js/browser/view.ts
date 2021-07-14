@@ -5,6 +5,7 @@ import ContextMenu from "./contextmenu";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
+import { ItemConfig, ComponentItemConfig, ContentItem } from "golden-layout";
 
 let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
@@ -77,7 +78,7 @@ export class View {
 		// @ts-expect-error is be completed later
 		this.state = { title, name: "unnamed" };
 
-		const itemConfig = {
+		const itemConfig: ContentItem = {
 			title: title,
 			type: "component",
 			componentName: title,
@@ -98,7 +99,8 @@ export class View {
 			});
 		});
 
-		(viewLayout as any).root.contentItems[0].addChild(itemConfig);
+		viewLayout.rootItem.addChild(itemConfig);
+		//viewLayout.root.contentItems[0].addChild(itemConfig);
 
 		const graph = new Graph(thisView.cyContainer);
 		const cy = graph.cy;
