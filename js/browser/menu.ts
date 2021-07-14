@@ -15,7 +15,10 @@ import * as load from "./load";
 import { Graph } from "./graph";
 import { activeState, activeView, mainView, views } from "./view";
 import log from "loglevel";
+import hotkeys from "hotkeys-js";
+
 export let menu = null; // singleton instance
+
 /** main menu bar */
 export class Menu {
 	separateSubsBox;
@@ -66,6 +69,7 @@ export class Menu {
 			util.REPO_APPLICATION,
 			"",
 			"Please type your issue here:\n\n\n\n" + "!!Please do not delete the following text, because its the log for developers!!\n\n",
+			// @ts-expect-error
 			log.logs
 		);
 	}

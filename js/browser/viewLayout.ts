@@ -2,15 +2,16 @@
 import * as util from "./util";
 import { View, mainView } from "./view";
 import * as layout from "../layout";
-//import { GoldenLayout, LayoutConfig } from "../../node_modules/golden-layout/dist/esm/index";
+import GoldenLayout from "golden-layout";
 import log from "loglevel";
+import "golden-layout/src/css/goldenlayout-base.css";
+import "golden-layout/src/css/goldenlayout-dark-theme.css";
+
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
 export function goldenLayout() {
-	const layoutConfig: any = {
-		settings: {
-			selectionEnabled: true,
-		},
+	const layoutConfig = {
+		settings: { selectionEnabled: true },
 		content: [
 			{
 				type: "stack",
@@ -18,14 +19,17 @@ export function goldenLayout() {
 			},
 		],
 	};
-	// @ts-expect-error This expression is not constructable
+
+	// //@ts-expect-error This expression is not constructable
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
+
 	viewLayout.on("selectionChanged ", (event) => {
 		// TODO TP: This event is not firing despite following the docs. Please investigate and fix.
 		log.info("SELECTION CHANGED");
 		log.info(event);
 	});
+
 	viewLayout.on("stackCreated", function (stack) {
 		(viewLayout as any).selectItem(stack);
 		const template = util.getElementById("goldenlayout-header");
@@ -34,9 +38,11 @@ export function goldenLayout() {
 		(stack as any).header.controlsContainer.prepend(zoomButtons);
 		// When a tab is selected then select its stack. For unknown reasons this is not default behaviour of GoldenLayout.
 		// What happens when a tab is moved out of a stack? Testing showed no problems but this should be investigated for potential bugs.
+
 		(stack as any).on("activeContentItemChanged", () => {
 			(viewLayout as any).selectItem(stack);
 		});
+
 		const stackState = () => (stack as any).getActiveContentItem().config.componentState;
 		const cy = () => stackState().cy;
 		const controls = (stack as any).header.controlsContainer[0];

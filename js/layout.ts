@@ -7,6 +7,9 @@ import timer from "./timer";
 import * as NODE from "./node";
 import config from "./config";
 import log from "loglevel";
+import cytoscape from "cytoscape";
+import cytoscapeeuler from "cytoscape-euler";
+cytoscape.use(cytoscapeeuler);
 
 const ANIMATE_THRESHOLD = 500;
 

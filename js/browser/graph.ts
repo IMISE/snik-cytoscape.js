@@ -13,8 +13,8 @@ import * as rdf from "../rdf";
 import * as language from "../lang/language";
 import progress from "./progress";
 import { mainView, View } from "./view";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
-import { NodeSingular } from "cytoscape";
+import MicroModal from "micromodal";
+import cytoscape from "cytoscape";
 import log from "loglevel";
 export enum Direction {
 	IN,

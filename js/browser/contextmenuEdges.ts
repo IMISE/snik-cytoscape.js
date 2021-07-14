@@ -7,6 +7,7 @@ import * as EDGE from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
 import { logWrap, ontoWikiUrl } from "./contextmenuUtil";
+import log from "loglevel";
 
 /** Creates a human readable string of the triple that an edge represents.
  *  @param {cytoscape.EdgeSingular} edge the edge, whose label is determined

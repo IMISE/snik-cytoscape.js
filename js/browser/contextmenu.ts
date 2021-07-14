@@ -5,6 +5,10 @@ Needs to be initialized before it can be used via the default export function.
 import nodeCommands from "./contextmenuNodes";
 import edgeCommands from "./contextmenuEdges";
 import { flatHelp } from "../help";
+import cytoscape from "cytoscape";
+import contextMenus from "cytoscape-context-menus";
+cytoscape.use(contextMenus);
+import "cytoscape-context-menus/cytoscape-context-menus.css";
 import log from "loglevel";
 
 const config = { menuItems: [] };

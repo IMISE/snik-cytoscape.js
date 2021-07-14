@@ -9,6 +9,7 @@ See http://js.cytoscape.org/#style/visibility.
 import * as NODE from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
 import { views } from "./view";
+import log from "loglevel";
 
 const filterData = [
 	[`node[${NODE.SOURCE}='meta']`, `meta`, "meta"],

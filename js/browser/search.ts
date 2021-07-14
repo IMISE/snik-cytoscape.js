@@ -6,7 +6,7 @@ import * as util from "./util";
 import * as fuse from "../fuse";
 import progress from "./progress";
 import { activeState } from "./view";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
+import MicroModal from "micromodal";
 import log from "loglevel";
 // disable bif:contains search because it does not even accept all non-space strings and the performance hit is negliglible
 // BIF contains also breaks space insensitiveness, which we require and also check in the unit test

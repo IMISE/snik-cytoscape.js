@@ -5,7 +5,7 @@ import * as sparql from "../sparql";
 import * as util from "./util";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
-import MicroModal from "../../node_modules/micromodal/dist/micromodal.es";
+import MicroModal from "micromodal";
 
 /** @type {Map<String,Array<string>>} */
 const chapters = new Map();

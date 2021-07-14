@@ -6,6 +6,7 @@ import config from "../config";
 import { toJSON } from "./state";
 import { mainView, partViews } from "./view";
 import { VERSION } from "./util";
+import log from "loglevel";
 
 let a = null; // reused for all saving, not visible to the user
 

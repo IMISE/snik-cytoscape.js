@@ -4,6 +4,8 @@ import { View, reset, activeView } from "./view";
 import config from "../config";
 import { fromJSON } from "./state";
 import { VERSION } from "./util";
+import log from "loglevel";
+
 /**
 Uploads a JSON file from the user.
 @param {Event} event a file input change event
