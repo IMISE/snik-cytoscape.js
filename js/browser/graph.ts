@@ -24,10 +24,10 @@ export enum Direction {
 /** Cytoscape.js Graph Class with path operations and styling. */
 export class Graph {
 	cy: cytoscape.Core;
-	selectedNode: cytoscape.NodeSingular = null;
+	selectedNode: cytoscape.NodeSingular | null = null;
 	starMode: boolean = false;
-	matchComponents = [];
-	pathSource = null;
+	matchComponents: Array<cytoscape.Collection> = [];
+	pathSource: cytoscape.NodeSingular | null = null;
 	container: HTMLElement;
 	/** Creates a new cytoscape graph, assigns it to the #cy container and sets up basic event listeners.
   @param {HTMLElement} container parent element
@@ -507,7 +507,7 @@ export class Graph {
 	/** Move all matching nodes together.
 	 * @param {number} distance the distance between them
 	 * @return {void} */
-	moveAllMatches(distance) {
+	moveAllMatches(distance: number) {
 		for (let i = 0; i < this.matchComponents.length; i++) {
 			const comp = this.matchComponents[i];
 			if (comp.length === 1) {

@@ -5,6 +5,7 @@ import * as sparql from "./sparql";
 import timer from "./timer";
 import config from "./config";
 import log from "loglevel";
+import cytoscape, { ElementDefinition } from "cytoscape";
 
 /**
  * Query for classes from the endpoint
@@ -79,8 +80,7 @@ function parseLabels(s) {
 async function createClassNodes(from: string) {
 	const json = await selectClasses(from);
 
-	/** @type{cytoscape.ElementDefinition[]} */
-	const nodes: Array<cytoscape.ElementDefinition> = [];
+	const nodes: Array<ElementDefinition> = [];
 	const sources = new Set<string>();
 	for (let i = 0; i < json.length; i++) {
 		let source;
@@ -138,10 +138,10 @@ async function selectInstances(from) {
 /** Create cytoscape nodes for the instances.
 * @param  {string} from a SPARQL FROM clause defining where to load the instances from
  @return {Promise<Array<object>>} cytoscape nodes for the instances */
-async function createInstanceNodes(from) {
+async function createInstanceNodes(from: string) {
 	const json = await selectInstances(from);
 	/** @type{cytoscape.ElementDefinition[]} */
-	const nodes = [];
+	const nodes: Array<cytoscape.ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
 		nodes.push({
 			group: "nodes",
@@ -206,7 +206,7 @@ async function selectTriples(from, fromNamed, instances, virtual) {
  */
 async function createEdges(from, fromNamed, instances, virtual) {
 	const json = await selectTriples(from, fromNamed, instances, virtual);
-	const edges = [];
+	const edges: Array<ElementDefinition> = [];
 	for (let i = 0; i < json.length; i++) {
 		edges.push({
 			group: "edges",

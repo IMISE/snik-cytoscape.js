@@ -17,8 +17,6 @@ import { activeState, activeView, mainView, views } from "./view";
 import log from "loglevel";
 import hotkeys from "hotkeys-js";
 
-export let menu = null; // singleton instance
-
 /** main menu bar */
 export class Menu {
 	separateSubsBox;
@@ -32,7 +30,6 @@ export class Menu {
 		// bind this to the class instance instead of the event source
 		this.showCloseMatches = this.showCloseMatches.bind(this);
 		this.addMenu();
-		menu = this;
 	}
 	/** @return {boolean} whether subontologies are to be displayed separately. */
 	separateSubs() {
@@ -321,8 +318,8 @@ export class Menu {
 		// see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
 		ul.setAttribute("tabindex", "0");
 		const data = this.menuData();
-		const spans = [];
-		const aas = []; // 2-dimensional array of anchors
+		const spans: Array<HTMLSpanElement> = [];
+		const aas: Array<Array<HTMLAnchorElement>> = []; // 2-dimensional array of anchors
 		for (let i = 0; i < data.length; i++) {
 			const menuDatum = data[i];
 			const li = document.createElement("li");
@@ -350,7 +347,7 @@ export class Menu {
 				}
 				div.classList.toggle("show");
 			});
-			const as = [];
+			const as: Array<HTMLAnchorElement> = [];
 			aas.push(as);
 			for (const entry of menuDatum.entries) {
 				const a = document.createElement("a");
@@ -469,3 +466,5 @@ export class Menu {
 		}
 	}
 }
+
+export const menu = new Menu(); // singleton instance

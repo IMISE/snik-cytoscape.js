@@ -14,7 +14,7 @@
 		"noImplicitAny": false,
 		"noEmitOnError": false,
 		"noEmit": false,
-		"strict": false
+		"strict": true
 	},
 	"include": ["js/**/*", "globals.d.ts"],
 	"exclude": ["node_modules"]

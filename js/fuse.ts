@@ -6,7 +6,7 @@ import config from "./config";
 import Fuse from "fuse.js";
 import log from "loglevel";
 
-let index = null;
+let index: Fuse = null;
 
 const options = {
 	shouldSort: true,
@@ -52,7 +52,7 @@ export async function createIndex() {
     OPTIONAL {?c skos:definition ?def.}
   }`;
 	const bindings = await sparql.select(sparqlQuery);
-	const items = [];
+	const items: Array<Item> = [];
 	for (const b of bindings) {
 		const suffix = b.uri.value.replace(/.*\//, "");
 		const item: Item = {

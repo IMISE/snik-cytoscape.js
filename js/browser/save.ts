@@ -8,7 +8,9 @@ import { mainView, partViews } from "./view";
 import { VERSION } from "./util";
 import log from "loglevel";
 
-let a = null; // reused for all saving, not visible to the user
+const a = document.createElement("a"); // reused for all saving, not visible to the user
+document.body.appendChild(a);
+a.style.display = "none";
 
 /** JSON.stringify analogue with excluded values to save space. Can only be used on objects.
 @param {object} object a JSON object
@@ -70,12 +72,7 @@ Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-w
 @param {string} fileName the name of the saved file
 @return {void}
 */
-export function saveJson(data, fileName) {
-	if (a === null) {
-		a = document.createElement("a");
-		document.body.appendChild(a);
-		a.style = "display: none";
-	}
+export function saveJson(data: string, fileName: string) {
 	//const json = stringify(data,"graph",'\t'); // partially prettified variant not working correctly
 	const json = JSON.stringify(data); // unprettified variant
 	const blob = new Blob([json], { type: "application/json" });
@@ -95,11 +92,6 @@ Based on https://stackoverflow.com/questions/19327749/javascript-blob-fileName-w
 @return {void}
 */
 export function saveUrl(url, fileName) {
-	if (a === null) {
-		a = document.createElement("a");
-		document.body.appendChild(a);
-		a.style = "display: none";
-	}
 	a.href = url;
 	a.download = fileName;
 	a.click();

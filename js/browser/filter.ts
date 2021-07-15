@@ -8,7 +8,7 @@ See http://js.cytoscape.org/#style/visibility.
 */
 import * as NODE from "../node";
 import { checkboxKeydownListener, checkboxClickableDiv } from "./util";
-import { views } from "./view";
+import { View, views } from "./view";
 import log from "loglevel";
 
 const filterData = [
@@ -32,13 +32,13 @@ const filterData = [
 	//["node[consolidated<=0]","unverified"]
 ];
 
-const filters = [];
+const filters: Array<Filter> = [];
 const GRAPH_GETS_ADDITIONS = true;
 
 // apply a function to all cytoscape cores in all tabs
-const multicy = (f) =>
+const multicy = (f: Function) =>
 	views()
-		.map((v) => v.state.cy)
+		.map((v: View) => v.state.cy)
 		.forEach((cy) => f(cy));
 
 /**

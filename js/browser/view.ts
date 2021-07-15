@@ -6,10 +6,10 @@ import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
 
-let viewCount = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
+let viewCount: number = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
 export const partViews = new Set<View>();
-export const views = () => [mainView, ...partViews];
+export const views: () => Array<View> = () => [mainView, ...partViews];
 let firstFinished = null; // following instances need to wait for the first to load
 let viewLayout = goldenLayout();
 
@@ -35,7 +35,7 @@ interface State {
 export class View {
 	initialized: Promise<void>;
 	state: State;
-	cyContainer: HTMLDivElement;
+	cyContainer: HTMLDivElement = document.createElement("div");
 	element: HTMLElement;
 	cxtMenu: ContextMenu;
 
@@ -90,7 +90,7 @@ export class View {
 			partViews.add(this);
 		}
 		viewLayout.registerComponent(title, function (container) {
-			thisView.cyContainer = document.createElement("div");
+			//thisView.cyContainer = document.createElement("div");
 			thisView.element = container.getElement()[0];
 			container.getElement()[0].appendChild(thisView.cyContainer);
 			container.on("destroy", () => {
@@ -118,7 +118,7 @@ let removeTabsArray = [];
  *  @param {object} x the component to traverse
  *  @param {number} depth recursive depth
  *  @return {void}*/
-function traverse(x, depth) {
+function traverse(x: object, depth: number) {
 	if (x.type === "component" && x.componentName !== "Gesamtmodell") {
 		removeTabsArray.push(x);
 		return;

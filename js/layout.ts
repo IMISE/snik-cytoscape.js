@@ -7,13 +7,13 @@ import timer from "./timer";
 import * as NODE from "./node";
 import config from "./config";
 import log from "loglevel";
-import cytoscape from "cytoscape";
+import cytoscape, { ElementDefinition, NodeCollection } from "cytoscape";
 import cytoscapeeuler from "cytoscape-euler";
 cytoscape.use(cytoscapeeuler);
 
 const ANIMATE_THRESHOLD = 500;
 
-let activeLayout = undefined;
+let activeLayout = null;
 
 /**
 @param {string} layoutName Cytoscape.js layout name
@@ -41,8 +41,8 @@ function storageName(layoutName, subs, separateSubs) {
 // returns [["http://www.snik.eu...",{"x":0,"y":0}],...]
 positions(cy.nodes());
 */
-export function positions(nodes) {
-	const pos = [];
+export function positions(nodes: NodeCollection) {
+	const pos: Array<Array<any>> = [];
 	for (let i = 0; i < nodes.size(); i++) {
 		const node = nodes[i];
 		pos.push([node.data(NODE.ID), node.position()]);
@@ -84,7 +84,7 @@ export async function run(cy: cytoscape.Core, layoutConfig: LayoutConfig, subs?:
 		/** @type{cytoscape.ElementDefinition[]} */
 		const sources = new Set();
 		/** @type{cytoscape.ElementDefinition[]} */
-		const virtualEdges = [];
+		const virtualEdges: Array<ElementDefinition> = [];
 
 		const nodes = cy.nodes();
 		for (let i = 0; i < nodes.length; i++) {

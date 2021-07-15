@@ -7,7 +7,7 @@ import Stats from "stats.js";
  * @return {void}
  */
 export function addOverlay(cy: cytoscape.Core) {
-	const statss = [];
+	const statss: Array<Stats> = [];
 	const basics = self.performance && (self.performance as any).memory ? 3 : 2;
 	for (let i = 0; i < basics + 2; i++) {
 		const stats = new Stats();

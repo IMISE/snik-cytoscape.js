@@ -32,7 +32,7 @@ const propertyData = [
 	["skos:relatedMatch", "related", null, null, true, false],
 ];
 
-const properties = [];
+const properties: Array<Property> = [];
 
 /** RDF Property class for use in SNIK. */
 export class Property {
@@ -40,12 +40,12 @@ export class Property {
 	label: string;
 	domain: string;
 	range: string;
-	interontology: string;
-	restriction: string;
+	interontology: boolean;
+	restriction: boolean;
 
 	/** Sets up the property from an array.
-	 * @param {Array} array Contains 6 elements: [uri,label,domain,range,interontology,restriction]. */
-	constructor(array) {
+	 * @param {Array} array Contains 6 propertys: [uri,label,domain,range,interontology,restriction]. */
+	constructor(array: Array<any>) {
 		[this.uri, this.label, this.domain, this.range, this.interontology, this.restriction] = array;
 		this.uri = rdf.long(this.uri);
 	}
@@ -61,13 +61,13 @@ for (const a of propertyData) {
  * @param  {cytoscape.NodeSingular} objectNode  node representing a resource in object position
  * @return {Array<Property>}                    all properties that are allowed between the given subject and object node
  */
-export function possible(subjectNode, objectNode) {
-	const possibleProperties = properties.filter((element) => {
+export function possible(subjectNode, objectNode): Array<Property> {
+	const possibleProperties = properties.filter((property) => {
 		return (
-			(!element.domain || element.domain === subjectNode.data(NODE.SUBTOP)) && // domain
-			(!element.range || element.range === objectNode.data(NODE.SUBTOP)) && // range
-			(subjectNode.data(NODE.SOURCE) === objectNode.data(NODE.SOURCE)) !== element.interontology && // interontology
-			(element.uri !== "http://www.w3.org/2000/01/rdf-schema#subClassOf" || subjectNode.data(NODE.SUBTOP) === objectNode.data(NODE.SUBTOP))
+			(!property.domain || property.domain === subjectNode.data(NODE.SUBTOP)) && // domain
+			(!property.range || property.range === objectNode.data(NODE.SUBTOP)) && // range
+			(subjectNode.data(NODE.SOURCE) === objectNode.data(NODE.SOURCE)) !== property.interontology && // interontology
+			(property.uri !== "http://www.w3.org/2000/01/rdf-schema#subClassOf" || subjectNode.data(NODE.SUBTOP) === objectNode.data(NODE.SUBTOP))
 		); // rdfs:subClassOf only with the same subtop
 	});
 	log.debug(`possible properties between ${subjectNode.data(NODE.ID)} and ${objectNode.data(NODE.ID)}:`, possibleProperties);
