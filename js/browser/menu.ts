@@ -17,6 +17,8 @@ import { activeState, activeView, mainView, views } from "./view";
 import log from "loglevel";
 import hotkeys from "hotkeys-js";
 
+export let menu: Menu | null = null;
+
 /** main menu bar */
 export class Menu {
 	separateSubsBox;
@@ -30,6 +32,7 @@ export class Menu {
 		// bind this to the class instance instead of the event source
 		this.showCloseMatches = this.showCloseMatches.bind(this);
 		this.addMenu();
+		menu = this;
 	}
 	/** @return {boolean} whether subontologies are to be displayed separately. */
 	separateSubs() {
@@ -466,5 +469,3 @@ export class Menu {
 		}
 	}
 }
-
-export const menu = new Menu(); // singleton instance

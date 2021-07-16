@@ -5,16 +5,26 @@ Needs to be initialized before it can be used via the default export function.
 import nodeCommands from "./contextmenuNodes";
 import edgeCommands from "./contextmenuEdges";
 import { flatHelp } from "../help";
-import cytoscape from "cytoscape";
+import cytoscape, { Collection, EdgeSingular, NodeSingular, SingularElementReturnValue } from "cytoscape";
 import contextMenus from "cytoscape-context-menus";
 cytoscape.use(contextMenus);
 import "cytoscape-context-menus/cytoscape-context-menus.css";
 import log from "loglevel";
+import { sub } from "../rdf";
 
-const config = { menuItems: [] };
+// cytoscape-context-menus extension does not have type hints
+export interface MenuItem {
+	content: string;
+	id: string;
+	selector?: "node" | "node:compound" | "edge";
+	submenu?: Array<MenuItem>;
+	onClickFunction?(event: Event | { target: any }): void;
+}
+
+const config = { menuItems: [] as Array<MenuItem> };
 
 /** context menu for nodes and edges */
-export default class ContextMenu {
+export class ContextMenu {
 	graph: cytoscape.Core;
 	cxtMenus: Array<Object>;
 
@@ -64,3 +74,24 @@ export default class ContextMenu {
 		return cxtMenu;
 	}
 }
+
+/**
+ * Add a logging wrapper to a context menu command.
+ * @param  {object} cmd            the context menu command to wrap if it isn't already wrapped
+ * @param  {function} messageFunction a function that describes the element
+ * @return {void}
+ */
+export function logWrap(cmd, messageFunction) {
+	if (!cmd.onClickFunction || cmd.onClickFunction.wrapped) {
+		return;
+	}
+
+	const tmp = cmd.onClickFunction;
+	cmd.onClickFunction = (ele) => {
+		log.debug("Context Menu: Operation " + cmd.content + " on " + messageFunction(ele));
+		tmp(ele);
+	};
+	cmd.onClickFunction.wrapped = true;
+}
+
+export const ontoWikiUrl = (uri) => "https://www.snik.eu/ontowiki/view/?r=" + uri + "&m=" + sub(uri);

@@ -6,7 +6,7 @@ import * as util from "./util";
 import * as EDGE from "../edge";
 import * as language from "../lang/language";
 import { Graph } from "./graph";
-import { logWrap, ontoWikiUrl } from "./contextmenuUtil";
+import { logWrap, ontoWikiUrl, MenuItem } from "./contextmenu";
 import log from "loglevel";
 
 /** Creates a human readable string of the triple that an edge represents.
@@ -20,8 +20,8 @@ function edgeLabel(edge) {
 @param {Graph} graph the graph that the context menu operates on
 @returns {Array} an array of commands
 */
-export default (graph) => {
-	const commands = [
+export default function edgeCommands(graph: Graph): Array<MenuItem> {
+	const commands: Array<MenuItem> = [
 		{
 			content: "edit / report",
 			id: "edge-edit",
@@ -136,4 +136,4 @@ export default (graph) => {
 	/*	selector: `edge[${EDGE.GRAPH} = "http://www.snik.eu/ontology/limes-exact"]`, */
 
 	return commands;
-};
+}

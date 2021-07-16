@@ -14,7 +14,7 @@ import * as language from "../lang/language";
 import progress from "./progress";
 import { mainView, View } from "./view";
 import MicroModal from "micromodal";
-import cytoscape from "cytoscape";
+import cytoscape, { NodeCollection, NodeSingular } from "cytoscape";
 import log from "loglevel";
 export enum Direction {
 	IN,
@@ -447,8 +447,8 @@ export class Graph {
 	 * @param {cytoscape.NodeCollection} nodes The nodes, each of which will be passed as parameter to a separate call of the given function. Can be null or undefined,
 	 * @param {boolean} direct whether the input is a cytoscape collection that can be passed directly into the function without looping, which can be much faster if possible.
 	 * @return {void} */
-	multiplex(f, nodes, direct) {
-		return (ele) => {
+	multiplex(f: (node?: NodeSingular | NodeCollection) => void, nodes?: NodeCollection, direct?: boolean) {
+		return (ele?: NodeSingular) => {
 			const selected = this.cy.nodes(":selected");
 			let collection = nodes;
 			// nodes parameter is preferred
@@ -456,7 +456,7 @@ export class Graph {
 				collection = selected;
 			}
 			if (collection) {
-				collection = collection.union(ele);
+				if (ele) collection = collection.union(ele);
 				log.debug("multiplexing of " + collection.size() + " elements (direct=" + direct + ")");
 				if (direct) {
 					f(collection);

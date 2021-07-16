@@ -69,9 +69,9 @@ export async function loadSessionFromJsonFile(event) {
 			return;
 		}
 		reset();
-		const promises = [];
 		const mainView = new View(false);
-		promises.push(mainView.initialized);
+		const promises = [mainView.initialized];
+
 		// First graph is an instance of Graph from graph.js; the second one is the graph attribute from the Cytoscape JSON format.
 		loadGraphFromJson(mainView.state.graph, json.mainGraph.graph);
 		activeView().setTitle(json.mainGraph.title);

@@ -1,10 +1,11 @@
 /** @module */
 import { Graph } from "./graph";
 import { fillInitialGraph } from "./main";
-import ContextMenu from "./contextmenu";
+import { ContextMenu } from "./contextmenu";
 import { goldenLayout } from "./viewLayout";
 import { toJSON } from "./state";
 import log from "loglevel";
+import { ComponentConfig, ContentItem } from "golden-layout";
 
 let viewCount: number = 0; // only used for the name, dont decrement on destroy to prevent name conflicts
 export let mainView = null;
@@ -113,25 +114,29 @@ export class View {
 		});
 	}
 }
-let removeTabsArray = [];
+
 /** Helper function that traverses the component tree.
  *  @param {object} x the component to traverse
  *  @param {number} depth recursive depth
- *  @return {void}*/
-function traverse(x: object, depth: number) {
-	if (x.type === "component" && x.componentName !== "Gesamtmodell") {
-		removeTabsArray.push(x);
-		return;
+ *  @return {Array<ContentItem>}*/
+function traverse(x: ContentItem, depth: number): Array<ContentItem> {
+	const removeTabsArray: Array<ContentItem> = [];
+	if (x.type === "component") {
+		const config = x as unknown as ComponentConfig;
+		if (config.componentName !== "Gesamtmodell") {
+			removeTabsArray.push(x);
+			return removeTabsArray;
+		}
 	}
-	for (const y of x.contentItems) {
-		traverse(y, ++depth);
+	for (const item of x.contentItems) {
+		removeTabsArray.push(...traverse(item, ++depth));
 	}
+	return removeTabsArray;
 }
 /** Close all tabs except the first one.
  *  @return {void} */
 export function reset() {
-	removeTabsArray = [];
-	traverse((viewLayout as any).root, 0);
+	const removeTabsArray = traverse(viewLayout.root, 0);
 	for (const content of removeTabsArray) {
 		content.remove();
 	}

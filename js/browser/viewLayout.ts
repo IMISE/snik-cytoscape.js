@@ -6,6 +6,7 @@ import GoldenLayout from "golden-layout";
 import log from "loglevel";
 import "golden-layout/src/css/goldenlayout-base.css";
 import "golden-layout/src/css/goldenlayout-dark-theme.css";
+import "../../css/goldenlayout.css";
 
 /** Create, configure and return a GoldenLayout instance.
  *  @return {GoldenLayout} the created GoldenLayout instance */
@@ -20,7 +21,7 @@ export function goldenLayout() {
 		],
 	};
 
-	// @ts-expect-error This expression is not constructable
+	// //@ts-expect-error This expression is not constructable
 	const viewLayout = new GoldenLayout(layoutConfig);
 	// TODO: update stack on focus change
 
