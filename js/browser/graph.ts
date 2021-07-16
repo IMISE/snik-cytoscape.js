@@ -597,7 +597,7 @@ export class Graph {
 	 * @param {cytoscape.NodeCollection} nodes the nodes whose close matches are shown
 	 * @return {void} */
 	showCloseMatch(nodes) {
-		MicroModal.show("search-resu");
+		MicroModal.show("search-results");
 		const edges = nodes.connectedEdges(".unfiltered").filter('[pl="closeMatch"]'); // ,[pl="narrowMatch"],[pl="narrowMatch"]
 		const matches = edges.connectedNodes(".unfiltered");
 		Graph.setVisible(matches.union(edges), true);
